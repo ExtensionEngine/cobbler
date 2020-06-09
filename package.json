@@ -1,0 +1,52 @@
+{
+  "name": "cobbler",
+  "version": "1.0.0",
+  "description": "Training LMS Project",
+  "main": "server/index.js",
+  "scripts": {
+    "serve": "vue-cli-service serve ./client/src/App.vue",
+    "build": "vue-cli-service build ./client/src/App.vue",
+    "lint": "vue-cli-service lint ./client/src/App.vue"
+  },
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "eslint-plugin-require-sort": "^1.2.1",
+    "vue": "^2.6.11",
+    "vue-router": "^3.2.0",
+    "vuex": "^3.4.0"
+  },
+  "devDependencies": {
+    "@extensionengine/eslint-config": "^1.2.0",
+    "@vue/cli-plugin-babel": "~4.4.0",
+    "@vue/cli-plugin-eslint": "~4.4.0",
+    "@vue/cli-plugin-router": "~4.4.0",
+    "@vue/cli-plugin-vuex": "~4.4.0",
+    "@vue/cli-service": "~4.4.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-semistandard": "^15.0.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.21.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-vue": "^6.2.2",
+    "prettier": "^1.19.1",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ExtensionEngine/cobbler.git"
+  },
+  "keywords": [
+    "LMS"
+  ],
+  "author": "Luciano Peranni, Sergije Anticevic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ExtensionEngine/cobbler/issues"
+  },
+  "homepage": "https://github.com/ExtensionEngine/cobbler#readme"
+}
