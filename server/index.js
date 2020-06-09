@@ -11,7 +11,7 @@ const app = express();
 app.use(helmet());
 app.use(bodyParser.json());
 
-app.use('/api/', router);
+app.use('/api', router);
 
 app.listen(process.env.PORT, () =>
   console.log(`Server is listening on port ${process.env.PORT}!`)

@@ -6,6 +6,7 @@
   "scripts": {
     "dev:server": "nodemon ./server",
     "dev:client": "vue-cli-service serve ./client/src/App.vue",
+    "debug:server": "nodemon --inspect server",
     "build": "vue-cli-service build ./client/src/App.vue",
     "lint": "vue-cli-service lint ./client/src/App.vue"
   },
