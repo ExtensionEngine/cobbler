@@ -4,9 +4,9 @@
   "description": "Training LMS Project",
   "main": "server/index.js",
   "scripts": {
-    "serve": "vue-cli-service serve ./client/src/App.vue",
-    "build": "vue-cli-service build ./client/src/App.vue",
-    "lint": "vue-cli-service lint ./client/src/App.vue"
+    "serve": "vue-cli-service serve ./client/src/main.js",
+    "build": "vue-cli-service build ./client/src/main.js",
+    "lint": "vue-cli-service lint ./client/src/main.js"
   },
   "dependencies": {
     "core-js": "^3.6.5",
