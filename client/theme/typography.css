@@ -1,0 +1,10 @@
+/*===FONT===*/
+@font-face {
+  font-family: main;
+  src: url('https://fonts.googleapis.com/css2?family=Raleway:wght@500;800&display=swap');
+}
+
+@font-face {
+  font-family: secondary;
+  src: url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;700&display=swap');
+}

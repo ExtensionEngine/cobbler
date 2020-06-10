@@ -4,11 +4,11 @@
   "description": "Training LMS Project",
   "main": "server/index.js",
   "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
     "dev:server": "nodemon ./server",
-    "dev:client": "vue-cli-service serve ./client/src/App.vue",
     "debug:server": "nodemon --inspect server",
-    "build": "vue-cli-service build ./client/src/App.vue",
-    "lint": "vue-cli-service lint ./client/src/App.vue"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -16,6 +16,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "eslint-plugin-require-sort": "^1.2.1",
+    "normalize.css": "^8.0.1",
     "express": "^4.17.1",
     "helmet": "^3.22.0",
     "vue": "^2.6.11",
