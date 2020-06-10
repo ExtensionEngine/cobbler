@@ -1,12 +1,16 @@
 <template>
   <div id="app">
     <div id="nav">
-      <h1>{{ item }}</h1>
       <router-link to="/">Home</router-link> |
     </div>
     <router-view />
   </div>
 </template>
+
+<script>
+import 'normalize.css';
+export default { name: 'app' };
+</script>
 
 <style>
 #app {
@@ -30,10 +34,3 @@
   color: #42b983;
 }
 </style>
-
-<script>
-import 'normalize.css';
-export default {
-  name: 'app'
-};
-</script>
