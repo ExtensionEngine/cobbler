@@ -1,7 +1,5 @@
 'use strict';
 
-const { roles } = require('../../../../config/server');
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Users', {
@@ -33,7 +31,7 @@ module.exports = {
         allowNull: false
       },
       role: {
-        type: Sequelize.ENUM(roles)
+        type: Sequelize.ENUM('ADMIN', 'LECTURER', 'LEARNER')
       },
       avatarUrl: {
         type: Sequelize.TEXT,
