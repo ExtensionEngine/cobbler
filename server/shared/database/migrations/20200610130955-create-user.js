@@ -1,4 +1,7 @@
 'use strict';
+
+const { roles } = require('../../../../config/server');
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Users', {
@@ -10,24 +13,31 @@ module.exports = {
       },
       firstName: {
         type: Sequelize.STRING,
+        field: 'first_name',
         allowNull: false
       },
       lastName: {
         type: Sequelize.STRING,
+        field: 'last_name',
         allowNull: false
       },
       email: {
         type: Sequelize.STRING,
         unique: true
       },
-      biography: {
+      bio: {
         type: Sequelize.TEXT
       },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       role: {
-        type: Sequelize.ENUM('ADMIN', 'TEACHER', 'LEARNER')
+        type: Sequelize.ENUM(roles)
       },
       avatarUrl: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT,
+        field: 'avatar_url'
       },
       createdAt: {
         type: Sequelize.DATE,
