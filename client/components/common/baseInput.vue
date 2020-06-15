@@ -54,9 +54,6 @@ export default {
 .outlined {
   border: solid 1px rgba(0, 0, 0, 0.5);
 }
-.filled:focus {
-  background: rgba(204, 204, 204);
-}
 .input-wrapper {
   position: relative;
 }
@@ -65,14 +62,13 @@ export default {
   top: 11px;
   left: 16px;
   font-size: 16px;
-  transition: all 0.1s ease;
+  transition: all 0.15s ease;
 }
 .input:focus + .input-label,
 .field-filled {
   font-size: 11px;
-  top: -5px;
-  left: 10px;
-  background: #ffffff;
+  top: -12px;
+  left: 5px;
   padding: 0 5px;
 }
 </style>
