@@ -1,18 +1,18 @@
 <template>
   <div class="login-container">
     <form @submit.prevent="onSubmit" class="login-form">
-      <Input v-model="email" placeholder="Email" class="input-element" />
-      <Input v-model="password" type="password" class="input-element" placeholder="Password" />
-      <Button type="submit" class="input-element">LOGIN</Button>
-      <Alert v-if="error" severity="error" class="input-element">{{ error }}</Alert>
+      <base-input v-model="email" outlined label="Email" class="input-element" />
+      <base-input v-model="password" outlined label="Password" type="password" class="input-element" />
+      <base-button contained primary type="submit" class="input-element">LOGIN</base-button>
+      <base-alert v-if="error" error>{{ error }}</base-alert>
     </form>
   </div>
 </template>
 
 <script>
-import Alert from './common/baseAlert';
-import Button from './common/baseButton';
-import Input from './common/baseInput';
+import BaseAlert from './common/BaseAlert';
+import BaseButton from './common/BaseButton';
+import BaseInput from './common/BaseInput';
 import { mapActions } from 'vuex';
 
 export default {
@@ -21,7 +21,7 @@ export default {
     return {
       email: '',
       password: '',
-      error: ''
+      error: 'dasdas'
     };
   },
   methods: {
@@ -35,7 +35,11 @@ export default {
       }
     }
   },
-  components: { Button, Input, Alert }
+  components: {
+    'base-alert': BaseAlert,
+    'base-button': BaseButton,
+    'base-input': BaseInput
+  }
 };
 </script>
 

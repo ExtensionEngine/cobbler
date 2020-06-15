@@ -10,7 +10,10 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      protectedRoute: true
+    }
   },
   {
     path: '/login',
@@ -29,9 +32,18 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(it => it.meta.authRoute) && store.state.auth.token) {
+  const isLoginRoute = to.matched.some(it => it.meta.authRoute);
+  const isProtectedRoute = to.matched.some(it => it.meta.protectedRoute);
+  const isUserLoggedIn = store.state.auth.token;
+
+  if (isLoginRoute && isUserLoggedIn) {
     next('/');
   }
+
+  if (isProtectedRoute && !isUserLoggedIn) {
+    next('/login');
+  }
+
   next();
 });
 

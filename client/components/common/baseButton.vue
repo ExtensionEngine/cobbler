@@ -1,5 +1,11 @@
 <template>
-  <button v-on="$listeners" :type="type" :disabled="disabled" :class="buttonClass">
+  <button
+    v-on="$listeners" :type="type" :disabled="disabled" :class="{
+      btn: true,
+      contained,
+      outlined,
+      primary
+    }">
     <slot></slot>
   </button>
 </template>
@@ -11,16 +17,9 @@ export default {
   props: {
     disabled: { type: Boolean, default: false },
     type: { type: String, default: 'button' },
-    variant: { type: String, default: 'contained' },
-    color: { type: String, default: 'primary' }
-  },
-  computed: {
-    buttonClass: cmp => ({
-      btn: true,
-      contained: cmp.variant === 'contained',
-      outlined: cmp.variant === 'outlined',
-      primary: cmp.color === 'primary'
-    })
+    contained: { type: Boolean, default: false },
+    outlined: { type: Boolean, default: false },
+    primary: { type: Boolean, default: false }
   }
 };
 </script>
@@ -33,6 +32,7 @@ export default {
 }
 .btn:hover {
   cursor: pointer;
+  opacity: 0.9;
 }
 .primary {
   background: var(--color-primary);

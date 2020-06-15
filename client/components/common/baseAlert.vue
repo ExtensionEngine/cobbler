@@ -1,5 +1,12 @@
 <template>
-  <div :class="alertWrapperClass">
+  <div
+    :class="{
+      'alert-wrapper': true,
+      error,
+      warning,
+      info,
+      success
+    }">
     <div><slot></slot></div>
   </div>
 </template>
@@ -8,16 +15,10 @@
 export default {
   name: 'base-alert',
   props: {
-    severity: { type: String, default: 'info' }
-  },
-  computed: {
-    alertWrapperClass: cmp => ({
-      'alert-wrapper': true,
-      error: cmp.severity === 'error',
-      warning: cmp.severity === 'warning',
-      info: cmp.severity === 'info',
-      success: cmp.severity === 'success'
-    })
+    error: { type: Boolean, default: false },
+    warning: { type: Boolean, default: false },
+    info: { type: Boolean, default: false },
+    success: { type: Boolean, default: false }
   }
 };
 </script>

@@ -1,5 +1,16 @@
 <template>
-  <input @change="onChange" :placeholder="placeholder" :type="type" :value="value" :class="inputClass">
+  <label class="input-wrapper">
+    <input
+      @change="onChange"
+      :type="type"
+      :value="value"
+      :class="{
+        input: true,
+        filled,
+        outlined
+      }">
+    <span :class="{'input-label': true,'field-filled': value}">{{ label }}</span>
+  </label>
 </template>
 
 <script>
@@ -7,17 +18,11 @@ export default {
   name: 'base-input',
   inheritAttrs: false,
   props: {
+    label: { type: String, required: true },
     value: { type: String, default: '' },
     type: { type: String, default: 'text' },
-    variant: { type: String, default: 'filled' },
-    placeholder: { type: String, default: '' }
-  },
-  computed: {
-    inputClass: cmp => ({
-      input: true,
-      filled: cmp.variant === 'filled',
-      outlined: cmp.variant === 'outlined'
-    })
+    filled: { type: Boolean, default: false },
+    outlined: { type: Boolean, default: false }
   },
   methods: {
     onChange(event) {
@@ -29,25 +34,45 @@ export default {
 
 <style lang="css" scoped>
 .input {
-    padding: 12px 16px 14px;
-    border-width: 1px;
-    border-radius: 3px;
-    outline: none;
+  font-size: 16px;
+  padding: 12px 16px 14px;
+  border-width: 1px;
+  border-radius: 3px;
+  outline: none;
+  width: calc(100% - 32px);
 }
 .input:hover {
-    border-color: rgba(0,0,0);
+  border-color: rgba(0, 0, 0);
 }
 .input:focus {
-    border-color: var(#227093);
+  border-color: var(#227093);
 }
 .filled {
-    border: none;
-    border-bottom: solid 1px rgba(0,0,0,.5);
+  border: none;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.5);
 }
 .outlined {
-    border: solid 1px rgba(0,0,0,.5);
+  border: solid 1px rgba(0, 0, 0, 0.5);
 }
 .filled:focus {
-    background: rgba(204, 204, 204)
+  background: rgba(204, 204, 204);
+}
+.input-wrapper {
+  position: relative;
+}
+.input-label {
+  position: absolute;
+  top: 11px;
+  left: 16px;
+  font-size: 16px;
+  transition: all 0.1s ease;
+}
+.input:focus + .input-label,
+.field-filled {
+  font-size: 11px;
+  top: -5px;
+  left: 10px;
+  background: #ffffff;
+  padding: 0 5px;
 }
 </style>
