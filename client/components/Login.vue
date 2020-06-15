@@ -11,6 +11,7 @@
 <script>
 import Button from './common/baseButton';
 import Input from './common/baseInput';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'login',
@@ -21,8 +22,15 @@ export default {
     };
   },
   methods: {
-    onSubmit: () => {
-      console.log('submited');
+    ...mapActions(['login']),
+    onSubmit: async function () {
+      try {
+        await this.login({ email: this.email, password: this.password });
+        this.$router.push('/');
+      } catch (error) {
+        // TODO: handle error
+        console.log(error);
+      }
     }
   },
   components: { Button, Input }
