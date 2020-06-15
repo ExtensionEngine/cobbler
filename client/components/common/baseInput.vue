@@ -69,6 +69,8 @@ export default {
   font-size: 11px;
   top: -12px;
   left: 5px;
-  padding: 0 5px;
+  padding: 2px 7px;
+  background: white;
+  border-radius: 3px 3px 0 0;
 }
 </style>
