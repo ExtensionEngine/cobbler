@@ -1,23 +1,26 @@
 'use strict';
+const bcrypt = require('bcrypt');
 const User = require('./user.model');
-
-function sayHi(req, res) {
-  return res.send('Hi');
-}
 
 function addUser(req, res) {
   const { firstName, lastName, email, password, role } = req.body;
+  const hashedPassword = bcrypt.hashSync(password, 10);
   User.create({
     firstName,
     lastName,
     email,
-    password,
+    password: hashedPassword,
     role
   })
   .then(success => res.json(success))
-  .catch(err => res.json('NOPE', err));
+  .catch(err => res.json(err));
+}
+
+function login(req, res) {
+  res.json('Successfully logged in');
 }
 
 module.exports = {
-  addUser, sayHi
+  addUser,
+  login
 };
