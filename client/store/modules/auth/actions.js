@@ -9,9 +9,6 @@ export const login = ({ commit }, credentials) => {
 };
 
 export const logout = ({ commit }) => {
-  setTimeout(() => {
-    localStorage.removeItem('token');
-    commit('logout');
-    window.location.reload();
-  }, 0);
+  localStorage.removeItem('token');
+  commit('logout');
 };
