@@ -21,7 +21,7 @@ export default {
     return {
       email: '',
       password: '',
-      error: 'dasdas'
+      error: ''
     };
   },
   methods: {
@@ -45,7 +45,7 @@ export default {
 
 <style scoped>
 .login-container {
-  padding: 0 70px;
+  padding: 50px 70px;
 }
 .login-form {
   display: flex;
