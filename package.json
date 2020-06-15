@@ -4,21 +4,24 @@
   "description": "Training LMS Project",
   "main": "server/index.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev:client": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
+    "client:lint": "vue-cli-service lint",
     "dev:server": "nodemon ./server",
-    "debug:server": "nodemon --inspect server"
+    "debug:server": "nodemon --inspect server",
+    "db:seed": "npx sequelize-cli db:seed:all"
   },
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "eslint-plugin-require-sort": "^1.2.1",
-    "normalize.css": "^8.0.1",
     "express": "^4.17.1",
     "helmet": "^3.22.0",
+    "lodash": "^4.17.15",
+    "normalize.css": "^8.0.1",
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.12",
