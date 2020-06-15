@@ -11,12 +11,12 @@ class User extends Model {
     return bcrypt.compare(passwordAttempt, this.password)
       .then(result => {
         return result;
-      });
+      })
+      .catch(() => { return false; });
   }
 
   generateJWT() {
     const options = {
-      issuer: 'issuer',
       expiresIn: '1d'
     };
     const payload = { id: this.id, email: this.email };
