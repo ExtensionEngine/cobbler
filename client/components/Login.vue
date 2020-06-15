@@ -1,14 +1,16 @@
 <template>
   <div class="login-container">
     <form @submit.prevent="onSubmit" class="login-form">
-      <Input v-model="email" placeholder="Email" />
-      <Input v-model="password" type="password" placeholder="Password" />
-      <Button type="submit">LOGIN</Button>
+      <Input v-model="email" placeholder="Email" class="input-element" />
+      <Input v-model="password" type="password" class="input-element" placeholder="Password" />
+      <Button type="submit" class="input-element">LOGIN</Button>
+      <Alert v-if="error" severity="error" class="input-element">{{ error }}</Alert>
     </form>
   </div>
 </template>
 
 <script>
+import Alert from './common/baseAlert';
 import Button from './common/baseButton';
 import Input from './common/baseInput';
 import { mapActions } from 'vuex';
@@ -18,7 +20,8 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      error: ''
     };
   },
   methods: {
@@ -27,13 +30,12 @@ export default {
       try {
         await this.login({ email: this.email, password: this.password });
         this.$router.push('/');
-      } catch (error) {
-        // TODO: handle error
-        console.log(error);
+      } catch (err) {
+        this.error = err.message;
       }
     }
   },
-  components: { Button, Input }
+  components: { Button, Input, Alert }
 };
 </script>
 
@@ -44,5 +46,8 @@ export default {
 .login-form {
   display: flex;
   flex-direction: column;
+}
+.input-element {
+  margin: 10px 0;
 }
 </style>
