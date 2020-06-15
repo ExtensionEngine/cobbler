@@ -4,40 +4,49 @@ const bcrypt = require('bcrypt');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('Users',
+    return queryInterface.bulkInsert('users',
       [
         {
-          first_name: 'Mate',
-          last_name: 'Ivcic',
-          email: 'example@mail.net',
+          first_name: 'Learner',
+          last_name: 'A',
+          email: 'example1@gmail.com',
           password: bcrypt.hashSync('12345', Number(process.env.SALT_ROUNDS)),
-          role: 'LECTURER',
+          role: 'LEARNER',
           created_at: now,
           updated_at: now
         },
         {
-          first_name: 'Valentino',
-          last_name: 'Lazaro',
-          email: 'primjer@poruke.hr',
+          first_name: 'Learner',
+          last_name: 'B',
+          email: 'example2@gmail.com',
           password: bcrypt.hashSync('12345', Number(process.env.SALT_ROUNDS)),
-          role: 'LECTURER',
+          role: 'LEARNER',
           created_at: now,
           updated_at: now
         },
         {
-          first_name: 'Franco',
-          last_name: 'Baresi',
-          email: 'mail@gmail.com',
-          password: bcrypt.hashSync('678910', Number(process.env.SALT_ROUNDS)),
-          role: 'LECTURER',
+          first_name: 'Learner',
+          last_name: 'C',
+          email: 'example3@gmail.com',
+          password: bcrypt.hashSync('12345', Number(process.env.SALT_ROUNDS)),
+          role: 'LEARNER',
           created_at: now,
           updated_at: now
         },
         {
-          first_name: 'Slavoljub',
-          last_name: 'Mamic',
-          email: 'ante@mate.hr',
-          password: bcrypt.hashSync('678910', Number(process.env.SALT_ROUNDS)),
+          first_name: 'Learner',
+          last_name: 'D',
+          email: 'example4@gmail.com',
+          password: bcrypt.hashSync('12345', Number(process.env.SALT_ROUNDS)),
+          role: 'LEARNER',
+          created_at: now,
+          updated_at: now
+        },
+        {
+          first_name: 'Lecturer',
+          last_name: 'A',
+          email: 'teacher@gmail.com',
+          password: bcrypt.hashSync('12345', Number(process.env.SALT_ROUNDS)),
           role: 'LECTURER',
           created_at: now,
           updated_at: now
@@ -47,6 +56,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Users', null, {});
+    return queryInterface.bulkDelete('users', null, {});
   }
 };
