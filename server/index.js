@@ -5,12 +5,14 @@ const bodyParser = require('body-parser');
 const database = require('./shared/database');
 const express = require('express');
 const helmet = require('helmet');
+const { initialize } = require('./shared/auth');
 const { port } = require('../config/server');
 const router = require('./router.js');
 const app = express();
 
 app.use(helmet());
 app.use(bodyParser.json());
+app.use(initialize());
 
 app.use('/api', router);
 

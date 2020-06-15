@@ -11,19 +11,11 @@ function create(req, res) {
   .catch(err => res.json(err));
 }
 
-function addUser(req, res) {
-  const { firstName, lastName, email, password, role } = req.body;
-  User.create({
-    firstName,
-    lastName,
-    email,
-    password,
-    role
-  })
-  .then(success => res.json(success))
-  .catch(err => res.json('NOPE', err));
+function login({ user }, res) {
+  const token = user.generateJWT();
+  res.json({ user: user.email, token });
 }
-
 module.exports = {
-  create
+  create,
+  login
 };

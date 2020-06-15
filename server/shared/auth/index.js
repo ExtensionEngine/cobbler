@@ -11,7 +11,10 @@ const options = {
 passport.use(new LocalStrategy(options,
   (email, password, done) => User.findOne({ where: { email } })
   .then(user => {
-    return user && user.authenticate(password);
+    if (user && user.authenticate(password)) {
+      return user;
+    }
+    return false;
   })
   .then(user => {
     return done(null, user || false);
