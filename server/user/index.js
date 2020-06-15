@@ -3,7 +3,8 @@
 const router = require('express').Router();
 const ctrl = require('./user.controller');
 
-router.get('/', ctrl.sayHi);
+router
+  .post('/', ctrl.create);
 
 module.exports = {
   path: '/users',
