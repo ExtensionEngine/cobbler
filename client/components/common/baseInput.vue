@@ -1,7 +1,7 @@
 <template>
   <label class="input-wrapper">
     <input
-      @change="onChange"
+      @input="onChange"
       :type="type"
       :value="value"
       :class="{

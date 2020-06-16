@@ -4,7 +4,8 @@
       btn: true,
       contained,
       outlined,
-      primary
+      primary,
+      disabled
     }">
     <slot></slot>
   </button>
@@ -41,5 +42,12 @@ export default {
 .contained {
   color: #ffff;
   border: none;
+}
+.disabled {
+  opacity: 0.4;
+}
+.disabled:hover {
+  cursor: default;
+  opacity: 0.4;
 }
 </style>

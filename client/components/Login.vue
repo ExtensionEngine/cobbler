@@ -1,10 +1,11 @@
 <template>
   <div class="login-container">
     <form @submit.prevent="onSubmit" class="login-form">
-      <base-input v-model="email" filled label="Email" class="input-element" />
+      <base-input v-model="email" @input="validateEmail" filled label="Email" class="input-element" />
+      <base-alert v-if="!error.isServerSide && error.message" error>{{ error.message }}</base-alert>
       <base-input v-model="password" filled label="Password" type="password" class="input-element" />
-      <base-button contained primary type="submit" class="input-element">LOGIN</base-button>
-      <base-alert v-if="error" error>{{ error }}</base-alert>
+      <base-button :disabled="!!error.message && !error.isServerSide" contained primary type="submit" class="input-element">LOGIN</base-button>
+      <base-alert v-if="error.isServerSide && error.message" error>{{ error.isServerSide && error.message }}</base-alert>
     </form>
   </div>
 </template>
@@ -14,6 +15,7 @@ import BaseAlert from './common/BaseAlert';
 import BaseButton from './common/BaseButton';
 import BaseInput from './common/BaseInput';
 import { mapActions } from 'vuex';
+import { validateEmail } from '../utils/validate';
 
 export default {
   name: 'login',
@@ -21,7 +23,10 @@ export default {
     return {
       email: '',
       password: '',
-      error: ''
+      error: {
+        isServerSide: false,
+        message: ''
+      }
     };
   },
   methods: {
@@ -31,8 +36,26 @@ export default {
         await this.login({ email: this.email, password: this.password });
         this.$router.push('/');
       } catch (err) {
-        this.error = err.message;
+        const newError = {
+          isServerSide: true
+        };
+
+        if (err.status === 400) {
+          newError.message = 'Short password';
+        } else if (err.status === 404) {
+          newError.message = 'User with email not found';
+        } else if (err.status === 500) {
+          newError.message = 'Something went wrong';
+        }
+        this.error = newError;
       }
+    },
+    validateEmail: function () {
+      if (!validateEmail(this.email)) {
+        this.error = { message: 'Invalid email format!', isServerSide: false };
+        return;
+      }
+      this.error = { message: '', isServerSide: false };
     }
   },
   components: {
