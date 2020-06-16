@@ -1,11 +1,12 @@
 'use strict';
 
-class BadCredentialsError extends Error {
-  constructor(message) {
+class HttpError extends Error {
+  constructor(message, status) {
     super(message);
-    this.name = 'BadCredentialsError';
-    Error.captureStackTrace(this, BadCredentialsError);
+    this.name = 'HttpError';
+    this.status = status;
+    Error.captureStackTrace(this, HttpError);
   }
 }
 
-module.exports = { BadCredentialsError };
+module.exports = { HttpError };

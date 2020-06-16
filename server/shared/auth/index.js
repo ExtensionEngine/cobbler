@@ -1,7 +1,8 @@
 'use strict';
 
 const { ExtractJwt, Strategy } = require('passport-jwt');
-const { BadCredentialsError } = require('../error');
+const { NOT_FOUND, UNAUTHORIZED } = require('http-status-codes');
+const { HttpError } = require('../error');
 const LocalStrategy = require('passport-local');
 const passport = require('passport');
 const User = require('../../user/user.model');
@@ -12,14 +13,11 @@ const options = {
 
 passport.use(new LocalStrategy(options,
   async (email, password, done) => {
-    try {
-      const user = await User.findOne({ where: { email }, rejectOnEmpty: true });
-      const isValid = await user.checkPassword(password);
-      if (isValid) return done(null, user);
-      throw new BadCredentialsError('Wrong password');
-    } catch (e) {
-      return done(e);
-    }
+    const user = await User.findOne({ where: { email } });
+    if (!user) return done(new HttpError('User not found', NOT_FOUND));
+    const isValid = await user.checkPassword(password);
+    if (isValid) return done(null, user);
+    return done(new HttpError('Bad credentials', UNAUTHORIZED));
   }
 ));
 
