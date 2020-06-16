@@ -7,19 +7,15 @@ const { Model } = require('sequelize');
 const { roles } = require('../../config/server');
 
 class User extends Model {
-  authenticate(passwordAttempt) {
+  checkPassword(passwordAttempt) {
     return bcrypt.compare(passwordAttempt, this.password)
-      .then(result => {
-        return result;
-      })
-      .catch(() => { return false; });
+      .then(result => result)
+      .catch(() => false);
   }
 
   generateJWT() {
-    const options = {
-      expiresIn: '1d'
-    };
-    const payload = { id: this.id, email: this.email };
+    const options = { expiresIn: '1d' };
+    const payload = { sub: this.email };
     return jwt.sign(payload, process.env.JWT_SECRET, options);
   }
 }

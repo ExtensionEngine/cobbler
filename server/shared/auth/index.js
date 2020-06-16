@@ -4,36 +4,34 @@ const { ExtractJwt, Strategy } = require('passport-jwt');
 const LocalStrategy = require('passport-local');
 const passport = require('passport');
 const User = require('../../user/user.model');
+const { WrongCredentialsError } = require('../error');
 
 const options = {
   usernameField: 'email'
 };
 
 passport.use(new LocalStrategy(options,
-  (email, password, done) => User.findOne({ where: { email } })
-  .then(async user => {
-    if (user && await user.authenticate(password)) {
-      return done(null, user);
+  async (email, password, done) => {
+    try {
+      const user = await User.findOne({ where: { email }, rejectOnEmpty: true });
+      const isValid = await user.checkPassword(password);
+      if (isValid) return done(null, user);
+      throw new WrongCredentialsError('Wrong password');
+    } catch (e) {
+      return done(e);
     }
-    return done(null, false, { message: 'False username or password' });
-  })
-  .catch(err => {
-    return done(err, false, { message: 'User not found' });
-  }))
-);
+  }
+));
+
 // JWT Strategy
 const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('JWT');
 opts.secretOrKey = process.env.JWT_SECRET;
 
 passport.use(new Strategy(opts, (payload, done) => {
-  User.findOne({ id: payload.id })
-    .then(user => {
-      return done(null, user || false);
-    })
-    .catch(err => {
-      return done(err, false);
-    });
+  User.findOne({ email: payload.sub })
+    .then(user => done(null, user || false))
+    .catch(err => done(err, false));
 }));
 
 passport.serializeUser((user, done) => {
@@ -47,8 +45,8 @@ module.exports = {
   initialize(options = {}) {
     return passport.initialize(options);
   },
-  authenticate(strategy, options = {}) {
+  authenticate(strategy, options, cb) {
     return passport
-      .authenticate(strategy, { ...options });
+      .authenticate(strategy, { ...options, failWithError: true }, cb);
   }
 };
