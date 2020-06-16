@@ -87,9 +87,11 @@ export default {
   background: rgba(204, 204, 204);
   border-radius: 3px;
   padding: 50px;
+  box-shadow: 2px 6px 9px 0px #888888;
 }
 .input-element {
   margin: 10px 0;
+  box-shadow: 2px 2px 5px 0px #888888;
 }
 @media only screen and (max-width: 480px) {
   .login-form {
