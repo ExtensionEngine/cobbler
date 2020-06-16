@@ -1,19 +1,21 @@
 'use strict';
 
+const { NOT_FOUND, UNAUTHORIZED } = require('http-status-codes');
 const auth = require('../shared/auth');
+const { BadCredentialsError } = require('../shared/error');
 const ctrl = require('./auth.controller');
 const { EmptyResultError } = require('sequelize');
 const router = require('express').Router();
-const { WrongCredentialsError } = require('../shared/error');
 
 router.post('/login', (req, res, next) => {
   auth.authenticate('local', null, (err, user, info) => {
-    if (err instanceof EmptyResultError) { return res.send(404, 'User not found'); }
-    if (err instanceof WrongCredentialsError) { return res.send(401, 'Wrong password'); }
-
-    req.login(user, err => {
-      return err ? next(err) : next();
-    });
+    if (err instanceof EmptyResultError) {
+      return res.send(NOT_FOUND, 'User not found');
+    }
+    if (err instanceof BadCredentialsError) {
+      return res.send(UNAUTHORIZED, 'Wrong password');
+    }
+    next();
   })(req, res, next);
 }, ctrl.login);
 

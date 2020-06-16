@@ -1,12 +1,11 @@
 'use strict';
 
-class WrongCredentialsError extends Error {
+class BadCredentialsError extends Error {
   constructor(message) {
     super(message);
-    this.name = 'WrongCredentialsError';
-    this.statusCode = 401;
-    Error.captureStackTrace(this, WrongCredentialsError);
+    this.name = 'BadCredentialsError';
+    Error.captureStackTrace(this, BadCredentialsError);
   }
 }
 
-module.exports = { WrongCredentialsError };
+module.exports = { BadCredentialsError };
