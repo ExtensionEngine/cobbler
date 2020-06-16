@@ -1,3 +1,4 @@
+import router from '../router';
 import store from '../store';
 import thwack from 'thwack';
 export const base = '/api/v1';
@@ -27,7 +28,7 @@ export const configureThwack = () => {
 
     if (status === 401 || status === 403) {
       store.dispatch('logout');
-      history.push('/login');
+      router.push('/login');
     }
   });
 };
