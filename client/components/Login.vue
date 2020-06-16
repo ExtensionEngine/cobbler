@@ -2,10 +2,14 @@
   <div class="login-container">
     <form @submit.prevent="onSubmit" class="login-form">
       <base-input v-model="email" @input="validateEmail" filled label="Email" class="input-element" />
-      <base-alert v-if="!error.isServerSide && error.message" error>{{ error.message }}</base-alert>
-      <base-input v-model="password" filled label="Password" type="password" class="input-element" />
-      <base-button :disabled="!!error.message && !error.isServerSide" contained primary type="submit" class="input-element">LOGIN</base-button>
-      <base-alert v-if="error.isServerSide && error.message" error>{{ error.isServerSide && error.message }}</base-alert>
+      <base-alert v-if="error.email" error>{{ error.email }}</base-alert>
+      <base-input
+        v-model="password" @input="validatePassword" filled label="Password"
+        type="password"
+        class="input-element" />
+      <base-alert v-if="error.password" error>{{ error.password }}</base-alert>
+      <base-button :disabled="email && password &&(!!error.email || !!error.password)" contained primary type="submit" class="input-element">LOGIN</base-button>
+      <base-alert v-if="error.serverSide" error>{{ error.serverSide }}</base-alert>
     </form>
   </div>
 </template>
@@ -24,8 +28,9 @@ export default {
       email: '',
       password: '',
       error: {
-        isServerSide: false,
-        message: ''
+        email: '',
+        password: '',
+        serverSide: ''
       }
     };
   },
@@ -36,26 +41,29 @@ export default {
         await this.login({ email: this.email, password: this.password });
         this.$router.push('/');
       } catch (err) {
-        const newError = {
-          isServerSide: true
-        };
-
-        if (err.status === 400) {
-          newError.message = 'Short password';
-        } else if (err.status === 404) {
-          newError.message = 'User with email not found';
-        } else if (err.status === 500) {
-          newError.message = 'Something went wrong';
+        const { status } = err.response;
+        if (status === 401) {
+          this.error.serverSide = 'Short password';
+        } else if (status === 404) {
+          this.error.serverSide = 'User with email not found';
+        } else if (status === 500) {
+          this.error.serverSide = 'Something went wrong';
         }
-        this.error = newError;
       }
     },
     validateEmail: function () {
       if (!validateEmail(this.email)) {
-        this.error = { message: 'Invalid email format!', isServerSide: false };
+        this.error = { ...this.error, email: 'Entered email is not valid' };
         return;
       }
-      this.error = { message: '', isServerSide: false };
+      this.error = { ...this.error, email: '' };
+    },
+    validatePassword: function () {
+      if (this.password.length < 7) {
+        this.error = { ...this.error, password: 'The password should be longer than 6 chars' };
+        return;
+      }
+      this.error = { ...this.error, password: '' };
     }
   },
   components: {

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import store from '../store';
-export const base = '/api';
+export const base = 'http://localhost:3000/api/v1';
 
-const userBase = `${base}/user`;
+const userBase = `${base}`;
 
 export const endpoints = {
   user: {
@@ -25,7 +25,6 @@ export const configureAxios = () => {
     }
   );
 
-  // TODO: Test this interceptor once connected to backend
   axios.interceptors.response.use(
     response => response,
     error => {

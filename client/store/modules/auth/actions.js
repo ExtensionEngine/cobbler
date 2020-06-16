@@ -2,9 +2,10 @@ import { login as loginRequest } from '../../../api/auth';
 
 export const login = ({ commit }, credentials) => {
   return loginRequest(credentials)
-      .then(({ token }) => {
-        localStorage.setItem('token', token);
-        return commit('login', token);
+      .then(({ data }) => {
+        console.log(data.token);
+        localStorage.setItem('token', data.token);
+        return commit('login', data.token);
       });
 };
 

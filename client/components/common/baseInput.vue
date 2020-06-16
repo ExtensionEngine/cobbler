@@ -40,6 +40,7 @@ export default {
   border-radius: 3px;
   outline: none;
   width: calc(100% - 32px);
+  font-family: 'main';
 }
 .input:hover {
   border-color: rgba(0, 0, 0);

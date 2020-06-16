@@ -15,7 +15,9 @@ router.post('/login', (req, res, next) => {
     if (err instanceof BadCredentialsError) {
       return res.send(UNAUTHORIZED, 'Wrong password');
     }
-    next();
+    req.login(user, err => {
+      return err ? next(err) : next();
+    });
   })(req, res, next);
 }, ctrl.login);
 
