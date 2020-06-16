@@ -1,7 +1,7 @@
 'use strict';
 
-const { BAD_GATEWAY, BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED } = require('http-status-codes');
 const { ExtractJwt, Strategy } = require('passport-jwt');
+const { INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED } = require('http-status-codes');
 const { HttpError } = require('../error');
 const LocalStrategy = require('passport-local');
 const passport = require('passport');
