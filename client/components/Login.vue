@@ -41,11 +41,11 @@ export default {
         await this.login({ email: this.email, password: this.password });
         this.$router.push('/');
       } catch (err) {
-        const { status } = err.response;
+        const { status } = err.thwackResponse;
         if (status === 401) {
           this.error.serverSide = 'Short password';
         } else if (status === 404) {
-          this.error.serverSide = 'User with email not found';
+          this.error.serverSide = 'User with this email not found';
         } else if (status === 500) {
           this.error.serverSide = 'Something went wrong';
         }
@@ -59,8 +59,8 @@ export default {
       this.error = { ...this.error, email: '' };
     },
     validatePassword: function () {
-      if (this.password.length < 7) {
-        this.error = { ...this.error, password: 'The password should be longer than 6 chars' };
+      if (this.password.length < 5) {
+        this.error = { ...this.error, password: 'The password should be longer than 4 chars' };
         return;
       }
       this.error = { ...this.error, password: '' };

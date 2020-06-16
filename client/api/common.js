@@ -1,6 +1,6 @@
-import axios from 'axios';
 import store from '../store';
-export const base = 'http://localhost:3000/api/v1';
+import thwack from 'thwack';
+export const base = '/api/v1';
 
 const userBase = `${base}`;
 
@@ -10,31 +10,24 @@ export const endpoints = {
   }
 };
 
-export const configureAxios = () => {
-  axios.interceptors.request.use(
-    config => {
-      const token = store.state.auth.token;
-      if (token) {
-        config.headers.Authorization = 'Bearer ' + token;
-      }
+export const configureThwack = () => {
+  thwack.defaults.baseURL = 'http://localhost:3000';
 
-      return config;
-    },
-    error => {
-      Promise.reject(error);
+  thwack.addEventListener('request', event => {
+    const token = store.state.auth.token;
+    if (token) {
+      event.options.headers = {
+        Authorization: 'JWT ' + token
+      };
     }
-  );
+  });
 
-  axios.interceptors.response.use(
-    response => response,
-    error => {
-      if (error.response.status === 401 || error.response.status === 403) {
-        store.dispatch('logout');
-        history.push('/login');
-        return Promise.reject(error);
-      }
+  thwack.addEventListener('response', event => {
+    const { status } = event.thwackResponse;
 
-      return Promise.reject(error);
+    if (status === 401 || status === 403) {
+      store.dispatch('logout');
+      history.push('/login');
     }
-  );
+  });
 };

@@ -13,7 +13,6 @@
     "db:seed:undo": "sequelize-cli db:seed:undo:all"
   },
   "dependencies": {
-    "axios": "^0.19.2",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
@@ -31,6 +30,7 @@
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.12",
+    "thwack": "^0.5.0",
     "umzug": "^2.3.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
