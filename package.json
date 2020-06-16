@@ -4,14 +4,17 @@
   "description": "Training LMS Project",
   "main": "server/index.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev:client": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
+    "lint:client": "vue-cli-service lint",
     "dev:server": "nodemon ./server",
-    "debug:server": "nodemon --inspect server"
+    "debug:server": "nodemon --inspect server",
+    "db:seed": "sequelize-cli db:seed:all",
+    "db:seed:undo": "sequelize-cli db:seed:undo:all"
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
@@ -19,7 +22,12 @@
     "eslint-plugin-require-sort": "^1.2.1",
     "express": "^4.17.1",
     "helmet": "^3.22.0",
+    "http-status-codes": "^1.4.0",
+    "lodash": "^4.17.15",
     "normalize.css": "^8.0.1",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.12",
@@ -48,6 +56,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "nodemon": "^2.0.4",
     "prettier": "^1.19.1",
+    "sequelize-cli": "^5.5.1",
     "vue-template-compiler": "^2.6.11"
   },
   "repository": {
