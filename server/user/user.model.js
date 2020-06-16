@@ -8,9 +8,7 @@ const { roles } = require('../../config/server');
 
 class User extends Model {
   checkPassword(passwordAttempt) {
-    return bcrypt.compare(passwordAttempt, this.password)
-      .then(result => result)
-      .catch(() => false);
+    return bcrypt.compare(passwordAttempt, this.password);
   }
 
   generateJWT() {
@@ -43,7 +41,7 @@ User.init({
   },
   password: {
     type: Sequelize.STRING,
-    validate: { notEmpty: true, len: [5, 100] }
+    validate: { notEmpty: true, len: [6, 100] }
   },
   role: Sequelize.ENUM(roles),
   avatarUrl: {
