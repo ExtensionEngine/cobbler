@@ -1,10 +1,22 @@
 'use strict';
 
 const { Sequelize, sequelize } = require('../shared/database');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { Model } = require('sequelize');
 const { roles } = require('../../config/server');
 
-class User extends Model {}
+class User extends Model {
+  checkPassword(passwordAttempt) {
+    return bcrypt.compare(passwordAttempt, this.password);
+  }
+
+  generateJWT() {
+    const options = { expiresIn: '1d' };
+    const payload = { sub: this.email };
+    return jwt.sign(payload, process.env.JWT_SECRET, options);
+  }
+}
 User.init({
   firstName: {
     type: Sequelize.STRING,
@@ -29,7 +41,7 @@ User.init({
   },
   password: {
     type: Sequelize.STRING,
-    validate: { notEmpty: true, len: [5, 100] }
+    validate: { notEmpty: true, len: [6, 100] }
   },
   role: Sequelize.ENUM(roles),
   avatarUrl: {
@@ -48,6 +60,6 @@ User.init({
     type: Sequelize.DATE,
     field: 'deleted_at'
   }
-}, { sequelize });
+}, { sequelize, tableName: 'users' });
 
 module.exports = User;
