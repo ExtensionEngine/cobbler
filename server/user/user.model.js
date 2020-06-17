@@ -60,6 +60,6 @@ User.init({
     type: Sequelize.DATE,
     field: 'deleted_at'
   }
-}, { sequelize, modelName: 'users' });
+}, { sequelize, tableName: 'users' });
 
 module.exports = User;
