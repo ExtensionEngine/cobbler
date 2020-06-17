@@ -25,12 +25,13 @@ passport.use(new LocalStrategy(options,
   }
 ));
 
-const opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('JWT');
-opts.secretOrKey = process.env.JWT_SECRET;
+const opts = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('JWT'),
+  secretOrKey: process.env.JWT_SECRET
+};
 
-passport.use(new JwtStrategy(opts, (payload, done) => {
-  User.findOne({ email: payload.sub })
+passport.use(new JwtStrategy(opts, ({ sub: email }, done) => {
+  User.findOne({ email })
     .then(user => done(null, user || false));
 }));
 
