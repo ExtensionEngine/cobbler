@@ -1,5 +1,6 @@
 import Home from '../views/Home';
 import Login from '../views/Login';
+import paths from './paths';
 import store from '../store';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -8,7 +9,7 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
+    path: paths.home,
     name: 'Home',
     component: Home,
     meta: {
@@ -16,7 +17,7 @@ const routes = [
     }
   },
   {
-    path: '/login',
+    path: paths.login,
     name: 'Login',
     component: Login,
     meta: {
@@ -37,11 +38,11 @@ router.beforeEach((to, from, next) => {
   const isUserLoggedIn = store.state.auth.token;
 
   if (isLoginRoute && isUserLoggedIn) {
-    next('/');
+    next(paths.home);
   }
 
   if (isProtectedRoute && !isUserLoggedIn) {
-    next('/login');
+    next(paths.login);
   }
 
   next();

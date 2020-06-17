@@ -54,10 +54,10 @@ export default {
       email: '',
       password: '',
       formError: {
-        email: '',
-        password: ''
+        email: null,
+        password: null
       },
-      requestError: ''
+      requestError: null
     };
   },
   methods: {
@@ -82,7 +82,7 @@ export default {
         this.formError = { ...this.formError, email: 'Entered email is not valid' };
         return;
       }
-      this.formError = { ...this.formError, email: '' };
+      this.formError = { ...this.formError, email: null };
     },
     validatePassword: function () {
       if (this.password.length < 5) {
@@ -94,7 +94,7 @@ export default {
       }
       this.formError = {
         ...this.formError,
-        password: ''
+        password: null
       };
     }
   },
