@@ -1,6 +1,8 @@
 <template>
   <button
-    v-on="$listeners" :type="type" :disabled="disabled" :class="{
+    v-on="$listeners"
+    :disabled="disabled"
+    :class="{
       btn: true,
       contained,
       outlined,
@@ -14,10 +16,8 @@
 <script>
 export default {
   name: 'base-button',
-  inheritAttrs: false,
   props: {
     disabled: { type: Boolean, default: false },
-    type: { type: String, default: 'button' },
     contained: { type: Boolean, default: false },
     outlined: { type: Boolean, default: false },
     primary: { type: Boolean, default: false }
@@ -33,11 +33,13 @@ export default {
 }
 .btn:hover {
   cursor: pointer;
-  opacity: 0.9;
 }
 .primary {
   background: var(--color-primary);
   border: solid 2px var(--color-primary);
+}
+.primary:hover {
+  background: var(--color-primary-500);
 }
 .contained {
   color: #ffff;

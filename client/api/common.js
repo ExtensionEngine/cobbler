@@ -1,18 +1,17 @@
 import router from '../router';
 import store from '../store';
 import thwack from 'thwack';
-export const base = '/api/v1';
 
-const userBase = `${base}`;
+const base = '/api/v1';
 
 export const endpoints = {
-  user: {
-    login: `${userBase}/login`
+  auth: {
+    login: `${base}/login`
   }
 };
 
 export const configureThwack = () => {
-  thwack.defaults.baseURL = 'http://localhost:3000';
+  thwack.defaults.baseURL = process.env.VUE_APP_API_HOST;
 
   thwack.addEventListener('request', event => {
     const token = store.state.auth.token;

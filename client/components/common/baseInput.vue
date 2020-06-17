@@ -2,25 +2,30 @@
   <label class="input-wrapper">
     <input
       @input="onChange"
-      :type="type"
       :value="value"
+      :type="type"
       :class="{
         input: true,
         filled,
         outlined
       }">
-    <span :class="{'input-label': true,'field-filled': value}">{{ label }}</span>
+    <span
+      :class="{
+        'input-label': true,
+        'field-filled': value
+      }">
+      {{ label }}
+    </span>
   </label>
 </template>
 
 <script>
 export default {
   name: 'base-input',
-  inheritAttrs: false,
   props: {
-    label: { type: String, required: true },
     value: { type: String, default: '' },
-    type: { type: String, default: 'text' },
+    type: { type: String, default: '' },
+    label: { type: String, required: true },
     filled: { type: Boolean, default: false },
     outlined: { type: Boolean, default: false }
   },
@@ -40,20 +45,16 @@ export default {
   border-radius: 3px;
   outline: none;
   width: calc(100% - 32px);
-  font-family: 'main';
 }
 .input:hover {
-  border-color: rgba(0, 0, 0);
-}
-.input:focus {
-  border-color: var(#227093);
+  border-color: var(--color-neutral-black);
 }
 .filled {
   border: none;
-  border-bottom: solid 1px rgba(0, 0, 0, 0.5);
+  border-bottom: solid 1px var(--color-neutral-black));
 }
 .outlined {
-  border: solid 1px rgba(0, 0, 0, 0.5);
+  border: solid 1px var(--color-neutral-black);
 }
 .input-wrapper {
   position: relative;
@@ -71,7 +72,7 @@ export default {
   top: -12px;
   left: 5px;
   padding: 2px 7px;
-  background: white;
+  background: var(--color-neutral-white);
   border-radius: 3px 3px 0 0;
 }
 </style>

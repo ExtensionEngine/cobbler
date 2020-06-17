@@ -29,19 +29,18 @@ export default {
     justify-content: center;
     align-items: center;
     padding: 5px 0;
-    opacity: 0.7;
     border-radius: 3px;
 }
 .error {
-  background: var(--color-error);
+  background: var(--color-error-500);
 }
 .warning {
-    background: var(--color-warning);
+    background: var(--color-warning-500);
 }
 .info {
-    background: var(--color-info);
+    background: var(--color-info-500);
 }
 .success {
-    background: var(--color-success);
+    background: var(--color-success-500);
 }
 </style>

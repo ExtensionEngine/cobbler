@@ -1,15 +1,41 @@
 <template>
   <div class="login-container">
     <form @submit.prevent="onSubmit" class="login-form">
-      <base-input v-model="email" @input="validateEmail" filled label="Email" class="input-element" />
-      <base-alert v-if="error.email" error>{{ error.email }}</base-alert>
       <base-input
-        v-model="password" @input="validatePassword" filled label="Password"
+        v-model="email"
+        @input="validateEmail"
+        class="input-element"
+        label="Email"
+        filled />
+      <base-alert
+        v-if="formError.email"
+        error>
+        {{ formError.email }}
+      </base-alert>
+      <base-input
+        v-model="password"
+        @input="validatePassword"
+        class="input-element"
+        label="Password"
         type="password"
-        class="input-element" />
-      <base-alert v-if="error.password" error>{{ error.password }}</base-alert>
-      <base-button :disabled="email && password &&(!!error.email || !!error.password)" contained primary type="submit" class="input-element">LOGIN</base-button>
-      <base-alert v-if="error.serverSide" error>{{ error.serverSide }}</base-alert>
+        filled />
+      <base-alert
+        v-if="formError.password"
+        error>
+        {{ formError.password }}
+      </base-alert>
+      <base-button
+        :disabled="email && password &&(!!formError.email || !!formError.password)"
+        class="input-element"
+        type="submit"
+        contained primary>
+        LOGIN
+      </base-button>
+      <base-alert
+        v-if="requestError"
+        error>
+        {{ requestError }}
+      </base-alert>
     </form>
   </div>
 </template>
@@ -27,11 +53,11 @@ export default {
     return {
       email: '',
       password: '',
-      error: {
+      formError: {
         email: '',
-        password: '',
-        serverSide: ''
-      }
+        password: ''
+      },
+      requestError: ''
     };
   },
   methods: {
@@ -43,27 +69,33 @@ export default {
       } catch (err) {
         const { status } = err.thwackResponse;
         if (status === 401) {
-          this.error.serverSide = 'Short password';
+          this.requestError = 'Short password';
         } else if (status === 404) {
-          this.error.serverSide = 'User with this email not found';
+          this.requestError = 'User with this email not found';
         } else if (status === 500) {
-          this.error.serverSide = 'Something went wrong';
+          this.requestError = 'Something went wrong';
         }
       }
     },
     validateEmail: function () {
       if (!validateEmail(this.email)) {
-        this.error = { ...this.error, email: 'Entered email is not valid' };
+        this.formError = { ...this.formError, email: 'Entered email is not valid' };
         return;
       }
-      this.error = { ...this.error, email: '' };
+      this.formError = { ...this.formError, email: '' };
     },
     validatePassword: function () {
       if (this.password.length < 5) {
-        this.error = { ...this.error, password: 'The password should be longer than 4 chars' };
+        this.formError = {
+          ...this.formError,
+          password: 'The password should be longer than 4 chars'
+        };
         return;
       }
-      this.error = { ...this.error, password: '' };
+      this.formError = {
+        ...this.formError,
+        password: ''
+      };
     }
   },
   components: {
@@ -84,14 +116,14 @@ export default {
   width: 350px;
   display: flex;
   flex-direction: column;
-  background: rgba(204, 204, 204);
+  background: var(--color-neutral-gray-light);
   border-radius: 3px;
   padding: 50px;
-  box-shadow: 2px 6px 9px 0px #888888;
+  box-shadow: 2px 6px 9px 0px var(--color-neutral-gray);
 }
 .input-element {
   margin: 10px 0;
-  box-shadow: 2px 2px 5px 0px #888888;
+  box-shadow: 2px 2px 5px 0px var(--color-neutral-gray);
 }
 @media only screen and (max-width: 480px) {
   .login-form {
