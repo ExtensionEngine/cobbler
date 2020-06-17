@@ -11,4 +11,5 @@ export const login = ({ commit }, credentials) => {
 export const logout = ({ commit }) => {
   localStorage.removeItem('token');
   commit('logout');
+  window.location.reload();
 };

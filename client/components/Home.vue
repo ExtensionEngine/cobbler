@@ -4,7 +4,10 @@
 
 <script>
 export default {
-  name: 'home'
+  name: 'home',
+  beforeMount() {
+    this.$store.dispatch('changeLayout', 'main');
+  }
 };
 </script>
 

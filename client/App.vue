@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <layout-provider>
     <router-view />
-  </div>
+  </layout-provider>
 </template>
 
 <script>
@@ -9,8 +9,12 @@ import 'normalize.css';
 import './theme/colors.css';
 import './theme/layout.css';
 import './theme/typography.css';
+import LayoutProvider from './layouts';
 
-export default { name: 'app' };
+export default {
+  name: 'app',
+  components: { 'layout-provider': LayoutProvider }
+};
 </script>
 
 <style>
