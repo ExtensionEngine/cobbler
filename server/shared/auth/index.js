@@ -1,7 +1,8 @@
 'use strict';
 
-const { ExtractJwt, Strategy } = require('passport-jwt');
-const { BadCredentialsError } = require('../error');
+const { ExtractJwt, Strategy: JwtStrategy } = require('passport-jwt');
+const { INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED } = require('http-status-codes');
+const { HttpError } = require('../error');
 const LocalStrategy = require('passport-local');
 const passport = require('passport');
 const User = require('../../user/user.model');
@@ -13,25 +14,25 @@ const options = {
 passport.use(new LocalStrategy(options,
   async (email, password, done) => {
     try {
-      const user = await User.findOne({ where: { email }, rejectOnEmpty: true });
+      const user = await User.findOne({ where: { email } });
+      if (!user) return done(new HttpError('User not found', NOT_FOUND));
       const isValid = await user.checkPassword(password);
       if (isValid) return done(null, user);
-      throw new BadCredentialsError('Wrong password');
+      return done(new HttpError('Bad credentials', UNAUTHORIZED));
     } catch (e) {
-      return done(e);
+      return done(new HttpError('Something went wrong', INTERNAL_SERVER_ERROR));
     }
   }
 ));
 
-// JWT Strategy
-const opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('JWT');
-opts.secretOrKey = process.env.JWT_SECRET;
+const opts = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('JWT'),
+  secretOrKey: process.env.JWT_SECRET
+};
 
-passport.use(new Strategy(opts, (payload, done) => {
-  User.findOne({ email: payload.sub })
-    .then(user => done(null, user || false))
-    .catch(err => done(err, false));
+passport.use(new JwtStrategy(opts, ({ sub: email }, done) => {
+  User.findOne({ email })
+    .then(user => done(null, user || false));
 }));
 
 passport.serializeUser((user, done) => {
@@ -45,8 +46,8 @@ module.exports = {
   initialize(options = {}) {
     return passport.initialize(options);
   },
-  authenticate(strategy, options, cb) {
+  authenticate(strategy) {
     return passport
-      .authenticate(strategy, { ...options, failWithError: true }, cb);
+      .authenticate(strategy, { ...options, failWithError: true });
   }
 };
