@@ -1,6 +1,6 @@
 'use strict';
 
-const { ExtractJwt, Strategy } = require('passport-jwt');
+const { ExtractJwt, Strategy: JwtStrategy } = require('passport-jwt');
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED } = require('http-status-codes');
 const { HttpError } = require('../error');
 const LocalStrategy = require('passport-local');
@@ -25,12 +25,11 @@ passport.use(new LocalStrategy(options,
   }
 ));
 
-// JWT Strategy
 const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('JWT');
 opts.secretOrKey = process.env.JWT_SECRET;
 
-passport.use(new Strategy(opts, (payload, done) => {
+passport.use(new JwtStrategy(opts, (payload, done) => {
   User.findOne({ email: payload.sub })
     .then(user => done(null, user || false));
 }));
