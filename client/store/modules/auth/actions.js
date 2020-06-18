@@ -1,4 +1,6 @@
 import { login as loginRequest } from '../../../api/auth';
+import paths from '../../../router/paths';
+import router from '../../../router';
 
 export const login = ({ commit }, credentials) => {
   return loginRequest(credentials)
@@ -11,5 +13,5 @@ export const login = ({ commit }, credentials) => {
 export const logout = ({ commit }) => {
   localStorage.removeItem('token');
   commit('logout');
-  window.location.reload();
+  router.push(paths.login);
 };

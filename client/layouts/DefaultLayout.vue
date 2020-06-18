@@ -26,8 +26,7 @@
         @click="handleExpand"
         class="sidebar-backdrop"></div>
     </transition>
-    <div
-      class="main-content">
+    <div>
       <slot></slot>
     </div>
   </div>
@@ -37,7 +36,7 @@
 import BaseButton from '../components/common/BaseButton';
 
 export default {
-  name: 'main-layout',
+  name: 'default-layout',
   data() {
     return {
       isSidebarExpanded: false
@@ -76,8 +75,6 @@ export default {
     height: 100%;
     background: #888888;
     z-index: 1;
-}
-.main-content {
 }
 .sidebar-backdrop {
     position: fixed;

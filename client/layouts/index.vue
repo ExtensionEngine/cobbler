@@ -1,23 +1,29 @@
 <template>
   <div>
-    <main-layout
-      v-if="$store.state.layout.current === 'main'">
+    <default-layout
+      v-if="$store.state.layout.current === 'default'">
       <slot></slot>
-    </main-layout>
-    <div
-      v-if="$store.state.layout.current === 'login'">
+    </default-layout>
+    <login-layout
+      v-else-if="$store.state.layout.current === 'login'">
       <slot></slot>
-    </div>
+    </login-layout>
+    <default-layout
+      v-else>
+      <slot></slot>
+    </default-layout>
   </div>
 </template>
 
 <script>
-import MainLayout from './MainLayout';
+import DefaultLayout from './DefaultLayout';
+import LoginLayout from './LoginLayout';
 
 export default {
-  name: 'login-layout',
+  name: 'layout-provider',
   components: {
-    'main-layout': MainLayout
+    'default-layout': DefaultLayout,
+    'login-layout': LoginLayout
   }
 };
 </script>

@@ -13,7 +13,8 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      protectedRoute: true
+      protectedRoute: true,
+      layout: 'default'
     }
   },
   {
@@ -21,7 +22,8 @@ const routes = [
     name: 'Login',
     component: Login,
     meta: {
-      authRoute: true
+      authRoute: true,
+      layout: 'login'
     }
   }
 ];
@@ -38,12 +40,14 @@ router.beforeEach((to, from, next) => {
   const isUserLoggedIn = store.state.auth.token;
 
   if (isLoginRoute && isUserLoggedIn) {
-    next(paths.home);
+    next(routes.home);
   }
 
   if (isProtectedRoute && !isUserLoggedIn) {
-    next(paths.login);
+    next(routes.login);
   }
+
+  store.dispatch('changeLayout', to.meta.layout);
 
   next();
 });

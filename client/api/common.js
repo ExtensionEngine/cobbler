@@ -1,3 +1,4 @@
+import paths from '../router/paths';
 import router from '../router';
 import store from '../store';
 import thwack from 'thwack';
@@ -27,7 +28,7 @@ export const configureThwack = () => {
 
     if (status === 401 || status === 403) {
       store.dispatch('logout');
-      router.push('/login');
+      router.push(paths.login);
     }
   });
 };

@@ -98,9 +98,6 @@ export default {
       };
     }
   },
-  beforeMount() {
-    this.$store.dispatch('changeLayout', 'login');
-  },
   components: {
     'base-alert': BaseAlert,
     'base-button': BaseButton,
