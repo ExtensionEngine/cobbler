@@ -1,28 +1,26 @@
 'use strict';
 
 const { Sequelize, sequelize } = require('../shared/database');
-const Category = require('../category/category.model');
 const { Model } = require('sequelize');
 
 class Course extends Model {
-  constructor() {
-    super();
-    this.hasOne(Category, {
-      foreignKey: { name: 'categoryId', field: 'category_id' }
-    });
+  associate(Category) {
+    Course.belongsTo(Category, { as: 'category', foreignKey: 'categoryId' });
   }
 }
 
 Course.init({
   name: {
     type: Sequelize.STRING,
-    field: 'last_name',
     validate: { len: [2, 50] }
   },
   description: {
     type: Sequelize.TEXT,
-    field: 'last_name',
     validate: { len: [2, 50] }
+  },
+  categoryId: {
+    type: Sequelize.INTEGER,
+    field: 'category_id'
   },
   createdAt: {
     type: Sequelize.DATE,
@@ -36,10 +34,6 @@ Course.init({
     type: Sequelize.DATE,
     field: 'deleted_at'
   }
-}, { sequelize, tableName: 'categories' });
-
-// Course.hasOne(Category, {
-//   foreignKey: { name: 'categoryId', field: 'category_id' }
-// });
+}, { sequelize, tableName: 'courses' });
 
 module.exports = Course;
