@@ -1,7 +1,7 @@
-<h1 align="center">Cobbler</h1>
-<p>
-  SaaS LMS platform built for Training purposes 
-</p>
+# Cobbler
+
+SaaS LMS platform built for Training purposes 
+
 
 ## Dependencies
 
