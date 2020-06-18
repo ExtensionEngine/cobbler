@@ -1,12 +1,104 @@
 <template>
-  <Login />
+  <div class="login-container">
+    <base-form @submit="onSubmit" submit-label="Login" class="login-form">
+      <field
+        v-model="email"
+        name="email"
+        label="Email"
+        rules="required|email">
+        <template v-slot="{ on, value }">
+          <base-input
+            v-on="on"
+            :value="value"
+            class="input-element"
+            filled />
+        </template>
+      </field>
+      <field
+        v-model="password"
+        name="password"
+        label="Password"
+        rules="required|min:5">
+        <template v-slot="{ on, value }">
+          <base-input
+            v-on="on"
+            :value="value"
+            class="input-element"
+            type="password"
+            filled />
+        </template>
+      </field>
+      <base-error>{{ requestError }}</base-error>
+    </base-form>
+  </div>
 </template>
 
 <script>
-import Login from '../components/Login.vue';
+import BaseError from '../components/common/BaseError';
+import BaseForm from '../components/common/BaseForm';
+import BaseInput from '../components/common/BaseInput';
+import Field from '../components/common/BaseForm/Field';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'login',
-  components: { Login }
+  data() {
+    return {
+      email: '',
+      password: '',
+      requestError: null
+    };
+  },
+  methods: {
+    ...mapActions(['login']),
+    async onSubmit() {
+      try {
+        await this.login({ email: this.email, password: this.password });
+        this.$router.push('/');
+      } catch (err) {
+        const { status } = err.thwackResponse;
+        if (status === 401) {
+          this.requestError = 'Short password';
+        } else if (status === 404) {
+          this.requestError = 'User with this email not found';
+        } else if (status === 500) {
+          this.requestError = 'Something went wrong';
+        }
+      }
+    }
+  },
+  components: {
+    BaseInput,
+    BaseError,
+    BaseForm,
+    Field
+  }
 };
 </script>
+
+<style scoped>
+.login-container {
+  padding: 100px 0;
+  display: flex;
+  justify-content: center;
+}
+.login-form {
+  width: 380px;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-neutral-gray-light);
+  border-radius: 3px;
+  padding: 50px;
+  box-shadow: 2px 6px 9px 0px var(--color-neutral-gray);
+}
+.input-element {
+  margin: 10px 0;
+  box-shadow: 2px 2px 5px 0px var(--color-neutral-gray);
+}
+@media only screen and (max-width: 480px) {
+  .login-form {
+    width: 100%;
+    padding: 50px 25px;
+  }
+}
+</style>
