@@ -1,51 +1,44 @@
 <template>
   <div class="login-container">
-    <form @submit.prevent="onSubmit" class="login-form">
-      <base-input
+    <base-form @submit="onSubmit" submit-label="Login" class="login-form">
+      <field
         v-model="email"
-        @input="validateEmail"
-        class="input-element"
+        name="email"
         label="Email"
-        filled />
-      <base-alert
-        v-if="formError.email"
-        error>
-        {{ formError.email }}
-      </base-alert>
-      <base-input
+        rules="required|email">
+        <template v-slot="{ on, value }">
+          <base-input
+            v-on="on"
+            :value="value"
+            class="input-element"
+            filled />
+        </template>
+      </field>
+      <field
         v-model="password"
-        @input="validatePassword"
-        class="input-element"
+        name="password"
         label="Password"
-        type="password"
-        filled />
-      <base-alert
-        v-if="formError.password"
-        error>
-        {{ formError.password }}
-      </base-alert>
-      <base-button
-        :disabled="email && password &&(!!formError.email || !!formError.password)"
-        class="input-element"
-        type="submit"
-        contained primary>
-        LOGIN
-      </base-button>
-      <base-alert
-        v-if="requestError"
-        error>
-        {{ requestError }}
-      </base-alert>
-    </form>
+        rules="required|min:5">
+        <template v-slot="{ on, value }">
+          <base-input
+            v-on="on"
+            :value="value"
+            class="input-element"
+            type="password"
+            filled />
+        </template>
+      </field>
+      <base-error>{{ requestError }}</base-error>
+    </base-form>
   </div>
 </template>
 
 <script>
-import BaseAlert from './common/BaseAlert';
-import BaseButton from './common/BaseButton';
+import BaseError from './common/BaseError';
+import BaseForm from './common/Form';
 import BaseInput from './common/BaseInput';
+import Field from './common/Form/Field';
 import { mapActions } from 'vuex';
-import { validateEmail } from '../utils/validate';
 
 export default {
   name: 'login',
@@ -53,16 +46,12 @@ export default {
     return {
       email: '',
       password: '',
-      formError: {
-        email: null,
-        password: null
-      },
       requestError: null
     };
   },
   methods: {
     ...mapActions(['login']),
-    onSubmit: async function () {
+    async onSubmit() {
       try {
         await this.login({ email: this.email, password: this.password });
         this.$router.push('/');
@@ -76,32 +65,13 @@ export default {
           this.requestError = 'Something went wrong';
         }
       }
-    },
-    validateEmail: function () {
-      if (!validateEmail(this.email)) {
-        this.formError = { ...this.formError, email: 'Entered email is not valid' };
-        return;
-      }
-      this.formError = { ...this.formError, email: null };
-    },
-    validatePassword: function () {
-      if (this.password.length < 5) {
-        this.formError = {
-          ...this.formError,
-          password: 'The password should be longer than 4 chars'
-        };
-        return;
-      }
-      this.formError = {
-        ...this.formError,
-        password: null
-      };
     }
   },
   components: {
-    'base-alert': BaseAlert,
-    'base-button': BaseButton,
-    'base-input': BaseInput
+    BaseInput,
+    BaseError,
+    BaseForm,
+    Field
   }
 };
 </script>
@@ -113,7 +83,7 @@ export default {
   justify-content: center;
 }
 .login-form {
-  width: 350px;
+  width: 380px;
   display: flex;
   flex-direction: column;
   background: var(--color-neutral-gray-light);

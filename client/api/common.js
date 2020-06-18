@@ -2,11 +2,9 @@ import router from '../router';
 import store from '../store';
 import thwack from 'thwack';
 
-const base = '/api/v1';
-
 export const endpoints = {
   auth: {
-    login: `${base}/login`
+    login: 'login'
   }
 };
 
@@ -17,17 +15,22 @@ export const configureThwack = () => {
     const token = store.state.auth.token;
     if (token) {
       event.options.headers = {
+        ...event.options.headers,
         Authorization: 'JWT ' + token
       };
     }
   });
 
-  thwack.addEventListener('response', event => {
+  thwack.addEventListener('error', event => {
     const { status } = event.thwackResponse;
 
-    if (status === 401 || status === 403) {
+    if (status === 401) {
       store.dispatch('logout');
       router.push('/login');
+    }
+
+    if (status === 403) {
+      throw Error('Forbidden request');
     }
   });
 };

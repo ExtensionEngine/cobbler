@@ -1,22 +1,13 @@
 <template>
-  <label class="input-wrapper">
-    <input
-      @input="onChange"
-      :value="value"
-      :type="type"
-      :class="{
-        input: true,
-        filled,
-        outlined
-      }">
-    <span
-      :class="{
-        'input-label': true,
-        'field-filled': value
-      }">
-      {{ label }}
-    </span>
-  </label>
+  <input
+    @input="onChange"
+    :value="value"
+    :type="type"
+    :class="{
+      input: true,
+      filled,
+      outlined
+    }">
 </template>
 
 <script>
@@ -25,7 +16,6 @@ export default {
   props: {
     value: { type: String, default: '' },
     type: { type: String, default: '' },
-    label: { type: String, required: true },
     filled: { type: Boolean, default: false },
     outlined: { type: Boolean, default: false }
   },
@@ -39,12 +29,12 @@ export default {
 
 <style lang="css" scoped>
 .input {
+  width: 100%;
   font-size: 16px;
   padding: 12px 16px 14px;
   border-width: 1px;
   border-radius: 3px;
   outline: none;
-  width: calc(100% - 32px);
 }
 .input:hover {
   border-color: var(--color-neutral-black);

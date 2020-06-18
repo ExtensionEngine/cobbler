@@ -1,3 +1,4 @@
+import './utils/validate';
 import App from './App';
 import { configureThwack } from './api/common';
 import router from './router';

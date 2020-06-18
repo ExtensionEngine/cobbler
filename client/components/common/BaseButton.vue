@@ -3,12 +3,12 @@
     v-on="$listeners"
     :disabled="disabled"
     :class="{
-      btn: true,
       contained,
       outlined,
       primary,
       disabled
-    }">
+    }"
+    class="btn">
     <slot></slot>
   </button>
 </template>
@@ -28,8 +28,8 @@ export default {
 <style lang="css" scoped>
 .btn {
   padding: 5px 15px;
-  outline: none;
   border-radius: 3px;
+  width: 100%;
 }
 .btn:hover {
   cursor: pointer;
