@@ -1,6 +1,10 @@
 <template>
   <div class="login-container">
-    <base-form @submit="onSubmit" submit-label="Login" class="login-form">
+    <base-form
+      v-slot="{ isFormInvalid }"
+      @submit="onSubmit"
+      submit-label="Login"
+      class="login-form">
       <field
         v-model="email"
         name="email"
@@ -28,12 +32,19 @@
             filled />
         </template>
       </field>
-      <base-error>{{ requestError }}</base-error>
+      <base-button
+        :disabled="isFormInvalid"
+        type="submit"
+        contained primary>
+        Login
+      </base-button>
+      <base-error>{{ error }}</base-error>
     </base-form>
   </div>
 </template>
 
 <script>
+import BaseButton from '../components/common/BaseButton';
 import BaseError from '../components/common/BaseError';
 import BaseForm from '../components/common/BaseForm';
 import BaseInput from '../components/common/BaseInput';
@@ -46,7 +57,7 @@ export default {
     return {
       email: '',
       password: '',
-      requestError: null
+      error: null
     };
   },
   methods: {
@@ -58,11 +69,11 @@ export default {
       } catch (err) {
         const { status } = err.thwackResponse;
         if (status === 401) {
-          this.requestError = 'Short password';
+          this.error = 'Short password';
         } else if (status === 404) {
-          this.requestError = 'User with this email not found';
+          this.error = 'User with this email not found';
         } else if (status === 500) {
-          this.requestError = 'Something went wrong';
+          this.error = 'Something went wrong';
         }
       }
     }
@@ -70,6 +81,7 @@ export default {
   components: {
     BaseInput,
     BaseError,
+    BaseButton,
     BaseForm,
     Field
   }
@@ -83,17 +95,17 @@ export default {
   justify-content: center;
 }
 .login-form {
-  width: 380px;
+  width: 400px;
   display: flex;
   flex-direction: column;
-  background: var(--color-neutral-gray-light);
+  background: var(--color-gray-500);
   border-radius: 3px;
   padding: 50px;
-  box-shadow: 2px 6px 9px 0px var(--color-neutral-gray);
+  box-shadow: 2px 6px 9px 0px var(--color-gray);
 }
 .input-element {
   margin: 10px 0;
-  box-shadow: 2px 2px 5px 0px var(--color-neutral-gray);
+  box-shadow: 2px 2px 5px 0px var(--color-gray);
 }
 @media only screen and (max-width: 480px) {
   .login-form {

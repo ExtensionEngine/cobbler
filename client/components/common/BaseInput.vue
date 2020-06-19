@@ -4,10 +4,10 @@
     :value="value"
     :type="type"
     :class="{
-      input: true,
       filled,
       outlined
-    }">
+    }"
+    class="input">
 </template>
 
 <script>
@@ -15,7 +15,7 @@ export default {
   name: 'base-input',
   props: {
     value: { type: String, default: '' },
-    type: { type: String, default: '' },
+    type: { type: String, default: 'text' },
     filled: { type: Boolean, default: false },
     outlined: { type: Boolean, default: false }
   },
@@ -31,20 +31,16 @@ export default {
 .input {
   width: 100%;
   font-size: 16px;
-  padding: 12px 16px 14px;
-  border-width: 1px;
+  padding: var(--spacing-sm) var(--spacing-md);
   border-radius: 3px;
   outline: none;
 }
-.input:hover {
-  border-color: var(--color-neutral-black);
-}
 .filled {
   border: none;
-  border-bottom: solid 1px var(--color-neutral-black));
+  border-bottom: solid 1px var(--color-black));
 }
 .outlined {
-  border: solid 1px var(--color-neutral-black);
+  border: solid 1px var(--color-black);
 }
 .input-wrapper {
   position: relative;
@@ -61,8 +57,7 @@ export default {
   font-size: 11px;
   top: -12px;
   left: 5px;
-  padding: 2px 7px;
-  background: var(--color-neutral-white);
+  background: var(--color-white);
   border-radius: 3px 3px 0 0;
 }
 </style>

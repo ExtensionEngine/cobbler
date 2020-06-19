@@ -8,15 +8,12 @@
   --color-success: #22bb33;
 
   --color-primary-500: rgba(34, 112, 147, 0.5);
-  --color-accent-500: rgba(56, 246, 137, 0.5);
-  --color-info-500: rgba(91, 192, 222, 0.5);
   --color-error-500: rgba(187, 33, 36, 0.5);
-  --color-warning-500: rgba(240, 173, 78, 0.5);
-  --color-success-500: rgba(34, 187, 51, 0.5);
 
-  --color-neutral-black: #000000;
-  --color-neutral-gray-light: #cccccc;
-  --color-neutral-gray: #8b8b8b;
-  --color-neutral-gray-strong: #525252;
-  --color-neutral-white: #ffffff;
+  --color-black: #000000;
+  --color-gray: #8b8b8b;
+  --color-white: #ffffff;
+
+  --color-gray-500: #cccccc;
 }
+ 

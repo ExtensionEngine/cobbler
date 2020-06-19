@@ -16,7 +16,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px 0;
+  padding: var(--spacing-xxs) 0;
   border-radius: 3px;
   color: var(--color-error-500);
 }

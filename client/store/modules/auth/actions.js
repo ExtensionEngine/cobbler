@@ -4,10 +4,10 @@ import router from '../../../router';
 
 export const login = ({ commit }, credentials) => {
   return loginRequest(credentials)
-      .then(({ data }) => {
-        localStorage.setItem('token', data.token);
-        return commit('login', data.token);
-      });
+  .then(({ data }) => {
+    localStorage.setItem('token', data.token);
+    return commit('login', data.token);
+  });
 };
 
 export const logout = ({ commit }) => {

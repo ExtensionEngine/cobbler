@@ -27,7 +27,7 @@ export default {
 
 <style lang="css" scoped>
 .btn {
-  padding: 5px 15px;
+  padding: var(--spacing-xxs) var(--spacing-md);
   border-radius: 3px;
   width: 100%;
 }

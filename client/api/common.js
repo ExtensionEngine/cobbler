@@ -8,7 +8,7 @@ export const endpoints = {
   }
 };
 
-export const configureThwack = () => {
+const configureThwack = () => {
   thwack.defaults.baseURL = process.env.VUE_APP_API_HOST;
 
   thwack.addEventListener('request', event => {
@@ -34,3 +34,7 @@ export const configureThwack = () => {
     }
   });
 };
+
+configureThwack();
+
+export default thwack;

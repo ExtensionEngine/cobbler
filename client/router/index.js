@@ -35,7 +35,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const isLoginRoute = to.matched.some(it => it.meta.authRoute);
   const isProtectedRoute = to.matched.some(it => it.meta.protectedRoute);
-  const isUserLoggedIn = store.state.auth.token;
+  const isUserLoggedIn = !!store.state.auth.token;
 
   if (isLoginRoute && isUserLoggedIn) {
     next(paths.home);

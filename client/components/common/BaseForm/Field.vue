@@ -1,13 +1,14 @@
 <template>
   <validation-provider
-    v-slot="{ errors }" :rules="rules"
+    v-slot="{ errors }"
+    :rules="rules"
     :name="name"
     tag="div">
-    <label class="input-wrapper">
+    <label class="field-wrapper">
       <slot :on="{ input }" :value="value"></slot>
       <span
         :class="{ 'field-filled': value }"
-        class="input-label">
+        class="field-label">
         {{ label }}
       </span>
     </label>
@@ -40,23 +41,23 @@ export default {
 </script>
 
 <style scoped>
-.input-wrapper {
+.field-wrapper {
   position: relative;
 }
-.input-label {
+.field-label {
   position: absolute;
   top: 0;
   left: 16px;
   font-size: 16px;
   transition: all 0.15s ease;
 }
-.input:focus + .input-label,
+.input:focus + .field-label,
 .field-filled {
   font-size: 11px;
-  top: -25px;
+  top: -26px;
   left: 5px;
-  padding: 2px 7px;
-  background: var(--color-neutral-white);
+  padding: var(--spacing-xxs) var(--spacing-xs);
+  background: var(--color-white);
   border-radius: 3px 3px 0 0;
 }
 </style>
