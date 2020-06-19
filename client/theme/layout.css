@@ -9,3 +9,7 @@
   --spacing-xxl: 5.25rem;
   --spacing-xxxl: 5.5rem;
 }
+
+* {
+  box-sizing: border-box;
+}

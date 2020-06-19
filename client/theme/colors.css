@@ -6,4 +6,14 @@
   --color-error: 	#bb2124;
   --color-warning: #f0ad4e;
   --color-success: #22bb33;
+
+  --color-primary-500: rgba(34, 112, 147, 0.5);
+  --color-error-500: rgba(187, 33, 36, 0.5);
+
+  --color-black: #000000;
+  --color-gray: #8b8b8b;
+  --color-white: #ffffff;
+
+  --color-gray-500: #cccccc;
 }
+ 

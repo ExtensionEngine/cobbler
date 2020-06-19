@@ -11,6 +11,7 @@ const { port } = require('../config/server');
 const router = require('./router.js');
 const app = express();
 
+app.use(cors());
 app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
