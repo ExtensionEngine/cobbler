@@ -1,5 +1,6 @@
 import Home from '../views/Home';
 import Login from '../views/Login';
+import Navbar from '../components/common/Navbar';
 import paths from './paths';
 import store from '../store';
 import Vue from 'vue';
@@ -10,11 +11,15 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: paths.home,
-    name: 'Home',
-    component: Home,
+    component: Navbar,
     meta: {
       protectedRoute: true
-    }
+    },
+    children: [{
+      path: '',
+      name: 'Home',
+      component: Home
+    }]
   },
   {
     path: paths.login,
