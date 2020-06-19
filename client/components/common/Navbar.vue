@@ -7,7 +7,7 @@
     </span>
     <span
       class="nav-item">
-      {{ $store.state.auth.user.sub }}
+      {{ $store.state.auth.email }}
     </span>
   </nav>
 </template>

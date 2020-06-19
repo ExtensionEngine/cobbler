@@ -1,9 +1,9 @@
-export const login = (state, { token, user }) => {
+export const login = (state, { token, email }) => {
   state.token = token;
-  state.user = user;
+  state.email = email;
 };
 
 export const logout = state => {
   state.token = null;
-  state.user = null;
+  state.email = null;
 };

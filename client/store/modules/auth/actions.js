@@ -7,7 +7,7 @@ export const login = ({ commit }, credentials) => {
   return loginRequest(credentials)
   .then(({ data }) => {
     localStorage.setItem('token', data.token);
-    return commit('login', { token: data.token, user: jwtDecode(data.token) });
+    return commit('login', { token: data.token, email: jwtDecode(data.token).sub });
   });
 };
 
