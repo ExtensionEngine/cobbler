@@ -1,8 +1,12 @@
 import * as actions from './actions';
 import * as mutations from './mutations';
+import jwtDecode from 'jwt-decode';
+
+const token = localStorage.getItem('token');
 
 const state = {
-  token: localStorage.getItem('token') || null
+  token: token || null,
+  user: token ? jwtDecode(token) : null
 };
 
 export default {

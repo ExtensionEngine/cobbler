@@ -1,31 +1,20 @@
 <template>
-  <div>
-    <nav class="nav">
-      <span
-        @click="logout"
-        class="nav-item clickable">
-        Logout
-      </span>
-      <span
-        class="nav-item">
-        {{ getUserEmail }}
-      </span>
-    </nav>
-    <router-view />
-  </div>
+  <nav class="nav">
+    <span
+      @click="logout"
+      class="nav-item clickable">
+      Logout
+    </span>
+    <span
+      class="nav-item">
+      {{ $store.state.auth.user.sub }}
+    </span>
+  </nav>
 </template>
 
 <script>
-import jwtDecode from 'jwt-decode';
-
 export default {
   name: 'navbar',
-  computed: {
-    getUserEmail() {
-      const decodedToken = jwtDecode(this.$store.state.auth.token);
-      return decodedToken.sub;
-    }
-  },
   methods: {
     logout() {
       this.$store.dispatch('logout');

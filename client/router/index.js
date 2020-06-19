@@ -1,6 +1,6 @@
 import Home from '../views/Home';
+import Layout from '../components/common/Layout';
 import Login from '../views/Login';
-import Navbar from '../components/common/Navbar';
 import paths from './paths';
 import store from '../store';
 import Vue from 'vue';
@@ -11,7 +11,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: paths.home,
-    component: Navbar,
+    component: Layout,
     meta: {
       protectedRoute: true
     },
