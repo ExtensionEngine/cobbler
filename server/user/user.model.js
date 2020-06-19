@@ -1,6 +1,5 @@
 'use strict';
 
-const { Sequelize, sequelize } = require('../shared/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { Model } = require('sequelize');
@@ -17,53 +16,63 @@ class User extends Model {
     return jwt.sign(payload, process.env.JWT_SECRET, options);
   }
 
-  associate(Course) {
-    User.belongsToMany(Course, { through: 'enrolments' });
+  static fields(DataTypes) {
+    return {
+      firstName: {
+        type: DataTypes.STRING,
+        field: 'first_name',
+        validate: { len: [2, 50] }
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        field: 'last_name',
+        validate: { len: [2, 50] }
+      },
+      email: {
+        type: DataTypes.STRING,
+        set(email) {
+          this.setDataValue('email', email.toLowerCase());
+        },
+        validate: { isEmail: true },
+        unique: { msg: 'The specified email address is already in use.' }
+      },
+      bio: {
+        type: DataTypes.TEXT
+      },
+      password: {
+        type: DataTypes.STRING,
+        validate: { notEmpty: true, len: [6, 100] }
+      },
+      role: DataTypes.ENUM(roles),
+      avatarUrl: {
+        type: DataTypes.TEXT,
+        field: 'avatar_url'
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        field: 'created_at'
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        field: 'updated_at'
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        field: 'deleted_at'
+      }
+    };
+  }
+
+  static associate(db) {
+    const { Course } = db;
+    this.belongsToMany(Course, { through: 'enrollments', foreignKey: 'user_id' });
+  }
+
+  static options() {
+    return {
+      tableName: 'users'
+    };
   }
 }
-User.init({
-  firstName: {
-    type: Sequelize.STRING,
-    field: 'first_name',
-    validate: { len: [2, 50] }
-  },
-  lastName: {
-    type: Sequelize.STRING,
-    field: 'last_name',
-    validate: { len: [2, 50] }
-  },
-  email: {
-    type: Sequelize.STRING,
-    set(email) {
-      this.setDataValue('email', email.toLowerCase());
-    },
-    validate: { isEmail: true },
-    unique: { msg: 'The specified email address is already in use.' }
-  },
-  bio: {
-    type: Sequelize.TEXT
-  },
-  password: {
-    type: Sequelize.STRING,
-    validate: { notEmpty: true, len: [6, 100] }
-  },
-  role: Sequelize.ENUM(roles),
-  avatarUrl: {
-    type: Sequelize.TEXT,
-    field: 'avatar_url'
-  },
-  createdAt: {
-    type: Sequelize.DATE,
-    field: 'created_at'
-  },
-  updatedAt: {
-    type: Sequelize.DATE,
-    field: 'updated_at'
-  },
-  deletedAt: {
-    type: Sequelize.DATE,
-    field: 'deleted_at'
-  }
-}, { sequelize, tableName: 'users' });
 
 module.exports = User;

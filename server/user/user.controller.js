@@ -1,5 +1,6 @@
 'use strict';
 const bcrypt = require('bcrypt');
+const Course = require('../course/course.model');
 const pick = require('lodash/pick');
 const User = require('./user.model');
 
@@ -13,6 +14,15 @@ function create(req, res) {
   .catch(err => res.status(400).json(err));
 }
 
+function enroll(req, res) {
+  const user = User.findByPk(req.params.id);
+  return Course.findAll({
+    include: {
+      model: User
+    }
+  });
+}
+
 module.exports = {
-  create
+  create, enroll
 };

@@ -1,31 +1,40 @@
 'use strict';
 
-const { Sequelize, sequelize } = require('../shared/database');
-const Course = require('../course/course.model');
 const { Model } = require('sequelize');
 
-class Category extends Model {}
-
-Category.init({
-  name: {
-    type: Sequelize.STRING,
-    validate: { len: [2, 50] },
-    unique: true
-  },
-  createdAt: {
-    type: Sequelize.DATE,
-    field: 'created_at'
-  },
-  updatedAt: {
-    type: Sequelize.DATE,
-    field: 'updated_at'
-  },
-  deletedAt: {
-    type: Sequelize.DATE,
-    field: 'deleted_at'
+class Category extends Model {
+  static fields(DataTypes) {
+    return {
+      name: {
+        type: DataTypes.STRING,
+        validate: { len: [2, 50] },
+        unique: true
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        field: 'created_at'
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        field: 'updated_at'
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        field: 'deleted_at'
+      }
+    };
   }
-}, { sequelize, tableName: 'categories' });
 
-Category.hasMany(Course, { as: 'categories', foreignKey: 'categoryId' });
+  static associate(db) {
+    const { Course } = db;
+    this.hasMany(Course, { as: 'categories', foreignKey: 'categoryId' });
+  }
+
+  static options() {
+    return {
+      tableName: 'categories'
+    };
+  }
+}
 
 module.exports = Category;
