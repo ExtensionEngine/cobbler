@@ -16,6 +16,10 @@ class User extends Model {
     const payload = { sub: this.email };
     return jwt.sign(payload, process.env.JWT_SECRET, options);
   }
+
+  associate(Course) {
+    User.belongsToMany(Course, { through: 'enrolments' });
+  }
 }
 User.init({
   firstName: {

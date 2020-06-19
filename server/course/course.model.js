@@ -4,8 +4,9 @@ const { Sequelize, sequelize } = require('../shared/database');
 const { Model } = require('sequelize');
 
 class Course extends Model {
-  associate(Category) {
+  associate(Category, User) {
     Course.belongsTo(Category, { as: 'category', foreignKey: 'categoryId' });
+    Course.belongsToMany(User, { through: 'enrolments' });
   }
 }
 
