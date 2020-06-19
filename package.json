@@ -9,8 +9,10 @@
     "lint:client": "vue-cli-service lint",
     "dev:server": "nodemon ./server",
     "debug:server": "nodemon --inspect server",
+    "db:create": "sequelize-cli db:create && sequelize-cli db:migrate",
     "db:seed": "sequelize-cli db:seed:all",
-    "db:seed:undo": "sequelize-cli db:seed:undo:all"
+    "db:seed:undo": "sequelize-cli db:seed:undo:all",
+    "db:reset": "sequelize-cli db:drop && npm run db:create"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
