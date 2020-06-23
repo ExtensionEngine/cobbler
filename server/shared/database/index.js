@@ -1,9 +1,18 @@
 'use strict';
 
 const config = require('./config');
+const invoke = require('lodash/invoke');
 const path = require('path');
 const { Sequelize } = require('sequelize');
 const Umzug = require('umzug');
+
+// Models
+
+// eslint-disable-next-line require-sort/require-sort
+const Category = require('../../category/category.model');
+const Course = require('../../course/course.model');
+const Enrollment = require('../../enrollment/enrollment.model');
+const User = require('../../user/user.model');
 
 const sequelize = new Sequelize(config.url, config);
 
@@ -29,8 +38,32 @@ function initialize() {
     .catch(() => console.log('Failed to connect to db'));
 }
 
-module.exports = {
+const models = {
+  User: defineModel(User),
+  Category: defineModel(Category),
+  Course: defineModel(Course),
+  Enrollment: defineModel(Enrollment)
+};
+
+function defineModel(Model, connection = sequelize) {
+  const { DataTypes } = connection.Sequelize;
+  const fields = invoke(Model, 'fields', DataTypes, connection) || {};
+  const options = invoke(Model, 'options') || {};
+  Object.assign(options, { sequelize: connection });
+  return Model.init(fields, options);
+}
+
+Object.values(models).forEach(model => {
+  invoke(model, 'associate', models);
+});
+
+const db = {
   Sequelize,
   sequelize,
-  initialize
+  initialize,
+  ...models
 };
+
+sequelize.model = name => sequelize.models[name] || db[name];
+
+module.exports = db;

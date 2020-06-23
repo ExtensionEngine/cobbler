@@ -2,14 +2,17 @@
 
 const { Model } = require('sequelize');
 
-class Category extends Model {
+class Enrollment extends Model {
   static fields(DataTypes) {
-    const { STRING, DATE } = DataTypes;
+    const { INTEGER, DATE } = DataTypes;
     return {
-      name: {
-        type: STRING,
-        validate: { len: [2, 50] },
-        unique: true
+      courseId: {
+        type: INTEGER,
+        field: 'course_id'
+      },
+      userId: {
+        type: INTEGER,
+        field: 'user_id'
       },
       createdAt: {
         type: DATE,
@@ -28,13 +31,14 @@ class Category extends Model {
 
   static options() {
     return {
-      tableName: 'categories'
+      tableName: 'enrollments'
     };
   }
 
-  static associate({ Course }) {
-    this.hasMany(Course, { as: 'categories', foreignKey: 'categoryId' });
+  static associate({ Course, User }) {
+    this.hasMany(User);
+    this.hasMany(Course);
   }
 }
 
-module.exports = Category;
+module.exports = Enrollment;

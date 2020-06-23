@@ -1,40 +1,48 @@
 'use strict';
 
-const { Sequelize, sequelize } = require('../shared/database');
 const { Model } = require('sequelize');
 
 class Course extends Model {
-  associate(Category, User) {
-    Course.belongsTo(Category, { as: 'category', foreignKey: 'categoryId' });
-    Course.belongsToMany(User, { through: 'enrolments' });
+  static fields(DataTypes) {
+    const { STRING, TEXT, DATE, INTEGER } = DataTypes;
+    return {
+      name: {
+        type: STRING,
+        validate: { len: [2, 50] }
+      },
+      description: {
+        type: TEXT,
+        validate: { len: [2, 50] }
+      },
+      categoryId: {
+        type: INTEGER,
+        field: 'category_id'
+      },
+      createdAt: {
+        type: DATE,
+        field: 'created_at'
+      },
+      updatedAt: {
+        type: DATE,
+        field: 'updated_at'
+      },
+      deletedAt: {
+        type: DATE,
+        field: 'deleted_at'
+      }
+    };
+  }
+
+  static associate({ Category, User }) {
+    this.belongsTo(Category, { as: 'category', foreignKey: 'categoryId' });
+    this.belongsToMany(User, { through: 'enrolments' });
+  }
+
+  static options() {
+    return {
+      tableName: 'courses'
+    };
   }
 }
-
-Course.init({
-  name: {
-    type: Sequelize.STRING,
-    validate: { len: [2, 50] }
-  },
-  description: {
-    type: Sequelize.TEXT,
-    validate: { len: [2, 50] }
-  },
-  categoryId: {
-    type: Sequelize.INTEGER,
-    field: 'category_id'
-  },
-  createdAt: {
-    type: Sequelize.DATE,
-    field: 'created_at'
-  },
-  updatedAt: {
-    type: Sequelize.DATE,
-    field: 'updated_at'
-  },
-  deletedAt: {
-    type: Sequelize.DATE,
-    field: 'deleted_at'
-  }
-}, { sequelize, tableName: 'courses' });
 
 module.exports = Course;
