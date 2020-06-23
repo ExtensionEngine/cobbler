@@ -5,7 +5,7 @@ const { INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED } = require('http-status-
 const { HttpError } = require('../error');
 const LocalStrategy = require('passport-local');
 const passport = require('passport');
-const User = require('../../user/user.model');
+const { User } = require('../database');
 
 const options = {
   usernameField: 'email'
@@ -20,7 +20,7 @@ passport.use(new LocalStrategy(options,
       if (isValid) return done(null, user);
       return done(new HttpError('Bad credentials', UNAUTHORIZED));
     } catch (e) {
-      return done(new HttpError('Something went wrong', INTERNAL_SERVER_ERROR));
+      return done(new HttpError(e, INTERNAL_SERVER_ERROR));
     }
   }
 ));

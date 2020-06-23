@@ -60,8 +60,12 @@ class User extends Model {
     };
   }
 
-  static associate({ Course }) {
-    this.belongsToMany(Course, { through: 'enrollments' });
+  static associate({ Course, Enrollment }) {
+    this.belongsToMany(Course,
+      {
+        through: Enrollment,
+        foreignKey: { name: 'userId', field: 'user_id' }
+      });
   }
 
   checkPassword(passwordAttempt) {

@@ -8,11 +8,13 @@ class Enrollment extends Model {
     return {
       courseId: {
         type: INTEGER,
-        field: 'course_id'
+        field: 'course_id',
+        primaryKey: true
       },
       userId: {
         type: INTEGER,
-        field: 'user_id'
+        field: 'user_id',
+        primaryKey: true
       },
       createdAt: {
         type: DATE,
@@ -36,8 +38,12 @@ class Enrollment extends Model {
   }
 
   static associate({ Course, User }) {
-    this.hasMany(User);
-    this.hasMany(Course);
+    this.belongsTo(User, {
+      foreignKey: { name: 'userId', field: 'user_id' }
+    });
+    this.belongsTo(Course, {
+      foreignKey: { name: 'courseId', field: 'course_id' }
+    });
   }
 }
 
