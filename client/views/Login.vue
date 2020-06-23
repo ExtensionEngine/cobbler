@@ -110,7 +110,7 @@ export default {
 @media only screen and (max-width: 480px) {
   .login-form {
     width: 100%;
-    padding: 50px 25px;
+    padding: var(--spacing-xl) var(--spacing-lg);
   }
 }
 </style>
