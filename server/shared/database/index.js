@@ -16,6 +16,14 @@ const User = require('../../user/user.model');
 
 const sequelize = new Sequelize(config.url, config);
 
+// Require models.
+/* eslint-disable require-sort/require-sort */
+const User = require('../../user/user.model');
+const Category = require('../../category/category.model');
+const Course = require('../../course/course.model');
+const Enrollment = require('../../enrollment/enrollment.model');
+/* eslint-enable */
+
 function initialize() {
   const umzug = new Umzug({
     storage: 'sequelize',
