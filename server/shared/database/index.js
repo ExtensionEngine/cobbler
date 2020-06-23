@@ -7,22 +7,14 @@ const { Sequelize } = require('sequelize');
 const Umzug = require('umzug');
 
 // Models
-
-// eslint-disable-next-line require-sort/require-sort
-const Category = require('../../category/category.model');
-const Course = require('../../course/course.model');
-const Enrollment = require('../../enrollment/enrollment.model');
-const User = require('../../user/user.model');
-
-const sequelize = new Sequelize(config.url, config);
-
-// Require models.
 /* eslint-disable require-sort/require-sort */
 const User = require('../../user/user.model');
 const Category = require('../../category/category.model');
 const Course = require('../../course/course.model');
 const Enrollment = require('../../enrollment/enrollment.model');
 /* eslint-enable */
+
+const sequelize = new Sequelize(config.url, config);
 
 function initialize() {
   const umzug = new Umzug({

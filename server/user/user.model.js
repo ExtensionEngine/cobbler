@@ -79,11 +79,4 @@ class User extends Model {
   }
 }
 
-  static options() {
-    return {
-      tableName: 'users'
-    };
-  }
-}
-
 module.exports = User;
