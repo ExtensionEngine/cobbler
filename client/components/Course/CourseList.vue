@@ -2,12 +2,7 @@
   <div class="container">
     <ul>
       <li v-for="course in courses.courses.data" :key="course.id">
-        <skeleton-loader
-          v-if="loading"
-          height="200px"
-          width="80%" />
         <course-card
-          v-else
           :title="course.name"
           :description="course.description"
           :end="course.endDate"
@@ -20,13 +15,9 @@
 <script>
 import CourseCard from './CourseCard';
 import { mapState } from 'vuex';
-import SkeletonLoader from '../common/SkeletonLoader';
 
 export default {
   name: 'course-list',
-  props: {
-    loading: { type: Boolean, default: false }
-  },
   computed: {
     ...mapState(['courses'])
   },
@@ -34,8 +25,7 @@ export default {
     this.$store.dispatch('getCourses');
   },
   components: {
-    CourseCard,
-    SkeletonLoader
+    CourseCard
   }
 };
 </script>

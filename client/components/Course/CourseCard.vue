@@ -12,7 +12,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'course-card',
   props: {
@@ -31,12 +30,8 @@ export default {
     height: 220px;
     margin: 5px;
   }
-
-  .course-card:hover {
-    cursor: pointer;
-  }
   .course-card-title {
-    background-color: var(--color-primary);
+    background-color: var(--color-gray);
     color: white;
     height: 50%;
     display:table;
