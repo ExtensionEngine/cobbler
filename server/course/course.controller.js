@@ -8,11 +8,13 @@ module.exports = {
   create,
   getAll,
   enroll,
-  getAvailableCourses
+  getAvailableCourses,
+  getCourseById,
+  getCoursesByUser
 };
 
 function create(req, res) {
-  const courseInfo = pick(req.body, ['name', 'description', 'categoryId']);
+  const courseInfo = pick(req.body, ['name', 'description', 'categoryId', 'startDate', 'endDate']);
   Course.create({ ...courseInfo })
   .then(success => res.status(201).json(success))
   .catch(err => res.status(400).json(err));
@@ -36,6 +38,12 @@ function getAll(req, res) {
     .catch(err => res.status(400).json(err));
 }
 
+function getCourseById(req, res) {
+  Course.findByPk(req.params.id)
+  .then(success => res.json(success))
+  .catch(err => res.status(400).json(err));
+}
+
 function getAvailableCourses(req, res) {
   Course.findAll({
     where: {
@@ -56,6 +64,24 @@ function getAvailableCourses(req, res) {
     ]
   }).then(success => res.json({ data: success }))
   .catch(err => res.status(400).json(err));
+}
+
+async function getCoursesByUser(req, res) {
+  try {
+    const email = jwt.decode(req.get('Authorization').slice(4)).sub;
+    return Course.findAll({
+      include: [{
+        model: User,
+        where: { email },
+        attributes: [],
+        through: []
+      }]
+    })
+    .then(success => res.json(success))
+    .catch(err => res.status(400).json(err));
+  } catch (e) {
+    res.status(400).json(e);
+  }
 }
 
 async function enroll(req, res) {
