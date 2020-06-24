@@ -6,7 +6,7 @@
       class="course-form">
       <field
         v-model="name"
-        class="form-item"
+        class="form-item-full"
         name="name"
         label="Name"
         rules="required|between:2,50">
@@ -19,7 +19,7 @@
       </field>
       <field
         v-model="description"
-        class="form-item"
+        class="form-item-full"
         name="description"
         label="Description"
         rules="required|between:2,50">
@@ -32,7 +32,7 @@
       </field>
       <field
         v-model="category"
-        class="form-item"
+        class="form-item-full"
         name="category"
         label="Category"
         rules="required">
@@ -45,7 +45,7 @@
       </field>
       <field
         v-model="startDate"
-        class="form-item"
+        class="form-item-half"
         name="Start date"
         label="Start date"
         rules="required">
@@ -60,7 +60,7 @@
       </field>
       <field
         v-model="endDate"
-        class="form-item"
+        class="form-item-half"
         name="End date"
         label="End date"
         rules="required">
@@ -144,8 +144,14 @@ export default {
 }
 .course-form {
   width: 90%;
+  max-width: 550px;
 }
-.form-item {
-  margin: 10px 0;
+.form-item-full {
+  margin: var(--spacing-sm) var(--spacing-xxs);
+}
+.form-item-half {
+  display: inline-block;
+  margin: var(--spacing-sm) var(--spacing-xxs);
+  width: calc(50% - 2 * var(--spacing-xxs))
 }
 </style>
