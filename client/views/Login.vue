@@ -3,7 +3,6 @@
     <base-form
       v-slot="{ isFormInvalid }"
       @submit="onSubmit"
-      submit-label="Login"
       class="login-form">
       <field
         v-model="email"

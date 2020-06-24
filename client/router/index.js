@@ -1,3 +1,4 @@
+import AddCourse from '../views/Lecturer/AddCourse';
 import Home from '../views/Home';
 import Layout from '../components/common/Layout';
 import Login from '../views/Login';
@@ -19,6 +20,10 @@ const routes = [
       path: '',
       name: 'Home',
       component: Home
+    }, {
+      path: paths.addCourse,
+      name: 'Add course',
+      component: AddCourse
     }]
   },
   {

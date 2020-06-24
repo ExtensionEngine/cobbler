@@ -5,6 +5,9 @@ import thwack from 'thwack';
 export const endpoints = {
   auth: {
     login: 'login'
+  },
+  categories: {
+    base: 'categories'
   }
 };
 

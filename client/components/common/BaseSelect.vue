@@ -1,23 +1,19 @@
 <template>
-  <input
+  <select
     @input="onChange"
     :value="value"
-    :type="type"
-    :class="{
-      filled,
-      outlined
-    }"
-    class="input">
+    class="select">
+    <option selected disabled value=""></option>
+    <option v-for="option in options" :key="option.id">{{ option.name }}</option>
+  </select>
 </template>
 
 <script>
 export default {
-  name: 'base-input',
+  name: 'base-select',
   props: {
     value: { type: String, default: '' },
-    type: { type: String, default: 'text' },
-    filled: { type: Boolean, default: false },
-    outlined: { type: Boolean, default: false }
+    options: { type: Array, default: () => [] }
   },
   methods: {
     onChange(event) {
@@ -28,18 +24,11 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.input {
+.select {
   width: 100%;
   font-size: 16px;
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: 3px;
   outline: none;
-}
-.filled {
-  border: none;
-  border-bottom: solid 1px var(--color-black));
-}
-.outlined {
-  border: solid 1px var(--color-black);
 }
 </style>

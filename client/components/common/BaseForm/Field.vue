@@ -52,6 +52,7 @@ export default {
   transition: all 0.15s ease;
 }
 .input:focus + .field-label,
+.text-area:focus + .field-label,
 .field-filled {
   font-size: 11px;
   top: -26px;
