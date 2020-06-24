@@ -18,6 +18,7 @@ function create(req, res) {
   .catch(err => res.status(400).json(err));
 }
 
+// TODO Include Categories in  get requests
 function getAll(req, res) {
   Course.findAll()
     .then(success => res.json({ data: success }))
