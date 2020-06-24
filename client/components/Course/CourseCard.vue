@@ -12,6 +12,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'course-card',
   props: {
@@ -35,7 +36,7 @@ export default {
     cursor: pointer;
   }
   .course-card-title {
-    background-color: var(--color-gray);
+    background-color: var(--color-primary);
     color: white;
     height: 50%;
     display:table;
