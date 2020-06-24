@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import { addCourse } from '../../api/courses';
 import BaseButton from '../../components/common/BaseButton';
 import BaseForm from '../../components/common/BaseForm';
 import BaseInput from '../../components/common/BaseInput';
@@ -104,8 +105,21 @@ export default {
     });
   },
   methods: {
-    onSubmit() {
-      console.log('Submitted');
+    async onSubmit() {
+      const courseToAdd = {
+        name: this.name,
+        description: this.description,
+        categoryId: this.categories.find(category => category.name === this.category).id,
+        startDate: this.startDate,
+        endDate: this.endDate
+      };
+      // TODO: wait for toast message PR to pass and implement it here
+      try {
+        await addCourse(courseToAdd);
+        this.$router.push('/');
+      } catch (err) {
+        console.log(err);
+      }
     }
   },
   async mounted() {
