@@ -154,4 +154,11 @@ export default {
   margin: var(--spacing-sm) var(--spacing-xxs);
   width: calc(50% - 2 * var(--spacing-xxs))
 }
+@media only screen and (max-width: 480px) {
+  .form-item-half {
+  display: block;
+  margin: var(--spacing-sm) var(--spacing-xxs);
+  width: auto;
+  }
+}
 </style>
