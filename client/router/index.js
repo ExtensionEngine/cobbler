@@ -1,6 +1,6 @@
 import AddCourse from '../views/Lecturer/AddCourse';
-import Home from '../views/Home';
 import Layout from '../components/common/Layout';
+import LecturerDashboard from '../views/Lecturer/Dashboard';
 import Login from '../views/Login';
 import paths from './paths';
 import store from '../store';
@@ -11,19 +11,25 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: paths.home,
+    path: paths.base,
     component: Layout,
     meta: {
       protectedRoute: true
     },
     children: [{
-      path: '',
-      name: 'Home',
-      component: Home
+      path: paths.lecturer.base,
+      name: 'Lecturer dashboard',
+      component: LecturerDashboard,
+      meta: {
+        lecturerRoute: true
+      }
     }, {
-      path: paths.addCourse,
+      path: paths.lecturer.addCourse,
       name: 'Add course',
-      component: AddCourse
+      component: AddCourse,
+      meta: {
+        lecturerRoute: true
+      }
     }]
   },
   {
@@ -45,17 +51,35 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const isLoginRoute = to.matched.some(it => it.meta.authRoute);
   const isProtectedRoute = to.matched.some(it => it.meta.protectedRoute);
+  const isLecturerRoute = to.matched.some(it => it.meta.lecturerRoute);
   const isUserLoggedIn = !!store.state.auth.token;
 
+  if (isLecturerRoute && store.state.auth.role !== 'LECTURER') {
+    next(getBasePath());
+  }
+
   if (isLoginRoute && isUserLoggedIn) {
-    next(paths.home);
+    next(getBasePath());
   }
 
   if (isProtectedRoute && !isUserLoggedIn) {
-    next(paths.login);
+    next(getBasePath());
   }
 
   next();
 });
+
+function getBasePath() {
+  switch (store.state.auth.role) {
+    case 'ADMIN':
+      return paths.admin.base;
+    case 'LECTURER':
+      return paths.lecturer.base;
+    case 'LEARNER':
+      return paths.learner.base;
+    default:
+      return paths.login;
+  }
+}
 
 export default router;

@@ -1,5 +1,14 @@
 export default {
-  home: '',
+  base: '',
   login: '/login',
-  addCourse: '/add-course'
+  lecturer: {
+    base: '/lecturer',
+    addCourse: '/lecturer/add-course'
+  },
+  learner: {
+    base: '/learner'
+  },
+  admin: {
+    base: '/admin'
+  }
 };

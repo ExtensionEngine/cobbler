@@ -74,7 +74,7 @@ class User extends Model {
 
   generateJWT() {
     const options = { expiresIn: '1d' };
-    const payload = { sub: this.email };
+    const payload = { sub: this.email, role: this.role };
     return jwt.sign(payload, process.env.JWT_SECRET, options);
   }
 }
