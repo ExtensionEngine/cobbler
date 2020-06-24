@@ -1,5 +1,5 @@
 <template>
-  <div class="course-card" :class="{ enrolled: enrolled }">
+  <div class="course-card" :class="{ enrolled }">
     <div class="course-card-title">
       <p class="category-name">{{ category }}</p>
       <h1>{{ title }}</h1>
@@ -7,7 +7,7 @@
     <div class="course-card-description">
       <p>{{ description }}</p>
       <p>By: {{ lecturer }}</p>
-      <p style="text-align: right;">{{ new Date(start).toDateString() }} - {{ new Date(end).toDateString() }}</p>
+      <p class="date">{{ new Date(start).toDateString() }} - {{ new Date(end).toDateString() }}</p>
     </div>
   </div>
 </template>
@@ -41,16 +41,63 @@ export default {
     height: fit-content;
     min-height: 230px;
     min-width: 300px;
-    margin: 5px;
     border-radius: 5px;
+    background-color: white;
+    position: relative;
+  }
+
+  .course-card:empty {
+    border: none;
+    background-repeat: no-repeat;
+    opacity: 0.6;
+  }
+
+  .course-card:empty:before {
+    content: '';
+    height:  60px;
+    width: 90%;
+    position: absolute;
+    left: 5%;
+    bottom: 20%;
+    background: linear-gradient(to left, #c2c1c1da 0, #dadadae3);
+    background-size: 200% 200%;
+    background-position: 15px 140px;
+    animation: loadingGradient 1s infinite;
+  }
+
+  .course-card:empty:after {
+    content: '';
+    height:  80px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: linear-gradient(to left, #c2c1c1da 0, #dadadae3);
+    background-size: 200% 200%;
+    animation: loadingGradient 1s infinite;
+  }
+
+  @keyframes loadingGradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: -200% 0%;
+    }
   }
 
   .course-card:hover {
     cursor: pointer;
+    transform: scale(1.1);
+    transition-duration: 0.3s;
+  }
+
+  .date {
+    text-align: right;
   }
 
   .enrolled {
-    border: 2px solid green;
+    border: 5px solid var(--color-success);
   }
 
   .course-card-title {

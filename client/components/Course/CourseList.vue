@@ -2,12 +2,7 @@
   <div class="container">
     <ul>
       <li v-for="course in getEnrolledCourses" :key="course.id">
-        <skeleton-loader
-          v-if="loading"
-          height="200px"
-          width="80%" />
         <course-card
-          v-else
           :title="course.name"
           :category="course.Category.name"
           :users="course.Users"
@@ -17,12 +12,7 @@
           :start="course.startDate" />
       </li>
       <li v-for="course in getNotEnrolledCourses" :key="course.id">
-        <skeleton-loader
-          v-if="loading"
-          height="200px"
-          width="80%" />
         <course-card
-          v-else
           :title="course.name"
           :category="course.Category.name"
           :users="course.Users"
@@ -35,9 +25,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import CourseCard from './CourseCard';
-import { mapGetters } from 'vuex';
-import SkeletonLoader from '../common/SkeletonLoader';
 
 export default {
   name: 'course-list',
@@ -45,14 +34,14 @@ export default {
     loading: { type: Boolean, default: false }
   },
   computed: {
-    ...mapGetters(['getEnrolledCourses', 'getNotEnrolledCourses'])
+    ...mapGetters(['getEnrolledCourses', 'getNotEnrolledCourses']),
+    ...mapActions(['getCourses'])
   },
   mounted() {
-    this.$store.dispatch('getCourses');
+    this.getCourses();
   },
   components: {
-    CourseCard,
-    SkeletonLoader
+    CourseCard
   }
 };
 </script>
@@ -72,8 +61,9 @@ export default {
   }
 
   li {
-    flex-basis: 33%;
+    flex-basis: 30%;
     flex-grow: 1;
+    margin: var(--spacing-xxs);
   }
 
 </style>
