@@ -12,7 +12,7 @@ module.exports = {
 };
 
 function create(req, res) {
-  const courseInfo = pick(req.body, ['name', 'description', 'categoryId']);
+  const courseInfo = pick(req.body, ['name', 'description', 'categoryId', 'startDate', 'endDate']);
   Course.create({ ...courseInfo })
   .then(success => res.status(201).json(success))
   .catch(err => res.status(400).json(err));
