@@ -5,7 +5,8 @@
     :type="type"
     :class="{
       filled,
-      outlined
+      outlined,
+      'input-filled': value
     }"
     class="input">
 </template>
@@ -34,6 +35,8 @@ export default {
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: 3px;
   outline: none;
+  color: transparent;
+  color: transparent;
 }
 .filled {
   border: none;
@@ -41,5 +44,8 @@ export default {
 }
 .outlined {
   border: solid 1px var(--color-black);
+}
+.input-filled {
+  color:var(--color-black);
 }
 </style>

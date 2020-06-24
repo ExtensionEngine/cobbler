@@ -6,6 +6,7 @@
       class="course-form">
       <field
         v-model="name"
+        class="form-item"
         name="name"
         label="Name"
         rules="required|between:2,50">
@@ -18,6 +19,7 @@
       </field>
       <field
         v-model="description"
+        class="form-item"
         name="description"
         label="Description"
         rules="required|between:2,50">
@@ -30,13 +32,45 @@
       </field>
       <field
         v-model="category"
+        class="form-item"
         name="category"
         label="Category"
         rules="required">
         <template v-slot="{ on, value }">
           <base-select
             v-on="on"
-            :value="value" :options="categories" />
+            :value="value"
+            :options="categories" />
+        </template>
+      </field>
+      <field
+        v-model="startDate"
+        class="form-item"
+        name="Start date"
+        label="Start date"
+        rules="required">
+        <template v-slot="{ on, value }">
+          <base-input
+            v-on="on"
+            :value="value"
+            :max="endDate"
+            type="date"
+            outlined />
+        </template>
+      </field>
+      <field
+        v-model="endDate"
+        class="form-item"
+        name="End date"
+        label="End date"
+        rules="required">
+        <template v-slot="{ on, value }">
+          <base-input
+            v-on="on"
+            :value="value"
+            :min="startDate"
+            type="date"
+            outlined />
         </template>
       </field>
       <base-button
@@ -64,7 +98,9 @@ export default {
       name: '',
       description: '',
       category: '',
-      categories: []
+      categories: [],
+      startDate: null,
+      endDate: null
     });
   },
   methods: {
@@ -94,5 +130,8 @@ export default {
 }
 .course-form {
   width: 90%;
+}
+.form-item {
+  margin: 10px 0;
 }
 </style>
