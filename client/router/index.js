@@ -28,6 +28,14 @@ const routes = [
     meta: {
       authRoute: true
     }
+  },
+  {
+    path: paths.course,
+    name: 'Login',
+    component: Login,
+    meta: {
+      authRoute: true
+    }
   }
 ];
 
