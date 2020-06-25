@@ -13,9 +13,12 @@ module.exports = {
   getCoursesByUser
 };
 
-function create(req, res) {
+async function create(req, res) {
   const courseInfo = pick(req.body, ['name', 'description', 'categoryId', 'startDate', 'endDate']);
+  const email = jwt.decode(req.get('Authorization').slice(4)).sub;
+  const creator = await User.findOne({ where: { email } });
   Course.create({ ...courseInfo })
+  .then(course => course.addUser(creator))
   .then(success => res.status(201).json(success))
   .catch(err => res.status(400).json(err));
 }
