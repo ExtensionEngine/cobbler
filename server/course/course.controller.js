@@ -12,6 +12,7 @@ module.exports = {
   getCourseById,
   getCoursesByUser,
   checkNameAvailability
+  update
 };
 
 async function create(req, res) {
@@ -81,11 +82,16 @@ async function getCoursesByUser(req, res) {
   try {
     const email = jwt.decode(req.get('Authorization').slice(4)).sub;
     return Course.findAll({
+      attributes: ['id', 'name', 'description', 'endDate', 'startDate'],
       include: [{
         model: User,
         where: { email },
         attributes: [],
         through: []
+      },
+      {
+        model: Category,
+        attributes: ['name']
       }]
     })
     .then(success => res.json(success))
@@ -107,6 +113,14 @@ async function enroll(req, res) {
   } catch (e) {
     res.status(400).json(e);
   }
+}
+
+async function update(req, res) {
+  const courseInfo = pick(req.body, ['name', 'description', 'startDate', 'endDate', 'categoryId']);
+  const course = await Course.findByPk(req.params.id);
+  course.update({ ...courseInfo })
+  .then(success => res.status(201).json(success))
+  .catch(err => res.status(400).json(err));
 }
 
 async function checkNameAvailability(req, res) {

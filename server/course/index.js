@@ -11,6 +11,7 @@ router
   .get('/:id', ctrl.getCourseById)
   .post('/:id/enroll', ctrl.enroll)
   .post('/check-name', ctrl.checkNameAvailability);
+  .patch('/:id', ctrl.update)
 
 module.exports = {
   path: '/courses',
