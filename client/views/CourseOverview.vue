@@ -3,7 +3,9 @@
     <course-page
       :title="course.data.name"
       :description="course.data.description"
-      :category="course.data.Category.name" />
+      :category="course.data.Category.name"
+      :start="course.data.startDate"
+      :end="course.data.endDate" />
   </container>
 </template>
 
