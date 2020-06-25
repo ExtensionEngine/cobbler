@@ -36,6 +36,7 @@ export default {
   align-items: center;
   padding: 0 var(--spacing-md);
   box-shadow: 2px 2px 4px 0px var(--color-gray);
+  z-index: 5;
 }
 .nav-item {
   background: var(--color-gray-500);

@@ -23,7 +23,7 @@ export default {
     description: { type: String, default: 'This is a course description' },
     users: { type: Array, default: () => [] },
     start: { type: String, default: '' },
-    end: { type: Date, default: '' },
+    end: { type: String, default: '' },
     enrolled: { type: Boolean, default: false }
   },
   computed: {
@@ -73,7 +73,7 @@ export default {
 
   .course-card:empty:after {
     content: '';
-    height:  80px;
+    height: 80px;
     width: 100%;
     position: absolute;
     left: 0;
@@ -116,6 +116,7 @@ export default {
   }
   .course-card-description {
     padding: 0 var(--spacing-md);
+    margin: 0;
   }
 
   .date {

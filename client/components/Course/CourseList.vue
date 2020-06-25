@@ -63,9 +63,9 @@ export default {
   }
 
   li {
-    flex-basis: 30%;
+    flex-basis: 25%;
     flex-grow: 1;
-    margin: var(--spacing-xxs);
+    margin: var(--spacing-xs) var(--spacing-lg);
   }
 
 </style>
