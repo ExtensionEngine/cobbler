@@ -35,6 +35,9 @@ export default {
     users: { type: Array, default: () => [] },
     enrolled: { type: Boolean, default: false }
   },
+  data() {
+    return {};
+  },
   computed: {
     lecturers() {
       const temp = [];

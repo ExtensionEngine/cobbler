@@ -29,7 +29,7 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  background: var(--color-gray);
+  background: var(--color-primary);
   height: var(--spacing-xl);
   display: flex;
   justify-content: flex-end;

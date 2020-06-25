@@ -42,14 +42,15 @@ export default {
 
 <style scoped>
   .course-card {
-    border: 1px solid black;
-    box-shadow: 2px 2px 4px 0px var(--color-gray);
+    border: 2px solid black;
+    box-shadow: 2px 2px 8px 0px var(--color-gray);
     height: fit-content;
-    min-height: 230px;
+    min-height: 180px;
     min-width: 300px;
     border-radius: 5px;
     background-color: white;
     position: relative;
+    font-size: 0.5rem;
   }
 
   .course-card:empty {
