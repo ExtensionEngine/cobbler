@@ -39,7 +39,14 @@ function getAll(req, res) {
 }
 
 function getCourseById(req, res) {
-  Course.findByPk(req.params.id)
+  Course.findByPk(req.params.id, {
+    include: [
+      {
+        model: Category,
+        attributes: ['name']
+      }
+    ]
+  })
   .then(success => res.json(success))
   .catch(err => res.status(400).json(err));
 }
