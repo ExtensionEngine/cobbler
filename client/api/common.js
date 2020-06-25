@@ -7,7 +7,8 @@ export const endpoints = {
     login: 'login'
   },
   course: {
-    getAvailable: 'courses/available'
+    getAvailable: 'courses/available',
+    getById: 'courses/'
   }
 };
 

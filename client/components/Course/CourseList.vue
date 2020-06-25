@@ -3,6 +3,7 @@
     <ul>
       <li v-for="course in getEnrolledCourses" :key="course.id">
         <course-card
+          :id="course.id"
           :title="course.name"
           :category="course.Category.name"
           :users="course.Users"
@@ -13,6 +14,7 @@
       </li>
       <li v-for="course in getNotEnrolledCourses" :key="course.id">
         <course-card
+          :id="course.id"
           :title="course.name"
           :category="course.Category.name"
           :users="course.Users"

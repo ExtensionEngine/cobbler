@@ -1,5 +1,5 @@
 <template>
-  <div class="course-card" :class="{ enrolled }">
+  <div @click="showCourse" class="course-card" :class="{ enrolled }">
     <div class="course-card-title">
       <p class="category-name">{{ category }}</p>
       <h1>{{ title }}</h1>
@@ -17,6 +17,7 @@
 export default {
   name: 'course-card',
   props: {
+    id: { type: Number, default: null },
     title: { type: String, default: 'Course title' },
     category: { type: String, default: 'Category' },
     description: { type: String, default: 'This is a course description' },
@@ -29,6 +30,11 @@ export default {
     lecturer() {
       const lecturer = this.users.find(user => user.role === 'LECTURER');
       return lecturer ? `${lecturer.firstName} ${lecturer.lastName}` : '';
+    }
+  },
+  methods: {
+    showCourse() {
+      this.$router.push(`courses/${this.id}`);
     }
   }
 };
@@ -87,17 +93,10 @@ export default {
   }
 
   .course-card:hover {
+    z-index: 1;
     cursor: pointer;
     transform: scale(1.1);
     transition-duration: 0.3s;
-  }
-
-  .date {
-    text-align: right;
-  }
-
-  .enrolled {
-    border: 5px solid var(--color-success);
   }
 
   .course-card-title {
@@ -118,4 +117,13 @@ export default {
   .course-card-description {
     padding: 0 var(--spacing-md);
   }
+
+  .date {
+    text-align: right;
+  }
+
+  .enrolled {
+    border: 5px solid var(--color-success);
+  }
+
 </style>
