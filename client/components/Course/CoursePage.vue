@@ -16,12 +16,14 @@
         Enroll
       </base-button>
     </div>
+    <lecture-container />
   </div>
 </template>
 
 <script>
 import BaseButton from '../common/BaseButton';
 import { enroll } from '../../api/courses';
+import LectureContainer from '../Lectures/LectureContainer';
 
 export default {
   name: 'course-page',
@@ -34,9 +36,6 @@ export default {
     end: { type: String, default: '' },
     users: { type: Array, default: () => [] },
     enrolled: { type: Boolean, default: false }
-  },
-  data() {
-    return {};
   },
   computed: {
     lecturers() {
@@ -58,7 +57,7 @@ export default {
     }
   },
   components: {
-    BaseButton
+    BaseButton, LectureContainer
   }
 };
 </script>
@@ -76,6 +75,7 @@ export default {
   }
   .btn-container {
     width: 10%;
+    margin-bottom: 20px;
   }
 
   .small-label{
@@ -84,6 +84,10 @@ export default {
     width: fit-content;
     padding: 5px 10px;
     margin-right: 10px
+  }
+
+  .lecture-list{
+    list-style-type: none;
   }
 
 </style>
