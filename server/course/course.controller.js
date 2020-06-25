@@ -44,6 +44,14 @@ function getCourseById(req, res) {
       {
         model: Category,
         attributes: ['name']
+      },
+      {
+        model: User,
+        required: false,
+        attributes: ['firstName', 'lastName', 'email'],
+        where: {
+          role: 'LECTURER'
+        }
       }
     ]
   })

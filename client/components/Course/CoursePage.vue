@@ -1,9 +1,13 @@
 <template>
   <div>
-    <p class="small-label">{{ category }}</p>
+    <div class="course-info">
+      <span class="small-label category-label">{{ category }}</span>
+      <span class="small-label date-label">
+        {{ new Date(start).toDateString() }} - {{ new Date(end).toDateString() }}
+      </span>
+    </div>
     <h1>{{ title }}</h1>
     <p>{{ description }}</p>
-    <p>{{ new Date(start).toDateString() }} - {{ new Date(end).toDateString() }}</p>
   </div>
 </template>
 
@@ -21,13 +25,23 @@ export default {
 </script>
 
 <style scoped>
+
+  .category-label {
+    background: var(--color-info);
+    color: white;
+  }
+
+  .date-label {
+    background: var(--color-success);
+    color: white;
+  }
+
   .small-label{
     font-size: 0.7rem;
     border-radius: 5px;
-    background: var(--color-info);
-    color: white;
     width: fit-content;
     padding: 5px 10px;
+    margin-right: 10px
   }
 
 </style>
