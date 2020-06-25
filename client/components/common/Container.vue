@@ -12,8 +12,8 @@ export default {
 
 <style lang="css" scoped>
   .container {
-    padding: 5px;
+    padding: var(--spacing-xs);
     width: 90%;
-    margin: 10px auto;
+    margin: var(--spacing-sm) auto;
   }
 </style>

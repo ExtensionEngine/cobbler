@@ -3,7 +3,7 @@
     <course-page
       :title="course.data.name"
       :description="course.data.description"
-      :category="course.data.category" />
+      :category="course.data.Category.name" />
   </container>
 </template>
 
