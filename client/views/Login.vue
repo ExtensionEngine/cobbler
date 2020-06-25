@@ -48,8 +48,8 @@ import BaseError from '../components/common/BaseError';
 import BaseForm from '../components/common/BaseForm';
 import BaseInput from '../components/common/BaseInput';
 import Field from '../components/common/BaseForm/Field';
+import { getBasePath } from '../router';
 import { mapActions } from 'vuex';
-import paths from '../router/paths';
 
 export default {
   name: 'login',
@@ -65,11 +65,7 @@ export default {
     async onSubmit() {
       try {
         await this.login({ email: this.email, password: this.password });
-        const { role } = this.$store.state.auth;
-        if (role === 'LECTURER') {
-          this.$router.push(paths.lecturer.base);
-        }
-        // TODO: Add routes for other roles
+        this.$router.push(getBasePath());
       } catch (err) {
         const { status } = err.thwackResponse;
         if (status === 401) {

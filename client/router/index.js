@@ -1,5 +1,7 @@
 import AddCourse from '../views/Lecturer/AddCourse';
+import AdminDashboard from '../views/Admin/Dashboard';
 import Layout from '../components/common/Layout';
+import LearnerDashboard from '../views/Learner/Dashboard';
 import LecturerDashboard from '../views/Lecturer/Dashboard';
 import Login from '../views/Login';
 import paths from './paths';
@@ -30,6 +32,20 @@ const routes = [
       meta: {
         lecturerRoute: true
       }
+    }, {
+      path: paths.learner.base,
+      name: 'Learner dashboard',
+      component: LearnerDashboard,
+      meta: {
+        learnerRoute: true
+      }
+    }, {
+      path: paths.admin.base,
+      name: 'Admin dashboard',
+      component: AdminDashboard,
+      meta: {
+        adminRoute: true
+      }
     }]
   },
   {
@@ -52,24 +68,23 @@ router.beforeEach((to, from, next) => {
   const isLoginRoute = to.matched.some(it => it.meta.authRoute);
   const isProtectedRoute = to.matched.some(it => it.meta.protectedRoute);
   const isLecturerRoute = to.matched.some(it => it.meta.lecturerRoute);
+  const isLearnerRoute = to.matched.some(it => it.meta.learnerRoute);
+  const isAdminRoute = to.matched.some(it => it.meta.adminRoute);
   const isUserLoggedIn = !!store.state.auth.token;
 
-  if (isLecturerRoute && store.state.auth.role !== 'LECTURER') {
-    next(getBasePath());
-  }
-
-  if (isLoginRoute && isUserLoggedIn) {
-    next(getBasePath());
-  }
-
-  if (isProtectedRoute && !isUserLoggedIn) {
+  if ((isLecturerRoute && store.state.auth.role !== 'LECTURER') ||
+    (isLearnerRoute && store.state.auth.role !== 'LEARNER') ||
+    (isAdminRoute && store.state.auth.role !== 'ADMIN') ||
+    (isLoginRoute && isUserLoggedIn) ||
+    (isProtectedRoute && !isUserLoggedIn) ||
+    to.fullPath === '/') {
     next(getBasePath());
   }
 
   next();
 });
 
-function getBasePath() {
+export function getBasePath() {
   switch (store.state.auth.role) {
     case 'ADMIN':
       return paths.admin.base;

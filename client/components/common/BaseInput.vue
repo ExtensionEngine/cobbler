@@ -36,7 +36,6 @@ export default {
   border-radius: 3px;
   outline: none;
   color: transparent;
-  color: transparent;
 }
 .filled {
   border: none;

@@ -1,12 +1,10 @@
 <template>
   <div>
     <div v-for="course in courses" :key="course.id" class="course-card">
-      <div>
-        <span class="category">{{ course.Category.name }}</span>
-        <h3 class="course-title">{{ course.name }}</h3>
-        <p>{{ course.description }}</p>
-        <span>{{ getDateRange(course) }}</span>
-      </div>
+      <span class="category">{{ course.Category.name }}</span>
+      <h3 class="course-title">{{ course.name }}</h3>
+      <p>{{ course.description }}</p>
+      <span>{{ getDateRange(course) }}</span>
     </div>
   </div>
 </template>
@@ -36,7 +34,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .category {
   position: absolute;
   top: 0;

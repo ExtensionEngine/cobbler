@@ -23,12 +23,6 @@ export default {
   methods: {
     handleCreateNewCourse() {
       this.$router.push(paths.lecturer.addCourse);
-    },
-    getDateRange({ startDate, endDate }) {
-      if (!startDate || !endDate) {
-        return 'The start date, end date or both are not defined yet!';
-      }
-      return `${new Date(startDate).toDateString()} - ${new Date(endDate).toDateString()}`;
     }
   },
   components: {
@@ -38,7 +32,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .dashboard-wrapper {
   display: flex;
   justify-content: center;
