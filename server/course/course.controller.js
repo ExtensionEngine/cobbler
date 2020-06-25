@@ -10,7 +10,8 @@ module.exports = {
   enroll,
   getAvailableCourses,
   getCourseById,
-  getCoursesByUser
+  getCoursesByUser,
+  checkNameAvailability
 };
 
 async function create(req, res) {
@@ -103,6 +104,15 @@ async function enroll(req, res) {
       course.addUser(user);
       res.status(201).json('Successfully enrolled');
     } else res.status(204).json('Course unavailable');
+  } catch (e) {
+    res.status(400).json(e);
+  }
+}
+
+async function checkNameAvailability(req, res) {
+  try {
+    const valid = !await Course.findOne({ where: { name: req.body.name } });
+    res.status(200).json({ valid });
   } catch (e) {
     res.status(400).json(e);
   }

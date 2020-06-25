@@ -8,3 +8,7 @@ export function addCourse(data) {
 export function getMyCourses() {
   return thwack.get(endpoints.courses.myCourses);
 }
+
+export function checkNameAvailability(name) {
+  return thwack.post(endpoints.courses.checkNameAvailability, { name });
+}

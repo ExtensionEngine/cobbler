@@ -1,4 +1,5 @@
 import { email, required } from 'vee-validate/dist/rules';
+import { checkNameAvailability } from '../api/courses';
 import { extend } from 'vee-validate';
 
 extend('email', email);
@@ -22,4 +23,14 @@ extend('between', {
     return true;
   },
   params: ['min', 'max']
+});
+
+extend('uniqueCourse', {
+  async validate(name) {
+    const { data } = await checkNameAvailability(name);
+    if (data.valid) {
+      return true;
+    }
+    return 'The name is taken';
+  }
 });

@@ -11,9 +11,10 @@
         <field
           v-model="name"
           class="form-item-full"
+          debounce="300"
           name="name"
           label="Name"
-          rules="required|between:2,50">
+          rules="required|between:2,50|uniqueCourse">
           <template v-slot="{ on, value }">
             <base-input
               v-on="on"
