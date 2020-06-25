@@ -10,7 +10,8 @@ export const endpoints = {
     base: 'categories'
   },
   courses: {
-    base: 'courses'
+    base: 'courses',
+    myCourses: 'courses/my-courses'
   }
 };
 
