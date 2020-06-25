@@ -12,23 +12,22 @@ class Category extends Model {
         unique: true
       },
       createdAt: {
-        type: DATE,
-        field: 'created_at'
+        type: DATE
       },
       updatedAt: {
-        type: DATE,
-        field: 'updated_at'
+        type: DATE
       },
       deletedAt: {
         type: DATE,
-        field: 'deleted_at'
+        paranoid: true
       }
     };
   }
 
   static options() {
     return {
-      tableName: 'categories'
+      tableName: 'categories',
+      underscored: true
     };
   }
 

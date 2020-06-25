@@ -11,12 +11,10 @@ class User extends Model {
     return {
       firstName: {
         type: STRING,
-        field: 'first_name',
         validate: { len: [2, 50] }
       },
       lastName: {
         type: STRING,
-        field: 'last_name',
         validate: { len: [2, 50] }
       },
       email: {
@@ -36,27 +34,25 @@ class User extends Model {
       },
       role: ENUM(roles),
       avatarUrl: {
-        type: TEXT,
-        field: 'avatar_url'
+        type: TEXT
       },
       createdAt: {
-        type: DATE,
-        field: 'created_at'
+        type: DATE
       },
       updatedAt: {
-        type: DATE,
-        field: 'updated_at'
+        type: DATE
       },
       deletedAt: {
         type: DATE,
-        field: 'deleted_at'
+        paranoid: true
       }
     };
   }
 
   static options() {
     return {
-      tableName: 'users'
+      tableName: 'users',
+      underscored: true
     };
   }
 
