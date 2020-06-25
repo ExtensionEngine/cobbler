@@ -9,6 +9,7 @@ router
   .get('/available', ctrl.getAvailableCourses)
   .get('/my-courses', ctrl.getCoursesByUser)
   .get('/:id', ctrl.getCourseById)
+  .patch('/:id', ctrl.update)
   .post('/:id/enroll', ctrl.enroll);
 
 module.exports = {
