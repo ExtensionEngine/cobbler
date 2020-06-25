@@ -1,8 +1,8 @@
 'use strict';
-const { Course, User } = require('../shared/database');
+
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const pick = require('lodash/pick');
+const { User } = require('../shared/database');
 
 const userAttributes = ['firstName', 'lastName', 'email', 'password', 'role'];
 

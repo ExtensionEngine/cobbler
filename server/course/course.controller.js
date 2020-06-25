@@ -21,7 +21,7 @@ async function create(req, res) {
     'startDate',
     'endDate'
   ]);
-  const email = jwt.decode(req.get('Authorization').slice(4)).sub;
+  const { email } = req.user;
   const creator = await User.findOne({ where: { email } });
   Course.create({ ...courseInfo })
     .then(course => course.addUser(creator))

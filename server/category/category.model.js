@@ -3,8 +3,7 @@
 const { Model } = require('sequelize');
 
 class Category extends Model {
-  static fields(DataTypes) {
-    const { STRING, DATE } = DataTypes;
+  static fields({ STRING, DATE }) {
     return {
       name: {
         type: STRING,

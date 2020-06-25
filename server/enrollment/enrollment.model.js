@@ -3,8 +3,7 @@
 const { Model } = require('sequelize');
 
 class Enrollment extends Model {
-  static fields(DataTypes) {
-    const { INTEGER, DATE } = DataTypes;
+  static fields({ INTEGER, DATE }) {
     return {
       courseId: {
         type: INTEGER,

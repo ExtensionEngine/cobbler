@@ -1,11 +1,10 @@
 'use strict';
 
-const fns = require('date-fns');
+const isAfter = require('date-fns/isAfter');
 const { Model } = require('sequelize');
 
 class Course extends Model {
-  static fields(DataTypes) {
-    const { STRING, TEXT, DATE, INTEGER } = DataTypes;
+  static fields({ STRING, TEXT, DATE, INTEGER }) {
     return {
       name: {
         type: STRING,
@@ -53,10 +52,7 @@ class Course extends Model {
   }
 
   checkAvailability() {
-    if (fns.compareAsc(this.endDate, Date.now) === -1) {
-      return false;
-    }
-    return true;
+    return isAfter(this.endDate, Date.now);
   }
 }
 

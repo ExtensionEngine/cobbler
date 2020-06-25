@@ -6,8 +6,7 @@ const { Model } = require('sequelize');
 const { roles } = require('../../config/server');
 
 class User extends Model {
-  static fields(DataTypes) {
-    const { STRING, TEXT, DATE, ENUM } = DataTypes;
+  static fields({ STRING, TEXT, DATE, ENUM }) {
     return {
       firstName: {
         type: STRING,
@@ -32,7 +31,10 @@ class User extends Model {
         type: STRING,
         validate: { notEmpty: true, len: [6, 100] }
       },
-      role: ENUM(roles),
+      role: {
+        type: ENUM(roles),
+        defaultValue: 'LEARNER'
+      },
       avatarUrl: {
         type: TEXT
       },
