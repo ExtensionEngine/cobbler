@@ -1,56 +1,59 @@
 <template>
-  <div>
-    <div v-for="course in courses" :key="course.id" class="course-card">
-      <h3 class="course-title">{{ course.name }}</h3>
-      <p>{{ course.description }}</p>
-      <span>{{ parseDate(course.startDate) }} - {{ parseDate(course.endDate) }}</span>
+  <div class="dashboard-wrapper">
+    <div class="dashboard-container">
+      <base-button
+        @click="handleCreateNewCourse"
+        class="new-course-btn"
+        contained
+        primary>
+        Create new course
+      </base-button>
+      <lecturer-course-list />
     </div>
-    <base-button
-      @click="handleCreateNewCourse"
-      contained
-      primary>
-      Create new course
-    </base-button>
   </div>
 </template>
 
 <script>
 import BaseButton from '../../components/common/BaseButton';
-import { getMyCourses } from '../../api/courses';
+import LecturerCourseList from '../../components/Lecturer/CourseList';
 import paths from '../../router/paths';
 
 export default {
   name: 'lecturer-dashboard',
-  data() {
-    return ({
-      courses: []
-    });
-  },
   methods: {
     handleCreateNewCourse() {
       this.$router.push(paths.lecturer.addCourse);
     },
-    parseDate(date) {
-      return new Date(date).toDateString();
+    getDateRange({ startDate, endDate }) {
+      if (!startDate || !endDate) {
+        return 'The start date, end date or both are not defined yet!';
+      }
+      return `${new Date(startDate).toDateString()} - ${new Date(endDate).toDateString()}`;
     }
   },
-  async mounted() {
-    const { data } = await getMyCourses();
-    this.courses = data;
-  },
   components: {
-    BaseButton
+    BaseButton,
+    LecturerCourseList
   }
 };
 </script>
 
 <style>
-.course-card {
-  background: var(--color-gray-500);
-  border: solid 2px var(--color-black);
-  padding: var(--spacing-xs);
+.dashboard-wrapper {
+  display: flex;
+  justify-content: center;
 }
-.course-title {
-  margin: 0;
+.dashboard-container {
+  width: 90%;
+  max-width: 550px;
+  box-shadow: 2px 6px 9px 0px var(--color-gray);
+}
+.new-course-btn {
+  height: 40px;
+}
+@media only screen and (max-width: 480px) {
+  .dashboard-container {
+    width: 100%;
+  }
 }
 </style>

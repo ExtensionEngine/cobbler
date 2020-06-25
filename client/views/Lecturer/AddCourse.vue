@@ -11,9 +11,9 @@
         <field
           v-model="name"
           class="form-item-full"
-          debounce="300"
+          :debounce="300"
           name="name"
-          label="Name"
+          label="Name*"
           rules="required|between:2,50|uniqueCourse">
           <template v-slot="{ on, value }">
             <base-input
@@ -26,7 +26,7 @@
           v-model="description"
           class="form-item-full"
           name="description"
-          label="Description"
+          label="Description*"
           rules="required|between:2,50">
           <template v-slot="{ on, value }">
             <base-input
@@ -39,7 +39,7 @@
           v-model="category"
           class="form-item-full"
           name="category"
-          label="Category"
+          label="Category*"
           rules="required">
           <template v-slot="{ on, value }">
             <base-select
@@ -52,8 +52,7 @@
           v-model="startDate"
           class="form-item-half"
           name="Start date"
-          label="Start date"
-          rules="required">
+          label="Start date">
           <template v-slot="{ on, value }">
             <base-input
               v-on="on"
@@ -67,8 +66,7 @@
           v-model="endDate"
           class="form-item-half"
           name="End date"
-          label="End date"
-          rules="required">
+          label="End date">
           <template v-slot="{ on, value }">
             <base-input
               v-on="on"

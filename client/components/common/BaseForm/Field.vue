@@ -28,7 +28,7 @@ export default {
     name: { type: String, required: true },
     value: { type: String, default: null },
     rules: { type: String, default: null },
-    debounce: { type: String, default: null }
+    debounce: { type: Number, default: null }
   },
   methods: {
     input(value) {

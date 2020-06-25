@@ -11,7 +11,7 @@ module.exports = {
   getAvailableCourses,
   getCourseById,
   getCoursesByUser,
-  checkNameAvailability
+  checkNameAvailability,
   update
 };
 
