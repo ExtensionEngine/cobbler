@@ -24,5 +24,5 @@ function getCoursesByUser(req, res) {
     ]
   })
     .then(success => res.json(success))
-    .catch(err => res.status(400).json(err));
+    .catch(err => { throw err; });
 }

@@ -1,7 +1,7 @@
 'use strict';
 
-const { BAD_REQUEST, NOT_FOUND } = require('http-status-codes');
 const { Category, Course, User } = require('../shared/database');
+const { BAD_REQUEST } = require('http-status-codes');
 const { HttpError } = require('../shared/error');
 const { Op } = require('sequelize');
 const pick = require('lodash/pick');
@@ -25,7 +25,7 @@ async function create(req, res) {
   Course.create({ ...courseInfo })
     .then(course => course.addUser(req.user))
     .then(success => res.status(201).json(success))
-    .catch(err => res.status(400).json(err));
+    .catch(() => res.status(400).json('Invalid params'));
 }
 
 function getAll(req, res) {
@@ -48,7 +48,9 @@ function getAll(req, res) {
   }
   Course.findAll(query)
     .then(success => res.json({ data: success }))
-    .catch(err => res.status(400).json(err));
+    .catch(err => {
+      throw err;
+    });
 }
 
 function getCourseById(req, res) {
@@ -77,18 +79,14 @@ function getCourseById(req, res) {
 }
 
 async function enroll(req, res) {
-  try {
-    const course = await Course.findByPk(req.params.id);
-    if (course.checkAvailability()) {
-      if (await course.addUser(req.user)) {
-        res.status(201).json('Successfully enrolled');
-      } else {
-        res.status(400).send('Could not enroll');
-      }
-    } else res.status(204).json('Course unavailable');
-  } catch (e) {
-    res.status(400).json(e);
-  }
+  const course = await Course.findByPk(req.params.id);
+  if (course.checkAvailability()) {
+    if (await course.addUser(req.user)) {
+      res.status(201).json('Successfully enrolled');
+    } else {
+      res.status(400).send('Could not enroll');
+    }
+  } else res.status(204).json('Course unavailable');
 }
 
 async function update(req, res) {
@@ -100,8 +98,11 @@ async function update(req, res) {
     'categoryId'
   ]);
   const course = await Course.findByPk(req.params.id);
+  if (!course) {
+    res.status(404).json('Course does not exist');
+  }
   course
     .update({ ...courseInfo })
     .then(success => res.status(201).json(success))
-    .catch(err => res.status(400).json(err));
+    .catch(() => res.status(400).json('Invalid params'));
 }

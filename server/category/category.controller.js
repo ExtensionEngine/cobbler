@@ -19,5 +19,5 @@ function create(req, res) {
 function getAll(req, res) {
   Category.findAll()
     .then(success => res.json(success))
-    .catch(err => res.json(err));
+    .catch(err => { throw err; });
 }
