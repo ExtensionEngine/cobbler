@@ -10,8 +10,7 @@ function create(req, res) {
   const user = pick(req.body, userAttributes);
   user.password = bcrypt.hashSync(user.password, 10);
   User.create({ ...user })
-  .then(success => res.json(success))
-  .catch(() => res.status(400).json('Invalid Params'));
+  .then(success => res.json(success));
 }
 
 module.exports = {

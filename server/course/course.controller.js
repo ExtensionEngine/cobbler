@@ -24,8 +24,7 @@ async function create(req, res) {
   ]);
   Course.create({ ...courseInfo })
     .then(course => course.addUser(req.user))
-    .then(course => res.status(201).json(course))
-    .catch(() => res.status(400).json('Invalid params'));
+    .then(course => res.status(201).json(course));
 }
 
 function getAll(req, res) {
@@ -97,6 +96,5 @@ async function update(req, res) {
   }
   course
     .update({ ...courseInfo })
-    .then(course => res.status(201).json(course))
-    .catch(() => res.status(400).json('Invalid params'));
+    .then(course => res.status(201).json(course));
 }
