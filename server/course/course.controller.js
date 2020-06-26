@@ -24,7 +24,7 @@ async function create(req, res) {
   ]);
   Course.create({ ...courseInfo })
     .then(course => course.addUser(req.user))
-    .then(success => res.status(201).json(success))
+    .then(course => res.status(201).json(course))
     .catch(() => res.status(400).json('Invalid params'));
 }
 
@@ -47,16 +47,13 @@ function getAll(req, res) {
     query.where = { endDate: { [Op.gte]: new Date() } };
   }
   Course.findAll(query)
-    .then(success => res.json({ data: success }))
-    .catch(err => {
-      throw err;
-    });
+    .then(course => res.json({ data: course }));
 }
 
 function getCourseById(req, res) {
   const { id } = req.params;
   if (!Number(id)) {
-    throw new HttpError('Index not a number', BAD_REQUEST);
+    throw new HttpError('ID is not a number', BAD_REQUEST);
   }
   Course.findByPk(id, {
     include: [
@@ -66,15 +63,12 @@ function getCourseById(req, res) {
       }
     ]
   })
-    .then(success => {
-      if (!success || !success.length) {
+    .then(course => {
+      if (!course) {
         res.status(404).send('Course not found');
       } else {
-        res.json(success);
+        res.json(course);
       }
-    })
-    .catch(err => {
-      throw err;
     });
 }
 
@@ -103,6 +97,6 @@ async function update(req, res) {
   }
   course
     .update({ ...courseInfo })
-    .then(success => res.status(201).json(success))
+    .then(course => res.status(201).json(course))
     .catch(() => res.status(400).json('Invalid params'));
 }
