@@ -1,6 +1,8 @@
 'use strict';
 
+const { BAD_REQUEST, NOT_FOUND } = require('http-status-codes');
 const { Category, Course, User } = require('../shared/database');
+const { HttpError } = require('../shared/error');
 const { Op } = require('sequelize');
 const pick = require('lodash/pick');
 
@@ -50,7 +52,11 @@ function getAll(req, res) {
 }
 
 function getCourseById(req, res) {
-  Course.findByPk(req.params.id, {
+  const { id } = req.params;
+  if (!Number(id)) {
+    throw new HttpError('Index not a number', BAD_REQUEST);
+  }
+  Course.findByPk(id, {
     include: [
       {
         model: Category,
@@ -58,8 +64,16 @@ function getCourseById(req, res) {
       }
     ]
   })
-    .then(success => res.json(success))
-    .catch(err => res.status(400).json(err));
+    .then(success => {
+      if (!success || !success.length) {
+        res.status(404).send('Course not found');
+      } else {
+        res.json(success);
+      }
+    })
+    .catch(err => {
+      throw err;
+    });
 }
 
 async function enroll(req, res) {
