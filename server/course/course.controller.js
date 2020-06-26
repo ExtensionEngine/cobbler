@@ -43,7 +43,7 @@ function getAll(req, res) {
     ]
   };
   if (available) {
-    query.where = { endDate: { [Op.gte]: Date.now() } };
+    query.where = { endDate: { [Op.gte]: new Date() } };
   }
   Course.findAll(query)
     .then(success => res.json({ data: success }))
@@ -74,6 +74,8 @@ function getCourseById(req, res) {
 async function enroll(req, res) {
   try {
     const course = await Course.findByPk(req.params.id);
+    console.log('minimalni organ');
+    console.log(course.checkAvailability());
     if (course.checkAvailability()) {
       if (await course.addUser(req.user)) {
         res.status(201).json('Successfully enrolled');
