@@ -42,12 +42,10 @@ export default {
 
 <style scoped>
   .course-card {
-    border: 2px solid black;
     box-shadow: 2px 2px 8px 0px var(--color-gray);
     height: fit-content;
     min-height: 180px;
     min-width: 300px;
-    border-radius: 5px;
     background-color: white;
     position: relative;
     font-size: 0.5rem;
@@ -103,16 +101,13 @@ export default {
   .course-card-title {
     background-color: var(--color-primary);
     color: white;
-    display:table;
-    text-align: center;
     width: 100%;
     min-height: 100px;
     height: fit-content;
-    padding: 10px;
+    padding: 15px;
   }
   .course-card-title h1 {
-   margin: 0;
-   display: table-cell;
+   font-size: 1.4rem;
    vertical-align: middle;
   }
   .course-card-description {

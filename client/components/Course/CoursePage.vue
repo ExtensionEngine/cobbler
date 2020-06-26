@@ -50,9 +50,9 @@ export default {
     sendEnrollRequest() {
       if (this.id) {
         enroll(this.id)
-      .then(success => {
-        this.$router.push('/');
-      });
+          .then(success => {
+            this.$router.push('/');
+          });
       }
     }
   },

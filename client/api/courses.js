@@ -2,7 +2,7 @@ import { endpoints } from './common';
 import thwack from 'thwack';
 
 export function getAllCourses() {
-  return thwack.get(`${endpoints.course.base}/available`);
+  return thwack.get(endpoints.course.available);
 }
 
 export function getById(id) {
