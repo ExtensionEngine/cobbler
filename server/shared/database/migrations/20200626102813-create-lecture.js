@@ -14,8 +14,7 @@ module.exports = {
         allowNull: false
       },
       description: {
-        type: Sequelize.TEXT,
-        allowNull: false
+        type: Sequelize.TEXT
       },
       courseId: {
         type: Sequelize.INTEGER,
