@@ -28,10 +28,12 @@ class Course extends Model {
         paranoid: true
       },
       startDate: {
-        type: DATE
+        type: DATE,
+        field: 'start_date'
       },
       endDate: {
-        type: DATE
+        type: DATE,
+        field: 'end_date'
       }
     };
   }
@@ -52,7 +54,7 @@ class Course extends Model {
   }
 
   checkAvailability() {
-    return isAfter(this.endDate, Date.now);
+    return isAfter(new Date(this.endDate), new Date());
   }
 }
 

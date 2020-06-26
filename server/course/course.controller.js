@@ -1,7 +1,6 @@
 'use strict';
 
 const { Category, Course, User } = require('../shared/database');
-const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const pick = require('lodash/pick');
 
@@ -45,7 +44,7 @@ function getAll(req, res) {
     ]
   };
   if (available) {
-    query.where = { endDate: { [Op.gte]: Date.now() } };
+    query.where = { endDate: { [Op.gte]: new Date() } };
   }
   Course.findAll(query)
     .then(success => res.json({ data: success }))
@@ -68,11 +67,17 @@ function getCourseById(req, res) {
 async function enroll(req, res) {
   try {
     const { email } = req.user;
+    console.info('req', req.user);
     const user = await User.findOne({ where: { email } });
+    console.info('fetch', user);
     const course = await Course.findByPk(req.params.id);
+
     if (course.checkAvailability()) {
-      await course.addUser(user);
-      res.status(201).json('Successfully enrolled');
+      if (await course.addUser(user)) {
+        res.status(201).json('Successfully enrolled');
+      } else {
+        res.send('Could not enroll');
+      }
     } else res.status(204).json('Course unavailable');
   } catch (e) {
     res.status(400).json(e);
