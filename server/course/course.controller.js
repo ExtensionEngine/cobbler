@@ -21,10 +21,8 @@ async function create(req, res) {
     'startDate',
     'endDate'
   ]);
-  const { email } = req.user;
-  const creator = await User.findOne({ where: { email } });
   Course.create({ ...courseInfo })
-    .then(course => course.addUser(creator))
+    .then(course => course.addUser(req.user))
     .then(success => res.status(201).json(success))
     .catch(err => res.status(400).json(err));
 }
@@ -75,12 +73,13 @@ function getCourseById(req, res) {
 
 async function enroll(req, res) {
   try {
-    const { email } = req.user;
-    const user = await User.findOne({ where: { email } });
     const course = await Course.findByPk(req.params.id);
     if (course.checkAvailability()) {
-      await course.addUser(user);
-      res.status(201).json('Successfully enrolled');
+      if (await course.addUser(req.user)) {
+        res.status(201).json('Successfully enrolled');
+      } else {
+        res.status(400).send('Could not enroll');
+      }
     } else res.status(204).json('Course unavailable');
   } catch (e) {
     res.status(400).json(e);
