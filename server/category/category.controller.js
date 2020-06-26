@@ -1,4 +1,5 @@
 'use strict';
+
 const Category = require('./category.model');
 const pick = require('lodash/pick');
 
