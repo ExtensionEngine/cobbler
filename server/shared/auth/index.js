@@ -31,7 +31,7 @@ const opts = {
 };
 
 passport.use(new JwtStrategy(opts, ({ sub: email }, done) => {
-  User.findOne({ where: { email } })
+  User.findOne({ email })
     .then(user => done(null, user || false));
 }));
 
