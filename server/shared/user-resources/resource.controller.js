@@ -23,5 +23,5 @@ function getCoursesByUser(req, res) {
       }
     ]
   })
-    .then(course => res.json(course));
+    .then(course => res.json({ data: course, offset: {} }));
 }

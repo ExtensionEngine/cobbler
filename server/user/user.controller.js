@@ -10,7 +10,7 @@ function create(req, res) {
   const user = pick(req.body, userAttributes);
   user.password = bcrypt.hashSync(user.password, 10);
   return User.create({ ...user })
-  .then(user => res.json(user));
+  .then(user => res.json({ data: user, offset: {} }));
 }
 
 module.exports = {

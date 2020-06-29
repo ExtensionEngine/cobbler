@@ -24,13 +24,11 @@ async function create(req, res) {
   ]);
   return Course.create({ ...courseInfo })
     .then(course => course.addUser(req.user))
-    .then(course => res.status(201).json(course));
+    .then(course => res.status(201).json({ data: course }));
 }
 
 function getAll(req, res) {
   const { available } = req.query;
-  // select = ['user','category']
-  // /courses?select=user,category
   const query = {
     include: [
       {
@@ -68,7 +66,7 @@ function getCourseById(req, res) {
       if (!course) {
         res.status(404).send('Course not found');
       } else {
-        res.json(course);
+        res.json({ data: course });
       }
     });
 }
@@ -79,9 +77,9 @@ async function enroll(req, res) {
     if (await course.addUser(req.user)) {
       res.status(201).json('Successfully enrolled');
     } else {
-      res.status(400).send('Could not enroll');
+      res.status(400).json('Could not enroll');
     }
-  } else res.status(204).json('Course unavailable');
+  } else res.status(403).json('Course unavailable');
 }
 
 async function update(req, res) {
@@ -98,5 +96,5 @@ async function update(req, res) {
   }
   return course
     .update({ ...courseInfo })
-    .then(course => res.status(201).json(course));
+    .then(course => res.status(201).json({ data: course }));
 }
