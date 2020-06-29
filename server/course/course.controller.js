@@ -1,6 +1,6 @@
 'use strict';
 
-const { Category, Course, User } = require('../shared/database');
+const { Category, Course, Enrollment, User } = require('../shared/database');
 const { BAD_REQUEST } = require('http-status-codes');
 const { HttpError } = require('../shared/error');
 const { Op } = require('sequelize');
@@ -14,7 +14,7 @@ module.exports = {
   update
 };
 
-async function create(req, res) {
+function create(req, res) {
   const courseInfo = pick(req.body, [
     'name',
     'description',
@@ -38,7 +38,7 @@ function getAll(req, res) {
       {
         model: User,
         attributes: ['firstName', 'lastName', 'email'],
-        through: { attributes: [] }
+        through: { model: Enrollment, attributes: [] }
       }
     ]
   };
@@ -73,7 +73,7 @@ function getCourseById(req, res) {
 
 async function enroll(req, res) {
   const course = await Course.findByPk(req.params.id);
-  if (course.checkAvailability()) {
+  if (course.available) {
     if (await course.addUser(req.user)) {
       res.status(201).json('Successfully enrolled');
     } else {
