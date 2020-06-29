@@ -1,5 +1,6 @@
 import AddCourse from '../views/Lecturer/AddCourse';
 import AdminDashboard from '../views/Admin/Dashboard';
+import EditCourse from '../views/Lecturer/EditCourse';
 import Layout from '../components/common/Layout';
 import LearnerDashboard from '../views/Learner/Dashboard';
 import LecturerDashboard from '../views/Lecturer/Dashboard';
@@ -29,6 +30,13 @@ const routes = [
       path: paths.lecturer.addCourse,
       name: 'Add course',
       component: AddCourse,
+      meta: {
+        roles: ['ADMIN']
+      }
+    }, {
+      path: paths.lecturer.editCourse(':id'),
+      name: 'Edit course',
+      component: EditCourse,
       meta: {
         lecturerRoute: true
       }

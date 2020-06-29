@@ -4,18 +4,16 @@
       <div v-for="n in 5" :key="n" class="course-card"></div>
     </div>
     <div v-else-if="!courses.length" class="no-content">There are no courses so far</div>
-    <div v-for="course in courses" :key="course.id" class="course-card">
-      <div class="card-info">
-        <h3 class="course-title">{{ course.name }}</h3>
-        <p>{{ course.description }}</p>
-        <span>{{ getDateRange(course) }}</span>
-      </div>
-      <span class="category">{{ course.Category.name }}</span>
-    </div>
+    <course-card
+      v-for="course in courses"
+      :key="course.id"
+      :course="course"
+      clickable />
   </div>
 </template>
 
 <script>
+import CourseCard from './CourseCard';
 import { getMyCourses } from '../../api/courses';
 
 export default {
@@ -26,14 +24,6 @@ export default {
       loading: true
     });
   },
-  methods: {
-    getDateRange({ startDate, endDate }) {
-      if (!startDate || !endDate) {
-        return 'The start date, end date or both are not defined yet!';
-      }
-      return `${new Date(startDate).toDateString()} - ${new Date(endDate).toDateString()}`;
-    }
-  },
   async mounted() {
     try {
       const { data } = await getMyCourses();
@@ -43,25 +33,21 @@ export default {
       // TODO: add toast message in case of error
       this.loading = false;
     }
+  },
+  components: {
+    CourseCard
   }
 };
 </script>
 
 <style scoped>
-.category {
-  align-self: flex-end;
-  flex-basis: 150px;
-  text-align: end;
-}
-.card-info {
-  flex-grow: 1;
-}
 .course-card {
   display: flex;
   background: var(--color-gray-500);
   border: solid 2px var(--color-black);
   padding: var(--spacing-xs);
   position: relative;
+  cursor: pointer;
 }
 .course-card:empty {
   height: 90px;
@@ -91,9 +77,6 @@ background-image: linear-gradient(var(--color-gray), var(--color-gray)),
   text-align: center;
   padding: 15px 0;
 
-}
-.course-title {
-  margin: 0;
 }
 @media only screen and (max-width: 480px) {
   .course-card:empty:after {

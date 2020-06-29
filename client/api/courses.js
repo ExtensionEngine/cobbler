@@ -12,3 +12,7 @@ export function getMyCourses() {
 export function checkNameAvailability(name) {
   return thwack.post(endpoints.courses.checkNameAvailability, { name });
 }
+
+export function getCourse(id) {
+  return thwack.get(endpoints.courses.getById(id));
+}
