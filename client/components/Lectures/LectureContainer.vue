@@ -2,7 +2,9 @@
   <div class="lecture-container">
     <ul class="lecture-list">
       <li v-for="lecture in dummyLectures" :key="lecture.id">
-        <lecture-box :title="lecture.name" />
+        <lecture-box
+          :title="lecture.name"
+          :description="lecture.description" />
       </li>
     </ul>
   </div>
@@ -35,12 +37,13 @@ export default {
 
 <style lang="css" scoped>
   .lecture-container {
-    background: rgb(245, 245, 245);
+    background: rgb(247, 247, 247);
+    width: 80%;
   }
   .lecture-list {
     list-style-type: none;
     padding: 0;
-    height : 250px;
+    height : 300px;
     overflow: scroll;
   }
 

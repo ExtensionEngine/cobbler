@@ -7,15 +7,20 @@
       </span>
     </div>
     <div class="course-content">
-      <h1>{{ title }}</h1>
-      <p>{{ description }}</p>
-      <p>By: {{ lecturers }}</p>
+      <div>
+        <div class="course-title">
+          <h1>{{ title }}</h1>
+          <div v-if="!enrolled" class="btn-container">
+            <base-button @click="sendEnrollRequest">
+              Enroll
+            </base-button>
+          </div>
+        </div>
+        <p>{{ description }}</p>
+        <p>By: {{ lecturers }}</p>
+      </div>
     </div>
-    <div v-if="!enrolled" class="btn-container">
-      <base-button @click="sendEnrollRequest">
-        Enroll
-      </base-button>
-    </div>
+
     <lecture-container />
   </div>
 </template>
@@ -64,6 +69,12 @@ export default {
 
 <style scoped>
 
+  .course-title {
+    display: flex;
+  }
+  .course-title h1{
+    margin-right: 20px;
+  }
   .category-label {
     background: var(--color-info);
     color: white;
@@ -73,9 +84,8 @@ export default {
     background: var(--color-success);
     color: white;
   }
-  .btn-container {
-    width: 10%;
-    margin-bottom: 20px;
+  .btn-container *{
+    margin-top: 30%;
   }
 
   .small-label{
