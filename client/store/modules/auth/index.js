@@ -7,7 +7,7 @@ const token = localStorage.getItem('token');
 const state = {
   token: token || null,
   email: token ? jwtDecode(token).sub : null,
-  role: token ? jwtDecode(token).role : null
+  role: token ? jwtDecode(token).role : 'GUEST'
 };
 
 export default {

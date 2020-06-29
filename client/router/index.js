@@ -1,5 +1,6 @@
 import AddCourse from '../views/Lecturer/AddCourse';
 import AdminDashboard from '../views/Admin/Dashboard';
+import Forbidden from '../views/Forbidden';
 import EditCourse from '../views/Lecturer/EditCourse';
 import Layout from '../components/common/Layout';
 import LearnerDashboard from '../views/Learner/Dashboard';
@@ -16,43 +17,40 @@ const routes = [
   {
     path: paths.base,
     component: Layout,
-    meta: {
-      protectedRoute: true
-    },
     children: [{
       path: paths.lecturer.base,
       name: 'Lecturer dashboard',
       component: LecturerDashboard,
       meta: {
-        lecturerRoute: true
+        roles: ['LECTURER']
       }
     }, {
       path: paths.lecturer.addCourse,
       name: 'Add course',
       component: AddCourse,
       meta: {
-        roles: ['ADMIN']
+        roles: ['LECTURER']
       }
     }, {
       path: paths.lecturer.editCourse(':id'),
       name: 'Edit course',
       component: EditCourse,
       meta: {
-        lecturerRoute: true
+          roles: ["LECTURER"]
       }
     }, {
       path: paths.learner.base,
       name: 'Learner dashboard',
       component: LearnerDashboard,
       meta: {
-        learnerRoute: true
+        roles: ['LEARNER']
       }
     }, {
       path: paths.admin.base,
       name: 'Admin dashboard',
       component: AdminDashboard,
       meta: {
-        adminRoute: true
+        roles: ['ADMIN']
       }
     }]
   },
@@ -61,7 +59,15 @@ const routes = [
     name: 'Login',
     component: Login,
     meta: {
-      authRoute: true
+      roles: ['GUEST']
+    }
+  },
+  {
+    path: paths.forbidden,
+    name: 'Forbidden',
+    component: Forbidden,
+    meta: {
+      roles: ['GUEST', 'LEARNER', 'LECTURER', 'ADMIN']
     }
   }
 ];
@@ -73,19 +79,13 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isLoginRoute = to.matched.some(it => it.meta.authRoute);
-  const isProtectedRoute = to.matched.some(it => it.meta.protectedRoute);
-  const isLecturerRoute = to.matched.some(it => it.meta.lecturerRoute);
-  const isLearnerRoute = to.matched.some(it => it.meta.learnerRoute);
-  const isAdminRoute = to.matched.some(it => it.meta.adminRoute);
-  const isUserLoggedIn = !!store.state.auth.token;
+  const { role } = store.state.auth;
 
-  if ((isLecturerRoute && store.state.auth.role !== 'LECTURER') ||
-    (isLearnerRoute && store.state.auth.role !== 'LEARNER') ||
-    (isAdminRoute && store.state.auth.role !== 'ADMIN') ||
-    (isLoginRoute && isUserLoggedIn) ||
-    (isProtectedRoute && !isUserLoggedIn) ||
-    to.fullPath === '/') {
+  if (!to.matched.some(({ meta }) => meta.roles && meta.roles.includes(role))) {
+    next(paths.forbidden);
+  }
+
+  if (to.fullPath === '/') {
     next(getBasePath());
   }
 
