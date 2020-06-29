@@ -23,6 +23,5 @@ function getCoursesByUser(req, res) {
       }
     ]
   })
-    .then(success => res.json(success))
-    .catch(err => { throw err; });
+    .then(course => res.json(course));
 }

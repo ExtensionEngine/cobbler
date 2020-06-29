@@ -9,8 +9,8 @@ const userAttributes = ['firstName', 'lastName', 'email', 'password', 'role'];
 function create(req, res) {
   const user = pick(req.body, userAttributes);
   user.password = bcrypt.hashSync(user.password, 10);
-  User.create({ ...user })
-  .then(success => res.json(success));
+  return User.create({ ...user })
+  .then(user => res.json(user));
 }
 
 module.exports = {

@@ -22,13 +22,15 @@ async function create(req, res) {
     'startDate',
     'endDate'
   ]);
-  Course.create({ ...courseInfo })
+  return Course.create({ ...courseInfo })
     .then(course => course.addUser(req.user))
     .then(course => res.status(201).json(course));
 }
 
 function getAll(req, res) {
   const { available } = req.query;
+  // select = ['user','category']
+  // /courses?select=user,category
   const query = {
     include: [
       {
@@ -45,7 +47,7 @@ function getAll(req, res) {
   if (available) {
     query.where = { endDate: { [Op.gte]: new Date() } };
   }
-  Course.findAll(query)
+  return Course.findAll(query)
     .then(course => res.json({ data: course }));
 }
 
@@ -54,7 +56,7 @@ function getCourseById(req, res) {
   if (!Number(id)) {
     throw new HttpError('ID is not a number', BAD_REQUEST);
   }
-  Course.findByPk(id, {
+  return Course.findByPk(id, {
     include: [
       {
         model: Category,
@@ -94,7 +96,7 @@ async function update(req, res) {
   if (!course) {
     res.status(404).json('Course does not exist');
   }
-  course
+  return course
     .update({ ...courseInfo })
     .then(course => res.status(201).json(course));
 }
