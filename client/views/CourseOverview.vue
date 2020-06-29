@@ -1,14 +1,14 @@
 <template>
   <container>
     <course-page
-      :id="course.data.id"
-      :title="course.data.name"
-      :description="course.data.description"
-      :category="course.data.Category.name"
-      :start="course.data.startDate"
-      :end="course.data.endDate"
-      :users="course.data.Users"
-      :enrolled="enrolled" />
+      :id="course.id"
+      :title="course.name"
+      :description="course.description"
+      :category="course.Category.name"
+      :start="course.startDate"
+      :end="course.endDate"
+      :users="course.Users"
+      :enrolled="this.$route.props.enrolled" />
   </container>
 </template>
 
@@ -16,7 +16,6 @@
 import Container from '../components/common/Container';
 import CoursePage from '../components/Course/CoursePage';
 import { getById } from '../api/courses';
-import { mapGetters } from 'vuex';
 
 export default {
   name: 'course-overview',
@@ -26,18 +25,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getEnrolledCourses', 'getNotEnrolledCourses']),
-    enrolled() {
-      for (const i in this.getEnrolledCourses) {
-        if (this.getEnrolledCourses[i].id === this.course.data.id) {
-          return true;
-        }
-      }
-      return false;
-    }
   },
   async mounted() {
-    this.course = await getById(this.$route.params.id);
+    await getById(this.$route.params.id).then(course => {
+      this.course = course.data;
+    });
+    // TODO - SEE IF ENROLLED
   },
   components: {
     CoursePage, Container

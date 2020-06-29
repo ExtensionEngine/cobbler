@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     showCourse() {
-      this.$router.push(`courses/${this.id}`);
+      this.$router.push(`courses/${this.id}`, { props: { enrolled: this.enrolled } });
     }
   }
 };

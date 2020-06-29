@@ -1,46 +1,62 @@
 <template>
   <div class="container">
-    <ul>
-      <li v-for="course in getEnrolledCourses" :key="course.id">
-        <course-card
-          :id="course.id"
-          :title="course.name"
-          :category="course.Category.name"
-          :users="course.Users"
-          enrolled
-          :description="course.description"
-          :end="course.endDate"
-          :start="course.startDate" />
-      </li>
-      <li v-for="course in getNotEnrolledCourses" :key="course.id">
-        <course-card
-          :id="course.id"
-          :title="course.name"
-          :category="course.Category.name"
-          :users="course.Users"
-          :description="course.description"
-          :end="course.endDate"
-          :start="course.startDate" />
-      </li>
-    </ul>
+    <div class="cards">
+      <course-card
+        v-for="course in getEnrolledCourses"
+        :key="course.id"
+        :id="course.id"
+        :title="course.name"
+        :category="course.Category.name"
+        :users="course.Users"
+        :enrolled="true"
+        :description="course.description"
+        :end="course.endDate"
+        :start="course.startDate" />
+      <course-card
+        v-for="course in getNotEnrolledCourses"
+        :key="course.id"
+        :id="course.id"
+        :title="course.name"
+        :category="course.Category.name"
+        :users="course.Users"
+        :description="course.description"
+        :end="course.endDate"
+        :start="course.startDate" />
+    </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import compareAsc from 'date-fns/compareAsc';
 import CourseCard from './CourseCard';
+import { getAllCourses } from '../../api/courses';
+import parseISO from 'date-fns/parseISO';
 
 export default {
   name: 'course-list',
   props: {
     loading: { type: Boolean, default: false }
   },
+  data() {
+    return { courses: { data: [] } };
+  },
   computed: {
-    ...mapGetters(['getEnrolledCourses', 'getNotEnrolledCourses']),
-    ...mapActions(['getCourses'])
+    getEnrolledCourses() {
+      return this.courses.data.filter(course => (course.Users.find(user => user.email === this.$store.state.auth.email)));
+    },
+    getNotEnrolledCourses() {
+      return this.courses.data
+      .filter(course => !(course.Users.find(user => user.email === this.$store.state.auth.email)))
+      .sort((prev, next) => {
+        return compareAsc(parseISO(prev.updatedAt), parseISO(next.updatedAt));
+      });
+    }
+
   },
   created() {
-    this.getCourses();
+    getAllCourses().then(courses => {
+      this.courses = courses.data;
+    });
   },
   components: {
     CourseCard
@@ -49,23 +65,28 @@ export default {
 </script>
 
 <style lang="css" scoped>
-  .container {
-    padding: var(--spacing-md);
-    font-size: 0.7rem;
-  }
+.container {
+  padding: var(--spacing-md);
+  font-size: 0.7rem;
+}
 
-  ul {
-    list-style-type: none;
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    padding: 0;
-  }
+.cards {
+  max-width: 1200px;
+  margin: 20px auto;
+  display: grid;
+  grid: auto-flow auto / 1fr;
+  grid-gap: var(--spacing-lg);
+}
 
-  li {
-    flex-basis: 20%;
-    flex-grow: 1;
-    margin: var(--spacing-lg) var(--spacing-lg);
+@media (min-width: 600px) {
+  .cards {
+    grid: auto-flow auto / repeat(2, 1fr);
   }
+}
 
+@media (min-width: 900px) {
+  .cards {
+    grid: auto-flow auto / repeat(3, 1fr);
+  }
+}
 </style>
