@@ -15,11 +15,10 @@ const app = express();
 app.use(cors());
 app.use(helmet());
 app.use(cors());
-app.use(queryParser);
 app.use(bodyParser.json());
 app.use(auth.initialize());
 
-app.use('/api/v1', router);
+app.use('/api/v1', queryParser, router);
 
 app.listen(port, () =>
   console.log(`Server is listening on port ${port}!`)

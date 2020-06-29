@@ -28,7 +28,7 @@ async function create(req, res) {
 }
 
 function getAll(req, res) {
-  const { available } = req.query;
+  const filters = req.query;
   const query = {
     include: [
       {
@@ -40,9 +40,13 @@ function getAll(req, res) {
         attributes: ['firstName', 'lastName', 'email'],
         through: { attributes: [] }
       }
-    ]
+    ],
+    where: Object.entries(filters).reduce((all, [key, filter]) => ({
+      ...all,
+      [key]: { [Op[filter.op]]: filter.data }
+    }))
   };
-  if (available) {
+  if (filters.available) {
     query.where = { endDate: { [Op.gte]: new Date() } };
   }
   return Course.findAll(query)
