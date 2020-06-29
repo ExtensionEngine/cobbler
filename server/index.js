@@ -8,12 +8,14 @@ const database = require('./shared/database');
 const express = require('express');
 const helmet = require('helmet');
 const { port } = require('../config/server');
+const queryParser = require('./shared/util/queryParser');
 const router = require('./router.js');
 const app = express();
 
 app.use(cors());
 app.use(helmet());
 app.use(cors());
+app.use(queryParser);
 app.use(bodyParser.json());
 app.use(auth.initialize());
 
