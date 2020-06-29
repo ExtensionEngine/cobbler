@@ -49,6 +49,7 @@ export default {
     background-color: white;
     position: relative;
     font-size: 0.5rem;
+
   }
 
   .course-card:empty {
@@ -59,10 +60,10 @@ export default {
 
   .course-card:empty:before {
     content: '';
-    height:  60px;
-    width: 90%;
+    height: 60px;
     position: absolute;
-    left: 5%;
+    left: var(--spacing-lg);
+    right: var(--spacing-lg);
     bottom: 20%;
     background: linear-gradient(to left, #c2c1c1da 0, #dadadae3);
     background-size: 200% 200%;

@@ -39,7 +39,7 @@ export default {
     ...mapGetters(['getEnrolledCourses', 'getNotEnrolledCourses']),
     ...mapActions(['getCourses'])
   },
-  mounted() {
+  created() {
     this.getCourses();
   },
   components: {
