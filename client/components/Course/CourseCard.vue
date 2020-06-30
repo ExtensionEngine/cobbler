@@ -44,7 +44,7 @@ export default {
   .course-card {
     box-shadow: 2px 2px 8px 0px var(--color-gray);
     height: fit-content;
-    min-height: 180px;
+    min-height: 200px;
     max-height: 250px;
     min-width: 300px;
     background-color: white;
@@ -109,12 +109,13 @@ export default {
     padding: 15px;
   }
   .course-card-title h1 {
-   font-size: 1.4rem;
+   font-size: 1.2rem;
    vertical-align: middle;
   }
   .course-card-description {
     padding: 0 var(--spacing-md);
     margin: 0;
+    font-size: 0.7rem;
   }
 
   .date {
