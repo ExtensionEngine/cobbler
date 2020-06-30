@@ -13,7 +13,8 @@ export const endpoints = {
     base: 'courses',
     myCourses: 'courses/my-courses',
     getById: id => `courses/${id}`,
-    checkNameAvailability: 'courses/check-name'
+    checkNameAvailability: 'courses/check-name',
+    update: id => `courses/${id}`
   }
 };
 

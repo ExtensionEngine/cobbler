@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="second-bar">
-      <span @click="handleBackClick" class="back-button">Go back</span>
-    </div>
+    <second-bar />
     <div class="course-container">
       <base-form
         v-slot="{ isFormInvalid }"
@@ -96,6 +94,7 @@ import BaseSelect from '../../components/common/BaseSelect';
 import Field from '../../components/common/BaseForm/Field';
 import { getAllCategories } from '../../api/categories';
 import paths from '../../router/paths';
+import SecondBar from './SecondBar';
 
 export default {
   name: 'add-course',
@@ -125,9 +124,6 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    },
-    handleBackClick() {
-      this.$router.push(paths.lecturer.base);
     }
   },
   async mounted() {
@@ -139,14 +135,15 @@ export default {
     BaseForm,
     BaseInput,
     BaseSelect,
-    Field
+    Field,
+    SecondBar
   }
 };
 </script>
 
 <style scoped>
 .course-container {
-  padding: 50px 0;
+  padding: var(--spacing-md) 0;
   display: flex;
   justify-content: center;
 }
@@ -159,22 +156,8 @@ export default {
 }
 .form-item-half {
   display: inline-block;
-  margin: var(--spacing-sm) var(--spacing-xxs);
+  margin: var(--spacing-xxs);
   width: calc(50% - 2 * var(--spacing-xxs))
-}
-.second-bar {
-  background: var(--color-gray-500);
-  padding: var(--spacing-sm) var(--spacing-lg);
-}
-.back-button {
-  background: var(--color-gray);
-  border-radius: 3px;
-  padding: var(--spacing-xxs) var(--spacing-xs);
-  cursor: pointer;
-  color: var(--color-white)
-}
-.back-button:hover {
-  opacity: .8;
 }
 @media only screen and (max-width: 480px) {
   .form-item-half {
