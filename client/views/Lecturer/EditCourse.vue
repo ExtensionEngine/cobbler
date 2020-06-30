@@ -5,7 +5,7 @@
       <base-form
         v-slot="{ isFormInvalid }"
         @submit="onUpdate"
-        class="course-form">
+        class="course-container">
         <span class="course-title">{{ originalName }}</span>
         <field
           v-model="course.name"
@@ -83,8 +83,21 @@
         </base-button>
       </base-form>
     </div>
-    <div class="lecture-wrapper">
-      <div v-for="lecture in lectures" :key="lecture.id">{{ lecture.name }}</div>
+    <div class="lectures-wrapper">
+      <div class="lectures-container">
+        <span class="lectures-title">Lectures</span>
+        <colapsible
+          v-for="lecture in lectures"
+          :key="lecture.id"
+          @toggleExpand="handleExpandToggle"
+          :id="lecture.id"
+          :title="lecture.name"
+          :expanded="lecture.expanded"
+          class="lecture">
+          <p>{{ lecture.description }}</p>
+        </colapsible>
+        <base-button primary contained>Add lecture</base-button>
+      </div>
     </div>
   </div>
 </template>
@@ -95,6 +108,7 @@ import BaseButton from '../../components/common/BaseButton';
 import BaseForm from '../../components/common/BaseForm';
 import BaseInput from '../../components/common/BaseInput';
 import BaseSelect from '../../components/common/BaseSelect';
+import Colapsible from '../../components/common/Colapsible';
 import DateFormat from 'date-fns/format';
 import Field from '../../components/common/BaseForm/Field';
 import { getAllCategories } from '../../api/categories';
@@ -124,6 +138,11 @@ export default {
       } catch (err) {
         console.log(err);
       }
+    },
+    handleExpandToggle(lectureId) {
+      this.lectures = this.lectures.map(lecture => lecture.id === lectureId
+        ? { ...lecture, expanded: !lecture.expanded }
+        : lecture);
     }
   },
   async created() {
@@ -152,6 +171,7 @@ export default {
     BaseForm,
     BaseInput,
     BaseSelect,
+    Colapsible,
     Field,
     SecondBar
   }
@@ -159,12 +179,16 @@ export default {
 </script>
 
 <style scoped>
-.course-wrapper {
+.course-wrapper,
+.lectures-wrapper {
   padding: var(--spacing-md) 0;
   display: flex;
   justify-content: center;
 }
-.course-form {
+.lectures-wrapper {
+  padding: 0;
+}
+.course-container {
   max-width: 550px;
   border: solid 1px var(--color-gray);
   border-radius: 3px;
@@ -172,7 +196,8 @@ export default {
   padding-top: var(--spacing-md);
   position: relative;
 }
-.course-title {
+.course-title,
+.lectures-title {
   position: absolute;
   top: -12px;
   left: 14px;
@@ -192,11 +217,22 @@ export default {
 .form-item-half input {
   padding: var(--spacing-sm);
 }
+.lectures-container {
+  width: 550px;
+  border: solid 1px var(--color-gray);
+  border-radius: 3px;
+  padding: var(--spacing-sm);
+  padding-top: var(--spacing-md);
+  position: relative;
+}
+.lecture {
+  margin: var(--spacing-sm) 0;
+}
 @media only screen and (max-width: 480px) {
   .form-item-half {
-  display: block;
-  margin: var(--spacing-sm) var(--spacing-xxs);
-  width: auto;
-  }
+    display: block;
+    margin: var(--spacing-sm) var(--spacing-xxs);
+    width: auto;
+}
 }
 </style>
