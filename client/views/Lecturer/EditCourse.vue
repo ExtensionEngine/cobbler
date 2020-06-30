@@ -342,10 +342,8 @@ export default {
   border: 1px var(--color-accent) solid;
 }
 @media only screen and (max-width: 480px) {
-  .form-item-half {
-    display: block;
-    margin: var(--spacing-sm) var(--spacing-xxs);
-    width: auto;
-}
+  .lecture {
+    flex-basis: 100%;
+  }
 }
 </style>
