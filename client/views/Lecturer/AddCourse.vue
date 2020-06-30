@@ -94,7 +94,7 @@ import BaseSelect from '../../components/common/BaseSelect';
 import Field from '../../components/common/BaseForm/Field';
 import { getAllCategories } from '../../api/categories';
 import paths from '../../router/paths';
-import SecondBar from './SecondBar';
+import SecondBar from '../../components/Lecturer/SecondBar';
 
 export default {
   name: 'add-course',

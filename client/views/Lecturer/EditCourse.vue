@@ -159,7 +159,7 @@ import Collapsible from '../../components/common/Collapsible';
 import DateFormat from 'date-fns/format';
 import Field from '../../components/common/BaseForm/Field';
 import { getAllCategories } from '../../api/categories';
-import SecondBar from './SecondBar';
+import SecondBar from '../../components/Lecturer/SecondBar';
 
 export default {
   name: 'edit-course',
