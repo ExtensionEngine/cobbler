@@ -26,11 +26,15 @@ extend('between', {
 });
 
 extend('uniqueCourse', {
-  async validate(name) {
+  async validate(name, { exception }) {
+    if (name === exception) {
+      return true;
+    }
     const { data } = await checkNameAvailability(name);
     if (data.valid) {
       return true;
     }
     return 'The name is taken';
-  }
+  },
+  params: ['exception']
 });

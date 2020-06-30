@@ -1,7 +1,7 @@
 import AddCourse from '../views/Lecturer/AddCourse';
 import AdminDashboard from '../views/Admin/Dashboard';
-import Forbidden from '../views/Forbidden';
 import EditCourse from '../views/Lecturer/EditCourse';
+import Forbidden from '../views/Forbidden';
 import Layout from '../components/common/Layout';
 import LearnerDashboard from '../views/Learner/Dashboard';
 import LecturerDashboard from '../views/Lecturer/Dashboard';
@@ -36,7 +36,7 @@ const routes = [
       name: 'Edit course',
       component: EditCourse,
       meta: {
-          roles: ["LECTURER"]
+        roles: ['LECTURER']
       }
     }, {
       path: paths.learner.base,
