@@ -28,8 +28,10 @@ function create(req, res) {
 }
 
 function getAll(req, res) {
-  const { available } = req.query;
+  const { available, limit, offset } = req.query;
   const query = {
+    limit,
+    offset,
     include: [
       {
         model: Category,

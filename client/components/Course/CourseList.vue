@@ -11,13 +11,16 @@
         :key="course.id"
         :course="course" />
     </div>
+    <div class="page-btn">
+      <button @click="paginateForward">next</button>
+    </div>
   </div>
 </template>
 
 <script>
 import compareAsc from 'date-fns/compareAsc';
 import CourseCard from './CourseCard';
-import { getAllCourses } from '../../api/courses';
+import { get } from '../../api/courses';
 import parseISO from 'date-fns/parseISO';
 
 export default {
@@ -26,7 +29,11 @@ export default {
     loading: { type: Boolean, default: false }
   },
   data() {
-    return { courses: { data: [] } };
+    return {
+      limit: 6,
+      offset: 0,
+      courses: { data: [] }
+    };
   },
   computed: {
     getEnrolledCourses() {
@@ -47,8 +54,13 @@ export default {
         });
     }
   },
+  methods: {
+    paginateForward() {
+      this.offset += this.limit;
+    }
+  },
   created() {
-    getAllCourses().then(courses => {
+    get(`?limit=${this.limit}&offset=${this.offset}`).then(courses => {
       this.courses = courses.data;
     });
   },
@@ -62,6 +74,11 @@ export default {
 .container {
   padding: var(--spacing-md);
   font-size: 0.7rem;
+}
+
+.page-btn {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .cards {
