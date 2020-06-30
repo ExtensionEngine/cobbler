@@ -1,6 +1,8 @@
 'use strict';
 
-const { Category, Course, User } = require('../shared/database');
+const { Category, Course, Enrollment, User } = require('../shared/database');
+const { BAD_REQUEST } = require('http-status-codes');
+const { HttpError } = require('../shared/error');
 const { Op } = require('sequelize');
 const pick = require('lodash/pick');
 
@@ -12,7 +14,7 @@ module.exports = {
   update
 };
 
-async function create(req, res) {
+function create(req, res) {
   const courseInfo = pick(req.body, [
     'name',
     'description',
@@ -20,10 +22,9 @@ async function create(req, res) {
     'startDate',
     'endDate'
   ]);
-  Course.create({ ...courseInfo })
+  return Course.create({ ...courseInfo })
     .then(course => course.addUser(req.user))
-    .then(success => res.status(201).json(success))
-    .catch(err => res.status(400).json(err));
+    .then(course => res.status(201).json({ data: course }));
 }
 
 function getAll(req, res) {
@@ -36,21 +37,24 @@ function getAll(req, res) {
       },
       {
         model: User,
-        attributes: ['firstName', 'lastName', 'email', 'role'],
-        through: { attributes: [] }
+        attributes: ['firstName', 'lastName', 'email'],
+        through: { model: Enrollment, attributes: [] }
       }
     ]
   };
   if (available) {
     query.where = { endDate: { [Op.gte]: new Date() } };
   }
-  Course.findAll(query)
-    .then(success => res.json({ data: success }))
-    .catch(err => res.status(400).json(err));
+  return Course.findAll(query)
+    .then(course => res.json({ data: course }));
 }
 
 function getCourseById(req, res) {
-  Course.findByPk(req.params.id, {
+  const { id } = req.params;
+  if (!Number(id)) {
+    throw new HttpError('ID is not a number', BAD_REQUEST);
+  }
+  return Course.findByPk(id, {
     include: [
       {
         model: Category,
@@ -66,25 +70,24 @@ function getCourseById(req, res) {
       }
     ]
   })
-    .then(success => res.json(success))
-    .catch(err => res.status(400).json(err));
+    .then(course => {
+      if (!course) {
+        res.status(404).send('Course not found');
+      } else {
+        res.json({ data: course });
+      }
+    });
 }
 
 async function enroll(req, res) {
-  try {
-    const course = await Course.findByPk(req.params.id);
-    console.log('minimalni organ');
-    console.log(course.checkAvailability());
-    if (course.checkAvailability()) {
-      if (await course.addUser(req.user)) {
-        res.status(201).json('Successfully enrolled');
-      } else {
-        res.status(400).send('Could not enroll');
-      }
-    } else res.status(204).json('Course unavailable');
-  } catch (e) {
-    res.status(400).json(e);
-  }
+  const course = await Course.findByPk(req.params.id);
+  if (course.available) {
+    if (await course.addUser(req.user)) {
+      res.status(201).json('Successfully enrolled');
+    } else {
+      res.status(400).json('Could not enroll');
+    }
+  } else res.status(403).json('Course unavailable');
 }
 
 async function update(req, res) {
@@ -96,8 +99,10 @@ async function update(req, res) {
     'categoryId'
   ]);
   const course = await Course.findByPk(req.params.id);
-  course
+  if (!course) {
+    res.status(404).json('Course does not exist');
+  }
+  return course
     .update({ ...courseInfo })
-    .then(success => res.status(201).json(success))
-    .catch(err => res.status(400).json(err));
+    .then(course => res.status(201).json({ data: course }));
 }

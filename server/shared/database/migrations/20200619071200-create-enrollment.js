@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('enrolments', {
+    return queryInterface.createTable('enrollments', {
       courseId: {
         type: Sequelize.INTEGER,
         field: 'course_id',
@@ -34,6 +34,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('enrolments');
+    return queryInterface.dropTable('enrollments');
   }
 };

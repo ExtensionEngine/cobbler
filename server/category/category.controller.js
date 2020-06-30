@@ -8,13 +8,11 @@ module.exports = {
 };
 
 function create(req, res) {
-  Category.create(pick(req.body, ['name']))
-    .then(success => res.json(success))
-    .catch(err => res.json(err));
+  return Category.create(pick(req.body, ['name']))
+    .then(category => res.json({ data: category }));
 }
 
 function getAll(req, res) {
-  Category.findAll()
-    .then(success => res.json(success))
-    .catch(err => res.json(err));
+  return Category.findAll()
+    .then(categories => res.json({ data: categories }));
 }
