@@ -25,6 +25,16 @@ module.exports = {
           name: 'Mathematical Computation',
           created_at: now,
           updated_at: now
+        },
+        {
+          name: 'Life Sciences',
+          created_at: now,
+          updated_at: now
+        },
+        {
+          name: 'Communication Skills',
+          created_at: now,
+          updated_at: now
         }
       ]);
   },
