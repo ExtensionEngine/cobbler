@@ -4,7 +4,7 @@ const isAfter = require('date-fns/isAfter');
 const { Model } = require('sequelize');
 
 class Course extends Model {
-  static fields({ STRING, TEXT, DATE, INTEGER }) {
+  static fields({ STRING, TEXT, DATE, INTEGER, VIRTUAL }) {
     return {
       name: {
         type: STRING,
@@ -34,6 +34,12 @@ class Course extends Model {
       endDate: {
         type: DATE,
         field: 'end_date'
+      },
+      available: {
+        type: VIRTUAL,
+        get() {
+          return isAfter(new Date(this.endDate), new Date());
+        }
       }
     };
   }
@@ -51,10 +57,6 @@ class Course extends Model {
       tableName: 'courses',
       underscored: true
     };
-  }
-
-  checkAvailability() {
-    return isAfter(new Date(this.endDate), new Date());
   }
 }
 

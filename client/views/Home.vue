@@ -1,10 +1,17 @@
 <template>
-  <h1>Home</h1>
+  <div>
+    <course-list />
+  </div>
 </template>
 
 <script>
+import CourseList from '../components/Course/CourseList';
+
 export default {
-  name: 'home'
+  name: 'home',
+  components: {
+    CourseList
+  }
 };
 </script>
 
