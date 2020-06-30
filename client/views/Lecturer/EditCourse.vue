@@ -1,11 +1,12 @@
 <template>
   <div>
     <second-bar />
-    <div v-if="course" class="form-wrapper">
+    <div v-if="course" class="course-wrapper">
       <base-form
         v-slot="{ isFormInvalid }"
         @submit="onUpdate"
         class="course-form">
+        <span class="course-title">{{ originalName }}</span>
         <field
           v-model="course.name"
           class="form-item-half"
@@ -21,7 +22,7 @@
           </template>
         </field>
         <field
-          v-model="course.Category.name"
+          v-model="course.category"
           class="form-item-half"
           name="category"
           label="Category*"
@@ -82,6 +83,9 @@
         </base-button>
       </base-form>
     </div>
+    <div class="lecture-wrapper">
+      <div v-for="lecture in lectures" :key="lecture.id">{{ lecture.name }}</div>
+    </div>
   </div>
 </template>
 
@@ -101,6 +105,7 @@ export default {
   data() {
     return ({
       course: null,
+      lectures: [],
       categories: [],
       originalName: null
     });
@@ -111,23 +116,35 @@ export default {
         const { data } = await updateCourse({
           ...this.course,
           categoryId: this.categories.find(
-            category => category.name === this.course.Category.name).id
+            category => category.name === this.course.category).id
         });
-        // TODO: Add toast notifications when merged with toast branch
+        this.originalName = data.name;
         console.log(data);
+        // TODO: Add toast notifications when merged with toast branch
       } catch (err) {
         console.log(err);
       }
     }
   },
   async created() {
-    const [courseResponse, categoriesResponse] = await Promise.all([getCourse(this.$route.params.id), getAllCategories()]);
-    this.originalName = courseResponse.data.name;
+    const [courseResponse, categoriesResponse] = await Promise.all([
+      getCourse(this.$route.params.id),
+      getAllCategories()
+    ]);
+
+    const { id, name, description, startDate, endDate, Category, Lectures } = courseResponse.data;
+    this.originalName = name;
     this.course = {
-      ...courseResponse.data,
-      startDate: courseResponse.data.startDate && DateFormat(new Date(courseResponse.data.startDate), 'yyyy-MM-dd'),
-      endDate: courseResponse.data.endDate && DateFormat(new Date(courseResponse.data.endDate), 'yyyy-MM-dd')
+      id,
+      name,
+      description,
+      category: Category.name,
+      startDate: courseResponse.data.startDate &&
+        DateFormat(new Date(startDate), 'yyyy-MM-dd'),
+      endDate: courseResponse.data.endDate &&
+        DateFormat(new Date(endDate), 'yyyy-MM-dd')
     };
+    this.lectures = Lectures;
     this.categories = categoriesResponse.data;
   },
   components: {
@@ -142,7 +159,7 @@ export default {
 </script>
 
 <style scoped>
-.form-wrapper {
+.course-wrapper {
   padding: var(--spacing-md) 0;
   display: flex;
   justify-content: center;
@@ -152,7 +169,15 @@ export default {
   border: solid 1px var(--color-gray);
   border-radius: 3px;
   padding: var(--spacing-sm);
-
+  padding-top: var(--spacing-md);
+  position: relative;
+}
+.course-title {
+  position: absolute;
+  top: -12px;
+  left: 14px;
+  background: var(--color-white);
+  padding: 0 5px;
 }
 .form-item-full {
   margin: var(--spacing-xs) var(--spacing-xxs);

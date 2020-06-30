@@ -1,5 +1,5 @@
 'use strict';
-const { Category, Course, User } = require('../shared/database');
+const { Category, Course, Lecture, User } = require('../shared/database');
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const pick = require('lodash/pick');
@@ -49,6 +49,9 @@ function getCourseById(req, res) {
       {
         model: Category,
         attributes: ['name']
+      },
+      {
+        model: Lecture
       }
     ]
   })

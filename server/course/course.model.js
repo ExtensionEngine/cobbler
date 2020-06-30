@@ -42,11 +42,14 @@ class Course extends Model {
     };
   }
 
-  static associate({ Category, User, Enrollment }) {
+  static associate({ Category, User, Enrollment, Lecture }) {
     this.belongsTo(Category, { foreignKey: 'categoryId' });
     this.belongsToMany(User, {
       through: Enrollment,
       foreignKey: { name: 'courseId', field: 'course_id' }
+    });
+    this.hasMany(Lecture, {
+      foreignKey: 'courseId'
     });
   }
 
