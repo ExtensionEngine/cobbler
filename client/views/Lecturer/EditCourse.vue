@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-if="course">
     <second-bar />
-    <div v-if="course" class="course-wrapper">
+    <div class="course-wrapper">
       <base-form
         v-slot="{ isFormInvalid }"
         @submit="onUpdate"
@@ -86,7 +86,53 @@
     <div class="lectures-wrapper">
       <div class="lectures-container">
         <span class="lectures-title">Lectures</span>
-        <colapsible
+        <base-button
+          @click="toggleAddLecture"
+          :class="{'add-lecture-btn-active': lectureAdd.isActive}"
+          class="add-lecture-btn"
+          outlined>
+          <span :class="{rotate: lectureAdd.isActive}">+</span>
+        </base-button>
+        <div :class="{'lecture-add-active': lectureAdd.isActive}" class="lecture-add">
+          <base-form
+            v-slot="{ isFormInvalid }"
+            @submit="handleLectureSubmit"
+            class="lecture-form">
+            <field
+              v-model="lectureAdd.name"
+              class="form-item-half"
+              name="name"
+              label="Name*"
+              rules="required|between:2,50">
+              <template v-slot="{ on, value }">
+                <base-input
+                  v-on="on"
+                  :value="value"
+                  outlined />
+              </template>
+            </field>
+            <field
+              v-model="lectureAdd.description"
+              class="form-item-half"
+              name="description"
+              label="Description">
+              <template v-slot="{ on, value }">
+                <base-input
+                  v-on="on"
+                  :value="value"
+                  outlined />
+              </template>
+            </field>
+            <base-button
+              class="lecture-add-btn"
+              :disabled="isFormInvalid"
+              type="submit"
+              contained>
+              Add
+            </base-button>
+          </base-form>
+        </div>
+        <collapsible
           v-for="lecture in lectures"
           :key="lecture.id"
           @toggleExpand="handleExpandToggle"
@@ -94,9 +140,9 @@
           :title="lecture.name"
           :expanded="lecture.expanded"
           class="lecture">
-          <p>{{ lecture.description }}</p>
-        </colapsible>
-        <base-button primary contained>Add lecture</base-button>
+          <p>{{ lecture.description || 'No description available yet' }}</p>
+        </collapsible>
+        <p v-if="!lectures.length">No lectures added yet!</p>
       </div>
     </div>
   </div>
@@ -104,11 +150,12 @@
 
 <script>
 import { getCourse, updateCourse } from '../../api/courses';
+import { addLecture } from '../../api/lectures';
 import BaseButton from '../../components/common/BaseButton';
 import BaseForm from '../../components/common/BaseForm';
 import BaseInput from '../../components/common/BaseInput';
 import BaseSelect from '../../components/common/BaseSelect';
-import Colapsible from '../../components/common/Colapsible';
+import Collapsible from '../../components/common/Collapsible';
 import DateFormat from 'date-fns/format';
 import Field from '../../components/common/BaseForm/Field';
 import { getAllCategories } from '../../api/categories';
@@ -121,7 +168,12 @@ export default {
       course: null,
       lectures: [],
       categories: [],
-      originalName: null
+      originalName: null,
+      lectureAdd: {
+        isActive: false,
+        name: '',
+        description: ''
+      }
     });
   },
   methods: {
@@ -143,6 +195,23 @@ export default {
       this.lectures = this.lectures.map(lecture => lecture.id === lectureId
         ? { ...lecture, expanded: !lecture.expanded }
         : lecture);
+    },
+    toggleAddLecture() {
+      this.lectureAdd = {
+        isActive: !this.lectureAdd.isActive,
+        name: '',
+        description: ''
+      };
+    },
+    async handleLectureSubmit() {
+      try {
+        // TODO: Add toast
+        const { data } = await addLecture({ ...this.lectureAdd, courseId: this.course.id });
+        this.lectures.push(data);
+        console.log(data);
+      } catch (err) {
+        console.log(err);
+      }
     }
   },
   async created() {
@@ -171,7 +240,7 @@ export default {
     BaseForm,
     BaseInput,
     BaseSelect,
-    Colapsible,
+    Collapsible,
     Field,
     SecondBar
   }
@@ -219,6 +288,9 @@ export default {
 }
 .lectures-container {
   width: 550px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   border: solid 1px var(--color-gray);
   border-radius: 3px;
   padding: var(--spacing-sm);
@@ -227,6 +299,47 @@ export default {
 }
 .lecture {
   margin: var(--spacing-sm) 0;
+  flex-basis: 50%;
+}
+.add-lecture-btn {
+  position: absolute;
+  top: -15px;
+  right: 10px;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  background: var(--color-success);
+  color: var(--color-white);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all .5s ease;
+}
+.add-lecture-btn-active {
+  background: var(--color-error);
+  transition: all .5s ease;
+}
+.add-lecture-btn span {
+  transition: all .3s ease;
+}
+.rotate {
+  transform: rotate(-45deg);
+}
+.lecture-form {
+  padding: var(--spacing-sm) 0;
+}
+.lecture-add {
+  max-height: 0;
+  overflow: hidden;
+  transition: all .3s ease;
+}
+.lecture-add-active {
+  max-height: 200px;
+}
+.lecture-add-btn {
+  background: var(--color-success);
+  border: 1px var(--color-accent) solid;
 }
 @media only screen and (max-width: 480px) {
   .form-item-half {

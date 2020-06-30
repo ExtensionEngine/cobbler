@@ -1,6 +1,6 @@
 'use strict';
 
-const { Enrollment, Lecture } = require('../shared/database');
+const { Lecture } = require('../shared/database');
 const pick = require('lodash/pick');
 
 module.exports = {

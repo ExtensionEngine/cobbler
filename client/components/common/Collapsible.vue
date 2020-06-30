@@ -9,9 +9,9 @@
 
 <script>
 export default {
-  name: 'colapsible',
+  name: 'collapsible',
   props: {
-    id: { type: Number, required: true },
+    id: { type: Number, default: null },
     title: { type: String, default: null },
     expanded: { type: Boolean, default: false }
   },
@@ -25,7 +25,8 @@ export default {
 
 <style scoped>
 .collapsible {
-  background-color: transparent];
+  background-color: var(--color-primary);
+  color: var(--color-white);
   cursor: pointer;
   padding: var(--spacing-xs);
   width: 100%;
@@ -35,7 +36,7 @@ export default {
   outline: none;
 }
 .active, .collapsible:hover {
-  background-color: var(--color-gray-500);
+  background-color: var(--color-primary-500);
 }
 .content {
   padding: 0 var(--spacing-md);
@@ -43,7 +44,7 @@ export default {
   background-color: #f1f1f1;
   border: solid 1px var(--color-gray);
   max-height: 0;
-  transition: max-height .5s ease-in-out;
+  transition: all .3s ease;
 }
 .expanded {
   max-height: 100vh;

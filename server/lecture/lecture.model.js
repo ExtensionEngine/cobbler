@@ -11,8 +11,7 @@ class Lecture extends Model {
         validate: { len: [2, 50] }
       },
       description: {
-        type: TEXT,
-        validate: { len: [2, 50] }
+        type: TEXT
       },
       courseId: {
         type: INTEGER,

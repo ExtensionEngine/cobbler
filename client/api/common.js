@@ -15,6 +15,9 @@ export const endpoints = {
     getById: id => `courses/${id}`,
     checkNameAvailability: 'courses/check-name',
     update: id => `courses/${id}`
+  },
+  lectures: {
+    base: 'lectures'
   }
 };
 
