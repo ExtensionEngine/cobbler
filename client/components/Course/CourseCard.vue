@@ -58,11 +58,9 @@ export default {
 <style scoped>
 .course-card {
   box-shadow: 2px 2px 8px 0px var(--color-gray);
-  height: fit-content;
   min-height: 200px;
   max-height: 250px;
   min-width: 300px;
-  background-color: white;
   position: relative;
   font-size: 0.5rem;
 }
@@ -123,12 +121,10 @@ export default {
   padding: 15px;
 }
 .course-card-title h1 {
-  font-size: 1.2rem;
-  vertical-align: middle;
+  font-size: 1.3rem;
 }
 .course-card-description {
   padding: 0 var(--spacing-md);
-  margin: 0;
   font-size: 0.7rem;
 }
 

@@ -3,15 +3,15 @@
     <div class="course-tags">
       <span class="small-label category-label">{{ category }}</span>
       <span class="small-label date-label">
-        {{ new Date(start).toDateString() }} - {{ new Date(end).toDateString() }}
+        {{ formatDate(start) }} - {{ formatDate(end) }}
       </span>
     </div>
     <div class="course-content">
       <div>
         <div class="course-title">
           <h1>{{ title }}</h1>
-          <div v-if="!enrolled" class="btn-container">
-            <base-button @click="sendEnrollRequest" class="enroll-btn" contained>
+          <div class="btn-container">
+            <base-button @click="sendEnrollRequest" :disabled="enrolled" class="enroll-btn" contained>
               Enroll
             </base-button>
           </div>
@@ -27,6 +27,7 @@
 <script>
 import BaseButton from '../common/BaseButton';
 import { enroll } from '../../api/courses';
+import format from 'date-fns/format';
 import LectureContainer from '../Lectures/LectureContainer';
 
 export default {
@@ -58,6 +59,9 @@ export default {
             this.$router.push('/');
           });
       }
+    },
+    formatDate(dateString) {
+      return format(new Date(dateString), 'dd/MM/yyyy');
     }
   },
   components: {
@@ -80,7 +84,7 @@ export default {
   }
 
   .date-label {
-    background: var(--color-success);
+    background: var(--color-gray);
     color: white;
   }
   .btn-container *{
@@ -88,29 +92,29 @@ export default {
   }
 
   .enroll-btn {
-    border: none;
     color: white;
     background-color: var(--color-success);
-    box-shadow: 0 1px 1px var(--color-gray), 0 1px 1px var(--color-gray);
+    box-shadow: 0 2px 3px var(--color-gray), 0 2px 3px var(--color-gray);
     padding: 8px 15px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: var(--spacing-xxxs);
   }
 
   .small-label{
     font-size: 0.7rem;
     border-radius: 5px;
-    width: fit-content;
     padding: 5px 10px;
-    margin-right: 10px
+    margin-right: var(--spacing-xs);
+  }
+
+  .course-tags {
+    display: flex;
+    justify-content: flex-start;
   }
 
   .lectures {
-    width: 80%;
-  }
-
-  @media only screen and (max-width: 769px;) {
-    .lectures {
-      width: 100%;
-    }
+    width: 100%;
   }
 
 </style>
