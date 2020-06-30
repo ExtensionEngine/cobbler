@@ -76,8 +76,6 @@ async function enroll(req, res) {
   if (course.available) {
     if (await course.addUser(req.user)) {
       res.status(201).json('Successfully enrolled');
-    } else {
-      res.status(400).json('Could not enroll');
     }
   } else res.status(403).json('Course unavailable');
 }
