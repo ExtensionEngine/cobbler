@@ -22,7 +22,7 @@ function create(req, res) {
     'startDate',
     'endDate'
   ]);
-  return Course.create({ ...courseInfo })
+  return Course.create(courseInfo)
     .then(course => course.addUser(req.user))
     .then(course => res.status(201).json({ data: course }));
 }
