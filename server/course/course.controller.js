@@ -22,7 +22,7 @@ function create(req, res) {
     'startDate',
     'endDate'
   ]);
-  return Course.create({ ...courseInfo })
+  return Course.create(courseInfo)
     .then(course => course.addUser(req.user))
     .then(course => res.status(201).json({ data: course }));
 }
@@ -71,23 +71,16 @@ function getCourseById(req, res) {
     ]
   })
     .then(course => {
-      if (!course) {
-        res.status(404).send('Course not found');
-      } else {
-        res.json({ data: course });
-      }
+      if (!course) return res.status(404).send('Course not found');
+      return res.json({ data: course });
     });
 }
 
 async function enroll(req, res) {
   const course = await Course.findByPk(req.params.id);
-  if (course.available) {
-    if (await course.addUser(req.user)) {
-      res.status(201).json('Successfully enrolled');
-    } else {
-      res.status(400).json('Could not enroll');
-    }
-  } else res.status(403).json('Course unavailable');
+  if (!course.available) return res.status(403).json('Course unavailable');
+  await course.addUser(req.user);
+  return res.status(201).json('Successfully enrolled');
 }
 
 async function update(req, res) {
@@ -100,7 +93,7 @@ async function update(req, res) {
   ]);
   const course = await Course.findByPk(req.params.id);
   if (!course) {
-    res.status(404).json('Course does not exist');
+    return res.status(404).json('Course does not exist');
   }
   return course
     .update({ ...courseInfo })
