@@ -21,7 +21,7 @@ export default {
   name: 'course-overview',
   data() {
     return {
-      course: {},
+      course: { Category: {} },
       enrolled: false
     };
   },

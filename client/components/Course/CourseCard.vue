@@ -45,6 +45,7 @@ export default {
     box-shadow: 2px 2px 8px 0px var(--color-gray);
     height: fit-content;
     min-height: 180px;
+    max-height: 250px;
     min-width: 300px;
     background-color: white;
     position: relative;
@@ -103,7 +104,7 @@ export default {
     background-color: var(--color-primary);
     color: white;
     width: 100%;
-    min-height: 100px;
+    max-height: 100px;
     height: fit-content;
     padding: 15px;
   }
