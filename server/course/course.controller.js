@@ -88,6 +88,6 @@ async function update(req, res) {
     return res.status(404).json('Course does not exist');
   }
   return course
-    .update({ ...courseInfo })
+    .update(courseInfo)
     .then(course => res.status(201).json({ data: course }));
 }
