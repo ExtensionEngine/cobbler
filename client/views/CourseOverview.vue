@@ -8,7 +8,7 @@
       :start="course.startDate"
       :end="course.endDate"
       :users="course.Users"
-      :enrolled="this.$route.props.enrolled" />
+      :enrolled="true" />
   </container>
 </template>
 

@@ -20,8 +20,7 @@
         <p>By: {{ lecturers }}</p>
       </div>
     </div>
-
-    <lecture-container />
+    <lecture-container class="lectures" />
   </div>
 </template>
 
@@ -96,8 +95,14 @@ export default {
     margin-right: 10px
   }
 
-  .lecture-list{
-    list-style-type: none;
+  .lectures {
+    width: 80%;
+  }
+
+  @media only screen and (max-width: 769px;) {
+    .lectures {
+      width: 100%;
+    }
   }
 
 </style>

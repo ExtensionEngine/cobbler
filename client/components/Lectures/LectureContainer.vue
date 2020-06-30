@@ -38,7 +38,6 @@ export default {
 <style lang="css" scoped>
   .lecture-container {
     background: rgb(247, 247, 247);
-    width: 80%;
   }
   .lecture-list {
     list-style-type: none;
