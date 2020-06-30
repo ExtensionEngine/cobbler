@@ -11,7 +11,7 @@
         <div class="course-title">
           <h1>{{ title }}</h1>
           <div v-if="!enrolled" class="btn-container">
-            <base-button @click="sendEnrollRequest">
+            <base-button @click="sendEnrollRequest" class="enroll-btn" contained>
               Enroll
             </base-button>
           </div>
@@ -85,6 +85,14 @@ export default {
   }
   .btn-container *{
     margin-top: 30%;
+  }
+
+  .enroll-btn {
+    border: none;
+    color: white;
+    background-color: var(--color-success);
+    box-shadow: 0 1px 1px var(--color-gray), 0 1px 1px var(--color-gray);
+    padding: 8px 15px;
   }
 
   .small-label{

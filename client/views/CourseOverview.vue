@@ -8,29 +8,31 @@
       :start="course.startDate"
       :end="course.endDate"
       :users="course.Users"
-      :enrolled="true" />
+      :enrolled="enrolled" />
   </container>
 </template>
 
 <script>
+import { checkIfEnrolled, getById } from '../api/courses';
 import Container from '../components/common/Container';
 import CoursePage from '../components/Course/CoursePage';
-import { getById } from '../api/courses';
 
 export default {
   name: 'course-overview',
   data() {
     return {
-      course: {}
+      course: {},
+      enrolled: false
     };
   },
-  computed: {
-  },
-  async mounted() {
+  async created() {
     await getById(this.$route.params.id).then(course => {
-      this.course = course.data;
+      this.course = course.data.data;
     });
-    // TODO - SEE IF ENROLLED
+    await checkIfEnrolled(this.course.id).then(result => {
+      const { enrolled } = result.data;
+      this.enrolled = enrolled;
+    });
   },
   components: {
     CoursePage, Container

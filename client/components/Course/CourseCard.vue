@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     showCourse() {
-      this.$router.push(`courses/${this.id}`, { props: { enrolled: this.enrolled } });
+      this.$router.push(`courses/${this.id}`);
     }
   }
 };
@@ -121,7 +121,7 @@ export default {
   }
 
   .enrolled {
-    border: 5px solid var(--color-success);
+    border: 2px solid var(--color-success);
   }
 
 </style>

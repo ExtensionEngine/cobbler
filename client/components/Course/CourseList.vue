@@ -42,16 +42,22 @@ export default {
   },
   computed: {
     getEnrolledCourses() {
-      return this.courses.data.filter(course => (course.Users.find(user => user.email === this.$store.state.auth.email)));
+      return this.courses.data.filter(course =>
+        course.Users.find(user => user.email === this.$store.state.auth.email)
+      );
     },
     getNotEnrolledCourses() {
       return this.courses.data
-      .filter(course => !(course.Users.find(user => user.email === this.$store.state.auth.email)))
-      .sort((prev, next) => {
-        return compareAsc(parseISO(prev.updatedAt), parseISO(next.updatedAt));
-      });
+        .filter(
+          course =>
+            !course.Users.find(
+              user => user.email === this.$store.state.auth.email
+            )
+        )
+        .sort((prev, next) => {
+          return compareAsc(parseISO(prev.updatedAt), parseISO(next.updatedAt));
+        });
     }
-
   },
   created() {
     getAllCourses().then(courses => {
