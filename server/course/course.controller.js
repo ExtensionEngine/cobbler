@@ -28,7 +28,7 @@ function create(req, res) {
 }
 
 function getAll(req, res) {
-  const { available } = req.query;
+  const filters = req.query;
   const query = {
     include: [
       {
@@ -40,9 +40,13 @@ function getAll(req, res) {
         attributes: ['firstName', 'lastName', 'email'],
         through: { model: Enrollment, attributes: [] }
       }
-    ]
+    ],
+    where: Object.entries(filters).reduce((all, [key, filter]) => ({
+      ...all,
+      [key]: { [Op[filter.op]]: filter.data }
+    }))
   };
-  if (available) {
+  if (filters.available) {
     query.where = { endDate: { [Op.gte]: new Date() } };
   }
   return Course.findAll(query)
@@ -59,14 +63,6 @@ function getCourseById(req, res) {
       {
         model: Category,
         attributes: ['name']
-      },
-      {
-        model: User,
-        required: false,
-        attributes: ['firstName', 'lastName', 'email'],
-        where: {
-          role: 'LECTURER'
-        }
       }
     ]
   })
@@ -96,6 +92,6 @@ async function update(req, res) {
     return res.status(404).json('Course does not exist');
   }
   return course
-    .update({ ...courseInfo })
+    .update(courseInfo)
     .then(course => res.status(201).json({ data: course }));
 }

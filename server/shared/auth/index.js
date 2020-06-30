@@ -32,7 +32,7 @@ const opts = {
 
 passport.use(new JwtStrategy(opts, ({ sub: email }, done) => {
   User.findOne({ where: { email } })
-  .then(user => done(null, user || false));
+    .then(user => done(null, user || false));
 }));
 
 passport.serializeUser((user, done) => {

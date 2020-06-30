@@ -5,13 +5,6 @@ import thwack from 'thwack';
 export const endpoints = {
   auth: {
     login: 'login'
-  },
-  course: {
-    base: 'courses',
-    available: 'courses?available=true',
-    byId: id => `courses/${id}`,
-    enroll: id => `courses/${id}/enroll`,
-    checkIfEnrolled: id => `me/courses/${id}`
   }
 };
 

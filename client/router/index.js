@@ -1,4 +1,3 @@
-import Course from '../views/CourseOverview.vue';
 import Home from '../views/Home';
 import Layout from '../components/common/Layout';
 import Login from '../views/Login';
@@ -20,11 +19,6 @@ const routes = [
       path: '',
       name: 'Home',
       component: Home
-    },
-    {
-      path: paths.courses,
-      name: 'Course',
-      component: Course
     }]
   },
   {
