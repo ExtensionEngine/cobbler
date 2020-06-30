@@ -4,24 +4,12 @@
       <course-card
         v-for="course in getEnrolledCourses"
         :key="course.id"
-        :id="course.id"
-        :title="course.name"
-        :category="course.Category.name"
-        :users="course.Users"
-        :enrolled="true"
-        :description="course.description"
-        :end="course.endDate"
-        :start="course.startDate" />
+        :course="course"
+        :enrolled="true" />
       <course-card
         v-for="course in getNotEnrolledCourses"
         :key="course.id"
-        :id="course.id"
-        :title="course.name"
-        :category="course.Category.name"
-        :users="course.Users"
-        :description="course.description"
-        :end="course.endDate"
-        :start="course.startDate" />
+        :course="course" />
     </div>
   </div>
 </template>
