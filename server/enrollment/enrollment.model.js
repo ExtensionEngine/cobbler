@@ -3,37 +3,33 @@
 const { Model } = require('sequelize');
 
 class Enrollment extends Model {
-  static fields(DataTypes) {
-    const { INTEGER, DATE } = DataTypes;
+  static fields({ INTEGER, DATE }) {
     return {
       courseId: {
         type: INTEGER,
-        field: 'course_id',
         primaryKey: true
       },
       userId: {
         type: INTEGER,
-        field: 'user_id',
         primaryKey: true
       },
       createdAt: {
-        type: DATE,
-        field: 'created_at'
+        type: DATE
       },
       updatedAt: {
-        type: DATE,
-        field: 'updated_at'
+        type: DATE
       },
       deletedAt: {
         type: DATE,
-        field: 'deleted_at'
+        paranoid: true
       }
     };
   }
 
   static options() {
     return {
-      tableName: 'enrollments'
+      tableName: 'enrollments',
+      underscored: true
     };
   }
 

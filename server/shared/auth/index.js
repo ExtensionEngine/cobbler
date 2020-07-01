@@ -20,7 +20,7 @@ passport.use(new LocalStrategy(options,
       if (isValid) return done(null, user);
       return done(new HttpError('Bad credentials', UNAUTHORIZED));
     } catch (e) {
-      return done(new HttpError(e, INTERNAL_SERVER_ERROR));
+      return done(new HttpError('Something went wrong', INTERNAL_SERVER_ERROR));
     }
   }
 ));
@@ -31,7 +31,7 @@ const opts = {
 };
 
 passport.use(new JwtStrategy(opts, ({ sub: email }, done) => {
-  User.findOne({ email })
+  User.findOne({ where: { email } })
     .then(user => done(null, user || false));
 }));
 

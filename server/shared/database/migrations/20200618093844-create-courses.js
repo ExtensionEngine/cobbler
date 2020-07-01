@@ -23,6 +23,14 @@ module.exports = {
         references: { model: 'categories', key: 'id' },
         allowNull: false
       },
+      startDate: {
+        type: Sequelize.DATE,
+        field: 'start_date'
+      },
+      endDate: {
+        type: Sequelize.DATE,
+        field: 'end_date'
+      },
       createdAt: {
         type: Sequelize.DATE,
         field: 'created_at',
@@ -39,7 +47,6 @@ module.exports = {
       }
     });
   },
-
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('courses');
   }

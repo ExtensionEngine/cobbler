@@ -1,6 +1,8 @@
 'use strict';
-const { Category, Course, User } = require('../shared/database');
-const jwt = require('jsonwebtoken');
+
+const { Category, Course, Enrollment, User } = require('../shared/database');
+const { BAD_REQUEST } = require('http-status-codes');
+const { HttpError } = require('../shared/error');
 const { Op } = require('sequelize');
 const pick = require('lodash/pick');
 
@@ -8,25 +10,28 @@ module.exports = {
   create,
   getAll,
   enroll,
-  getAvailableCourses,
   getCourseById,
   getCoursesByUser,
   checkNameAvailability,
   update
 };
 
-async function create(req, res) {
-  const courseInfo = pick(req.body, ['name', 'description', 'categoryId', 'startDate', 'endDate']);
-  const email = jwt.decode(req.get('Authorization').slice(4)).sub;
-  const creator = await User.findOne({ where: { email } });
-  Course.create({ ...courseInfo })
-  .then(course => course.addUser(creator))
-  .then(success => res.status(201).json(success))
-  .catch(err => res.status(400).json(err));
+function create(req, res) {
+  const courseInfo = pick(req.body, [
+    'name',
+    'description',
+    'categoryId',
+    'startDate',
+    'endDate'
+  ]);
+  return Course.create(courseInfo)
+    .then(course => course.addUser(req.user))
+    .then(course => res.status(201).json({ data: course }));
 }
 
 function getAll(req, res) {
-  Course.findAll({
+  const { available } = req.query;
+  const query = {
     include: [
       {
         model: Category,
@@ -35,16 +40,23 @@ function getAll(req, res) {
       {
         model: User,
         attributes: ['firstName', 'lastName', 'email'],
-        through: { attributes: [] }
+        through: { model: Enrollment, attributes: [] }
       }
     ]
-  })
-    .then(success => res.json({ data: success }))
-    .catch(err => res.status(400).json(err));
+  };
+  if (available) {
+    query.where = { endDate: { [Op.gte]: new Date() } };
+  }
+  return Course.findAll(query)
+    .then(course => res.json({ data: course }));
 }
 
 function getCourseById(req, res) {
-  Course.findByPk(req.params.id, {
+  const { id } = req.params;
+  if (!Number(id)) {
+    throw new HttpError('ID is not a number', BAD_REQUEST);
+  }
+  return Course.findByPk(id, {
     include: [
       {
         model: Category,
@@ -52,75 +64,34 @@ function getCourseById(req, res) {
       }
     ]
   })
-  .then(success => res.json(success))
-  .catch(err => res.status(400).json(err));
-}
-
-function getAvailableCourses(req, res) {
-  Course.findAll({
-    where: {
-      endDate: {
-        [Op.gte]: Date.now()
-      }
-    },
-    include: [
-      {
-        model: Category,
-        attributes: ['name']
-      },
-      {
-        model: User,
-        attributes: ['firstName', 'lastName', 'email'],
-        through: { attributes: [] }
-      }
-    ]
-  }).then(success => res.json({ data: success }))
-  .catch(err => res.status(400).json(err));
-}
-
-async function getCoursesByUser(req, res) {
-  try {
-    const email = jwt.decode(req.get('Authorization').slice(4)).sub;
-    return Course.findAll({
-      attributes: ['id', 'name', 'description', 'endDate', 'startDate'],
-      include: [{
-        model: User,
-        where: { email },
-        attributes: [],
-        through: []
-      },
-      {
-        model: Category,
-        attributes: ['name']
-      }]
-    })
-    .then(success => res.json(success))
-    .catch(err => res.status(400).json(err));
-  } catch (e) {
-    res.status(400).json(e);
-  }
+    .then(course => {
+      if (!course) return res.status(404).send('Course not found');
+      return res.json({ data: course });
+    });
 }
 
 async function enroll(req, res) {
-  try {
-    const email = jwt.decode(req.get('Authorization').slice(4)).sub;
-    const user = await User.findOne({ where: { email } });
-    const course = await Course.findByPk(req.params.id);
-    if (course.checkAvailability()) {
-      course.addUser(user);
-      res.status(201).json('Successfully enrolled');
-    } else res.status(204).json('Course unavailable');
-  } catch (e) {
-    res.status(400).json(e);
-  }
+  const course = await Course.findByPk(req.params.id);
+  if (!course.available) return res.status(403).json('Course unavailable');
+  await course.addUser(req.user);
+  return res.status(201).json('Successfully enrolled');
 }
 
 async function update(req, res) {
-  const courseInfo = pick(req.body, ['name', 'description', 'startDate', 'endDate', 'categoryId']);
+  const courseInfo = pick(req.body, [
+    'name',
+    'description',
+    'startDate',
+    'endDate',
+    'categoryId'
+  ]);
   const course = await Course.findByPk(req.params.id);
-  course.update({ ...courseInfo })
-  .then(success => res.status(201).json(success))
-  .catch(err => res.status(400).json(err));
+  if (!course) {
+    return res.status(404).json('Course does not exist');
+  }
+  return course
+    .update(courseInfo)
+    .then(course => res.status(201).json({ data: course }));
 }
 
 async function checkNameAvailability(req, res) {

@@ -3,8 +3,7 @@
 const { Model } = require('sequelize');
 
 class Category extends Model {
-  static fields(DataTypes) {
-    const { STRING, DATE } = DataTypes;
+  static fields({ STRING, DATE }) {
     return {
       name: {
         type: STRING,
@@ -12,23 +11,22 @@ class Category extends Model {
         unique: true
       },
       createdAt: {
-        type: DATE,
-        field: 'created_at'
+        type: DATE
       },
       updatedAt: {
-        type: DATE,
-        field: 'updated_at'
+        type: DATE
       },
       deletedAt: {
         type: DATE,
-        field: 'deleted_at'
+        paranoid: true
       }
     };
   }
 
   static options() {
     return {
-      tableName: 'categories'
+      tableName: 'categories',
+      underscored: true
     };
   }
 
