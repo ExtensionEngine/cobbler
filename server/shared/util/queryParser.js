@@ -2,40 +2,43 @@
 
 const { Op } = require('sequelize');
 
-const mapQueryToFilters = filters => {
-  const b = filters;
-  return Object.entries(filters).reduce((all, [key, filter]) => ({
-    ...all,
-    [key]: { [Op[filter.op]]: filter.data }
-  }), {});
-};
+const mapper = new Map();
 
-const queryParser = queryMapper => (req, res, next) => {
-  const query = Object.keys(req.query)
-  .reduce((all, key) => ({
-    ...all,
-    [key]: parseQueryItem(req.query[key])
-  }), {});
-  req.query = mapQueryToFilters(query);
+mapper.set('in', arg => arg.split(',').map(item => returnArgType(item)));
+mapper.set('notIn', arg => {
+  return {
+    [Op.notIn]: arg.split(',').map(item => returnArgType(item))
+  };
+});
+mapper.set('gt', arg => { return { [Op.gt]: returnArgType(arg) }; });
+mapper.set('lt', arg => { return { [Op.lt]: returnArgType(arg) }; });
+mapper.set('gte', arg => { return { [Op.gte]: returnArgType(arg) }; });
+mapper.set('lte', arg => { return { [Op.lte]: returnArgType(arg) }; });
+mapper.set('eq', arg => { return { [Op.eq]: returnArgType(arg) }; });
+mapper.set('ne', arg => { return { [Op.ne]: returnArgType(arg) }; });
+mapper.set('ts', arg => returnArgType(arg));
+
+const queryParser = (req, res, next) => {
+  const filters = {};
+  const { limit, offset, ...query } = req.query;
+  Object.entries(query)
+    .forEach(([attribute, filter]) => {
+      filters[attribute] = parseQueryItem(filter);
+    });
+  req.query = { filters, pagination: { limit, offset } };
   next();
 };
-// ?user=in.5,4,2
-const parseQueryItem = string => {
-  const args = string.split('.');
-  switch (args[0]) {
-    case 'ts' :
-      return String(args[1]);
-    case 'eq' :
-      return (['true', 'false'].includes(args[1].toLowerCase()))
-        ? args[1] !== 'false'
-        : Number(args[1]) || args[1];
-    case 'gt' :
-      return { data: args[1], op: 'gt' };
-    case 'lt' :
-      return { data: args[1], op: 'lt' };
-    default :
-      return '';
-  }
-};
 
-module.exports = queryParser(mapQueryToFilters);
+module.exports = queryParser;
+
+function parseQueryItem(string) {
+  const args = string.split('.');
+  if (mapper.get(args[0])) return mapper.get(args[0])(args[1]);
+  return returnArgType(string);
+}
+
+function returnArgType(string) {
+  return (['true', 'false'].includes(string.toLowerCase()))
+    ? string !== 'false'
+    : Number(string) || string;
+}
