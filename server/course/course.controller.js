@@ -11,7 +11,6 @@ module.exports = {
   getAll,
   enroll,
   getCourseById,
-  getCoursesByUser,
   checkNameAvailability,
   update
 };

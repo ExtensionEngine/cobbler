@@ -11,7 +11,7 @@ export const endpoints = {
   },
   courses: {
     base: 'courses',
-    myCourses: 'courses/my-courses',
+    myCourses: 'me/courses',
     checkNameAvailability: 'courses/check-name'
   }
 };

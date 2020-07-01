@@ -30,5 +30,6 @@ export default {
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: 3px;
   outline: none;
+  background: transparent;
 }
 </style>
