@@ -16,7 +16,7 @@ mapper.set('gte', arg => { return { [Op.gte]: returnArgType(arg) }; });
 mapper.set('lte', arg => { return { [Op.lte]: returnArgType(arg) }; });
 mapper.set('eq', arg => { return { [Op.eq]: returnArgType(arg) }; });
 mapper.set('ne', arg => { return { [Op.ne]: returnArgType(arg) }; });
-mapper.set('ts', arg => returnArgType(arg));
+mapper.set('ts', arg => { return { [Op.like]: `%${returnArgType(arg)}%` }; });
 
 const queryParser = (req, res, next) => {
   const filters = {};
