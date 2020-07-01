@@ -126,9 +126,9 @@ export default {
       }
     }
   },
-  async mounted() {
+  async created() {
     const { data } = await getAllCategories();
-    this.categories = data;
+    this.categories = data.data;
   },
   components: {
     BaseButton,

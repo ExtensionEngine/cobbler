@@ -24,10 +24,18 @@ export default {
       loading: true
     });
   },
-  async mounted() {
+  methods: {
+    getDateRange({ startDate, endDate }) {
+      if (!startDate || !endDate) {
+        return 'The start date, end date or both are not defined yet!';
+      }
+      return `${new Date(startDate).toDateString()} - ${new Date(endDate).toDateString()}`;
+    }
+  },
+  async created() {
     try {
       const { data } = await getMyCourses();
-      this.courses = data;
+      this.courses = data.data;
       this.loading = false;
     } catch (err) {
       // TODO: add toast message in case of error
@@ -58,10 +66,10 @@ export default {
   height: 100%;
   width: 100%;
   position: absolute;
-background-image: linear-gradient(var(--color-gray), var(--color-gray)),
-    linear-gradient(var(--color-gray), var(--color-gray)),
-    linear-gradient(var(--color-gray), var(--color-gray)),
-    linear-gradient(var(--color-gray), var(--color-gray));
+  background-image: linear-gradient(var(--color-gray), var(--color-gray)),
+      linear-gradient(var(--color-gray), var(--color-gray)),
+      linear-gradient(var(--color-gray), var(--color-gray)),
+      linear-gradient(var(--color-gray), var(--color-gray));
   background-size: 160px 25px,
     350px 15px,
     200px 15px,

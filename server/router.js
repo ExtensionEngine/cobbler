@@ -4,6 +4,7 @@ const auth = require('./auth');
 const { authenticate } = require('./shared/auth');
 const category = require('./category');
 const course = require('./course');
+const resource = require('./shared/user-resources');
 const router = require('express').Router();
 const lecture = require('./lecture');
 const user = require('./user');

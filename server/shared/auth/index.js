@@ -20,7 +20,7 @@ passport.use(new LocalStrategy(options,
       if (isValid) return done(null, user);
       return done(new HttpError('Bad credentials', UNAUTHORIZED));
     } catch (e) {
-      return done(new HttpError(e, INTERNAL_SERVER_ERROR));
+      return done(new HttpError('Something went wrong', INTERNAL_SERVER_ERROR));
     }
   }
 ));

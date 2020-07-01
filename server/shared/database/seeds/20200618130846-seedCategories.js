@@ -28,7 +28,6 @@ module.exports = {
         }
       ]);
   },
-
   down: (queryInterface, Sequelize) => {
     return queryInterface.bulkDelete('categories', null, {});
   }
