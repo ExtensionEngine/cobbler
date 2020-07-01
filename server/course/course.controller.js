@@ -1,10 +1,8 @@
 'use strict';
 
-const { Category, Course, Enrollment, User } = require('../shared/database');
+const { Category, Course, Enrollment, Lecture, User } = require('../shared/database');
 const { BAD_REQUEST } = require('http-status-codes');
 const { HttpError } = require('../shared/error');
-const { Category, Course, Lecture, User } = require('../shared/database');
-const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const pick = require('lodash/pick');
 

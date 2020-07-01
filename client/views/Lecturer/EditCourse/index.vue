@@ -40,7 +40,7 @@ export default {
   },
   async created() {
     const { data } = await getCourse(this.$route.params.id);
-    const { id, name, description, startDate, endDate, Category, Lectures } = data;
+    const { id, name, description, startDate, endDate, Category, Lectures } = data.data;
     this.course = {
       id,
       name,

@@ -111,7 +111,7 @@ export default {
           categoryId: this.categories.find(
             category => category.name === this.course.category).id
         });
-        this.originalName = data.name;
+        this.originalName = data.data.name;
         console.log(data);
         // TODO: Add toast notifications when merged with toast branch
       } catch (err) {
@@ -122,7 +122,7 @@ export default {
   async created() {
     this.originalName = this.course.name;
     const { data } = await getAllCategories();
-    this.categories = data;
+    this.categories = data.data;
   },
   components: {
     BaseButton,
