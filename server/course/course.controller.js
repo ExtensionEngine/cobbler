@@ -3,7 +3,7 @@
 const { Category, Course, Enrollment, User } = require('../shared/database');
 const { BAD_REQUEST } = require('http-status-codes');
 const { HttpError } = require('../shared/error');
-const { Op } = require('sequelize');
+const isEmpty = require('lodash/isEmpty');
 const pick = require('lodash/pick');
 
 module.exports = {
@@ -27,8 +27,10 @@ function create(req, res) {
     .then(course => res.status(201).json({ data: course }));
 }
 
-function getAll(req, res) {
-  const filters = req.query;
+async function getAll(req, res) {
+  const { filters } = req.query;
+  const errors = validateFilters(filters, Course);
+  if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
   const query = {
     include: [
       {
@@ -41,16 +43,10 @@ function getAll(req, res) {
         through: { model: Enrollment, attributes: [] }
       }
     ],
-    where: Object.entries(filters).reduce((all, [key, filter]) => ({
-      ...all,
-      [key]: { [Op[filter.op]]: filter.data }
-    }))
+    where: filters
   };
-  if (filters.available) {
-    query.where = { endDate: { [Op.gte]: new Date() } };
-  }
-  return Course.findAll(query)
-    .then(course => res.json({ data: course }));
+  const courses = await Course.findAll(query);
+  return res.json({ data: courses });
 }
 
 function getCourseById(req, res) {
@@ -94,4 +90,15 @@ async function update(req, res) {
   return course
     .update(courseInfo)
     .then(course => res.status(201).json({ data: course }));
+}
+
+function validateFilters(filters, model) {
+  const errors = {};
+  const validAttributes = Object.keys(model.rawAttributes);
+  const filteredAttributes = Object.keys(filters);
+  filteredAttributes.forEach(it => {
+    if (validAttributes.includes(it)) return;
+    errors[it] = `Attribute doesn't exist on "${model.name}" resource.`;
+  });
+  return errors;
 }
