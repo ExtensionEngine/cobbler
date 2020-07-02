@@ -35,6 +35,16 @@ module.exports = {
           name: 'Communication Skills',
           created_at: now,
           updated_at: now
+        },
+        {
+          name: 'Database Management',
+          created_at: now,
+          updated_at: now
+        },
+        {
+          name: 'Physics',
+          created_at: now,
+          updated_at: now
         }
       ]);
   },

@@ -101,6 +101,11 @@ export default {
     letter-spacing: var(--spacing-xxxs);
   }
 
+  .enroll-btn:focus {
+    outline: none;
+    box-shadow: inset 0px 0px 5px #c1c1c1;
+  }
+
   .small-label{
     font-size: 0.7rem;
     border-radius: 5px;

@@ -11,8 +11,17 @@
         :key="course.id"
         :course="course" />
     </div>
-    <div class="page-btn">
-      <button @click="paginateForward">next</button>
+    <div class="page-btns">
+      <button @click="paginateBack" class="arrow-btn">
+        <i class="material-icons">
+          keyboard_arrow_left
+        </i>
+      </button>
+      <button @click="paginateForward" class="arrow-btn">
+        <i class="material-icons">
+          keyboard_arrow_right
+        </i>
+      </button>
     </div>
   </div>
 </template>
@@ -56,13 +65,27 @@ export default {
   },
   methods: {
     paginateForward() {
-      this.offset += this.limit;
+      if (this.courses.data.length === this.limit) { this.offset += this.limit; }
+    },
+    paginateBack() {
+      this.offset = (this.offset > this.limit)
+        ? this.offset -= this.limit
+        : 0;
+    }
+  },
+  watch: {
+    offset() {
+      get(`?limit=${this.limit}&offset=${this.offset}`)
+        .then(courses => {
+          this.courses = courses.data;
+        });
     }
   },
   created() {
-    get(`?limit=${this.limit}&offset=${this.offset}`).then(courses => {
-      this.courses = courses.data;
-    });
+    get(`?limit=${this.limit}&offset=${this.offset}`)
+      .then(courses => {
+        this.courses = courses.data;
+      });
   },
   components: {
     CourseCard
@@ -76,9 +99,27 @@ export default {
   font-size: 0.7rem;
 }
 
-.page-btn {
+.page-btns {
   display: flex;
   justify-content: flex-end;
+  position: relative;
+  bottom: 5%;
+}
+
+i {
+  font-size: 2.2rem;
+}
+
+.arrow-btn {
+  background: none;
+  border: none;
+}
+.arrow-btn:hover {
+  cursor: pointer;
+}
+
+.arrow-btn:focus {
+  outline: none;
 }
 
 .cards {

@@ -28,7 +28,8 @@ function create(req, res) {
 }
 
 async function getAll(req, res) {
-  const { filters } = req.query;
+  const { filters, pagination } = req.query;
+  const { limit, offset } = pagination;
   const errors = validateFilters(filters, Course);
   if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
   const query = {

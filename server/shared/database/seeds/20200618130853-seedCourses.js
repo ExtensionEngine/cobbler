@@ -68,6 +68,42 @@ module.exports = {
           updated_at: now,
           start_date: new Date('2021-03-25'),
           end_date: new Date('2021-06-25')
+        },
+        {
+          name: 'MySQL vs Postgres',
+          description: 'Get to know the 2 most used dbms',
+          category_id: 7,
+          created_at: now,
+          updated_at: now,
+          start_date: new Date('2021-03-25'),
+          end_date: new Date('2021-06-25')
+        },
+        {
+          name: 'Postgres procedures and functions',
+          description: 'Enter the world of stored procedures and functions',
+          category_id: 7,
+          created_at: now,
+          updated_at: now,
+          start_date: new Date('2021-03-25'),
+          end_date: new Date('2021-06-25')
+        },
+        {
+          name: 'Advanced pressure calculations',
+          description: "It's dummy text anyway",
+          category_id: 8,
+          created_at: now,
+          updated_at: now,
+          start_date: new Date('2021-03-25'),
+          end_date: new Date('2021-06-25')
+        },
+        {
+          name: 'Applied Thermodynamics',
+          description: 'Use the laws of thermodynamics to accomplish goals',
+          category_id: 8,
+          created_at: now,
+          updated_at: now,
+          start_date: new Date('2021-03-25'),
+          end_date: new Date('2021-06-25')
         }
       ]);
   },
