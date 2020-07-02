@@ -68,16 +68,16 @@ export default {
   methods: {
     async handleLectureSubmit() {
       try {
-        // TODO: Add toast
+        this.$toasted.global.formSubmitting();
         const { data } = await addLecture({
           name: this.name,
           description: this.description,
           courseId: this.$route.params.id
         });
         this.$emit('add', data);
-        console.log(data);
+        this.$toasted.global.formSuccess({ message: 'Lecture added!' });
       } catch (err) {
-        console.log(err);
+        this.$toasted.global.formError({ message: 'Error while submitting lecture!' });
       }
     },
     toggleAddLecture() {

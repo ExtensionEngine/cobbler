@@ -106,16 +106,16 @@ export default {
   methods: {
     async onUpdate() {
       try {
+        this.$toasted.global.formSubmitting();
         const { data } = await updateCourse({
           ...this.course,
           categoryId: this.categories.find(
             category => category.name === this.course.category).id
         });
         this.originalName = data.data.name;
-        console.log(data);
-        // TODO: Add toast notifications when merged with toast branch
+        this.$toasted.global.formSuccess({ message: 'Course added successfully!' });
       } catch (err) {
-        console.log(err);
+        this.$toasted.global.formError({ message: 'Something went wrong!' });
       }
     }
   },
