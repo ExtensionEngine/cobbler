@@ -9,7 +9,7 @@ router
   .get('/:id', ctrl.getCourseById)
   .post('/:id/enroll', ctrl.enroll)
   .post('/check-name', ctrl.checkNameAvailability)
-  .put('/:id', ctrl.update);
+  .patch('/:id', ctrl.update);
 
 module.exports = {
   path: '/courses',

@@ -18,5 +18,5 @@ export function getCourse(id) {
 }
 
 export function updateCourse(course) {
-  return thwack.put(endpoints.courses.update(course.id), course);
+  return thwack.patch(endpoints.courses.update(course.id), course);
 }
