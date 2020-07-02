@@ -118,12 +118,13 @@ export default {
         startDate: this.startDate,
         endDate: this.endDate
       };
-      // TODO: wait for toast message PR to pass and implement it here
+      this.$toasted.global.formSubmitting();
       try {
         await addCourse(courseToAdd);
+        this.$toasted.global.formSuccess({ message: 'Course add successful!' });
         this.$router.push(paths.lecturer.base);
       } catch (err) {
-        console.log(err);
+        this.$toasted.global.formError({ message: 'Something went wrong' });
       }
     },
     handleBackClick() {

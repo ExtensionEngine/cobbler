@@ -52,7 +52,6 @@ export default {
   left: 16px;
   font-size: 16px;
   transition: all 0.15s ease;
-  z-index: -1;
 }
 .input:focus + .field-label,
 .text-area:focus + .field-label,
@@ -63,6 +62,5 @@ export default {
   padding: var(--spacing-xxs) var(--spacing-xs);
   background: var(--color-white);
   border-radius: 3px 3px 0 0;
-  z-index: 1;
 }
 </style>
