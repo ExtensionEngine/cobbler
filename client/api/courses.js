@@ -1,5 +1,4 @@
-import { endpoints } from './common';
-import thwack from 'thwack';
+import thwack, { endpoints } from '.';
 
 export function addCourse(data) {
   return thwack.post(endpoints.courses.base, data);
