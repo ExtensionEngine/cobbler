@@ -7,7 +7,7 @@ export default {
     addCourse: '/lecturer/add-course'
   },
   learner: {
-    base: '/learner'
+    base: '/'
   },
   admin: {
     base: '/admin'

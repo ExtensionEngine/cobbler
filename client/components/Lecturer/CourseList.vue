@@ -25,9 +25,9 @@ export default {
     try {
       const { data } = await getMyCourses();
       this.courses = data;
-      this.loading = false;
     } catch (err) {
       this.$toasted.global.formError({ message: 'Something went wrong while getting you courses' });
+    } finally {
       this.loading = false;
     }
   },

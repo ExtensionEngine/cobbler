@@ -1,7 +1,7 @@
 <template>
   <div class="forbidden-wrapper">
     <div class="forbidden-container">
-      <h1>Forbidden route for {{ $store.state.auth.role.toLowerCase() }} role</h1>
+      <h1>Forbidden route for {{ $store.getters.role | lowercase }} role</h1>
       <base-button @click="handleClick" primary contained>Go to home</base-button>
     </div>
   </div>
@@ -17,6 +17,9 @@ export default {
     handleClick() {
       this.$router.push(getBasePath());
     }
+  },
+  filters: {
+    lowercase: role => role.toLowerCase()
   },
   components: {
     BaseButton

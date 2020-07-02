@@ -7,7 +7,7 @@
     </span>
     <span
       class="nav-item">
-      {{ $store.state.auth.email }}
+      {{ $store.getters.email }}
     </span>
   </nav>
 </template>
@@ -36,7 +36,7 @@ export default {
   align-items: center;
   padding: 0 var(--spacing-md);
   box-shadow: 2px 2px 4px 0px var(--color-gray);
-  z-index: 4;
+  z-index: var(--z-nav);
 }
 .nav-item {
   background: var(--color-gray-500);
