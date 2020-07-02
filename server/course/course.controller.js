@@ -96,7 +96,7 @@ async function update(req, res) {
 async function checkNameAvailability(req, res) {
   try {
     const valid = !await Course.findOne({ where: { name: req.body.name } });
-    res.status(200).json({ valid });
+    res.status(200).json({ data: valid });
   } catch (e) {
     res.status(400).json(e);
   }

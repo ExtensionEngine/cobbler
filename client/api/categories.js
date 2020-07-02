@@ -1,5 +1,6 @@
-import thwack, { endpoints } from '.';
+import thwack, { endpoints, flattenData } from '.';
 
 export function getAllCategories() {
-  return thwack.get(endpoints.categories.base);
+  return thwack.get(endpoints.categories.base)
+  .then(flattenData);
 }

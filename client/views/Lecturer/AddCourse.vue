@@ -133,7 +133,7 @@ export default {
   },
   async created() {
     const { data } = await getAllCategories();
-    this.categories = data.data;
+    this.categories = data;
   },
   components: {
     BaseButton,

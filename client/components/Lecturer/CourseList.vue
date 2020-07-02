@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div v-if="loading">
+    <template v-if="loading">
       <div v-for="n in 5" :key="n" class="course-card"></div>
-    </div>
+    </template>
     <div v-else-if="!courses.length" class="no-content">There are no courses so far</div>
     <div v-for="course in courses" :key="course.id" class="course-card">
       <div class="card-info">
         <h3 class="course-title">{{ course.name }}</h3>
         <p>{{ course.description }}</p>
-        <span>{{ getDateRange(course) }}</span>
+        <span>{{ course | formatDates }}</span>
       </div>
       <span class="category">{{ course.Category.name }}</span>
     </div>
@@ -20,28 +20,23 @@ import { getMyCourses } from '../../api/courses';
 
 export default {
   name: 'lecturer-course-list',
-  data() {
-    return ({
-      courses: [],
-      loading: true
-    });
-  },
-  methods: {
-    getDateRange({ startDate, endDate }) {
-      if (!startDate || !endDate) {
-        return 'The start date, end date or both are not defined yet!';
-      }
-      return `${new Date(startDate).toDateString()} - ${new Date(endDate).toDateString()}`;
-    }
-  },
+  data: () => ({ courses: [], loading: true }),
   async created() {
     try {
       const { data } = await getMyCourses();
-      this.courses = data.data;
+      this.courses = data;
       this.loading = false;
     } catch (err) {
       this.$toasted.global.formError({ message: 'Something went wrong while getting you courses' });
       this.loading = false;
+    }
+  },
+  filters: {
+    formatDates({ startDate, endDate }) {
+      if (!startDate || !endDate) {
+        return 'The start date, end date or both are not defined yet!';
+      }
+      return `${new Date(startDate).toDateString()} - ${new Date(endDate).toDateString()}`;
     }
   }
 };

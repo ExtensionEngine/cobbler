@@ -28,7 +28,7 @@ extend('between', {
 extend('uniqueCourse', {
   async validate(name) {
     const { data } = await checkNameAvailability(name);
-    if (data.valid) {
+    if (data) {
       return true;
     }
     return 'The name is taken';

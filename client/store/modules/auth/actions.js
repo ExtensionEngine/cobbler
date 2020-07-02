@@ -6,10 +6,10 @@ import router from '../../../router';
 export const login = ({ commit }, credentials) => {
   return loginRequest(credentials)
   .then(({ data }) => {
-    localStorage.setItem('token', data.token);
-    const decodedToken = jwtDecode(data.token);
+    localStorage.setItem('token', data);
+    const decodedToken = jwtDecode(data);
     return commit('login', {
-      token: data.token,
+      token: data,
       email: decodedToken.sub,
       role: decodedToken.role
     });
