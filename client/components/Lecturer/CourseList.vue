@@ -38,7 +38,7 @@ export default {
       this.courses = data.data;
       this.loading = false;
     } catch (err) {
-      // TODO: add toast message in case of error
+      this.$toasted.global.formError({ message: 'Something went wrong while getting you courses' });
       this.loading = false;
     }
   },
