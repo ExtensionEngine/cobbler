@@ -1,9 +1,9 @@
 'use strict';
 
+const { BAD_REQUEST, CREATED, FORBIDDEN, NOT_FOUND } = require('http-status-codes');
 const { Category, Course, Enrollment, User } = require('../shared/database');
-const { BAD_REQUEST } = require('http-status-codes');
 const { HttpError } = require('../shared/error');
-const { Op } = require('sequelize');
+const isEmpty = require('lodash/isEmpty');
 const pick = require('lodash/pick');
 
 module.exports = {
@@ -24,11 +24,13 @@ function create(req, res) {
   ]);
   return Course.create(courseInfo)
     .then(course => course.addUser(req.user))
-    .then(course => res.status(201).json({ data: course }));
+    .then(course => res.status(CREATED).json({ data: course }));
 }
 
-function getAll(req, res) {
-  const { available, limit, offset } = req.query;
+async function getAll(req, res) {
+  const { filters } = req.query;
+  const errors = validateFilters(filters, Course);
+  if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
   const query = {
     limit,
     offset,
@@ -42,13 +44,11 @@ function getAll(req, res) {
         attributes: ['firstName', 'lastName', 'email'],
         through: { model: Enrollment, attributes: [] }
       }
-    ]
+    ],
+    where: filters
   };
-  if (available) {
-    query.where = { endDate: { [Op.gte]: new Date() } };
-  }
-  return Course.findAll(query)
-    .then(course => res.json({ data: course }));
+  const courses = await Course.findAll(query);
+  return res.json({ data: courses });
 }
 
 function getCourseById(req, res) {
@@ -73,16 +73,16 @@ function getCourseById(req, res) {
     ]
   })
     .then(course => {
-      if (!course) return res.status(404).send('Course not found');
+      if (!course) return res.status(NOT_FOUND).send('Course not found');
       return res.json({ data: course });
     });
 }
 
 async function enroll(req, res) {
   const course = await Course.findByPk(req.params.id);
-  if (!course.available) return res.status(403).json('Course unavailable');
+  if (!course.available) return res.status(FORBIDDEN).json('Course unavailable');
   await course.addUser(req.user);
-  return res.status(201).json('Successfully enrolled');
+  return res.status(CREATED).json('Successfully enrolled');
 }
 
 async function update(req, res) {
@@ -95,9 +95,20 @@ async function update(req, res) {
   ]);
   const course = await Course.findByPk(req.params.id);
   if (!course) {
-    return res.status(404).json('Course does not exist');
+    return res.status(NOT_FOUND).json('Course does not exist');
   }
   return course
-    .update({ ...courseInfo })
-    .then(course => res.status(201).json({ data: course }));
+    .update(courseInfo)
+    .then(course => res.status(CREATED).json({ data: course }));
+}
+
+function validateFilters(filters, model) {
+  const errors = {};
+  const validAttributes = Object.keys(model.rawAttributes);
+  const filteredAttributes = Object.keys(filters);
+  filteredAttributes.forEach(it => {
+    if (validAttributes.includes(it)) return;
+    errors[it] = `Attribute doesn't exist on "${model.name}" resource.`;
+  });
+  return errors;
 }
