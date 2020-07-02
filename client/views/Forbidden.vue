@@ -33,12 +33,13 @@ export default {
     justify-content: center;
 }
 .forbidden-container {
-    width: 350px;
+    max-width: var(--measure-sm);
+    width: 100%;
     padding: var(--spacing-md);
     border: 1px solid var(--color-primary);
     border-radius: 3px
 }
-h1 {
+.forbidden-container h1 {
     text-align: center;
 }
 </style>

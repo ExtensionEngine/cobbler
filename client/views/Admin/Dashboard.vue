@@ -7,7 +7,3 @@ export default {
   name: 'admin-dashboard'
 };
 </script>
-
-<style>
-
-</style>

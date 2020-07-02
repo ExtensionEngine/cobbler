@@ -9,6 +9,9 @@
   --spacing-xxl: 5.25rem;
   --spacing-xxxl: 5.5rem;
 
+  --measure-sm: 350px;
+  --measure-md: 550px;
+
   --z-nav: 2;
 }
 

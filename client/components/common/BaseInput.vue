@@ -49,7 +49,7 @@ export default {
 .input-filled {
   color: var(--color-black);
 }
-input[type="date"]::-webkit-calendar-picker-indicator {
+.field-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
     background: transparent;
     bottom: 0;
     right: 0;

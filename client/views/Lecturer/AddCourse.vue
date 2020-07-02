@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="second-bar">
-      <span @click="handleBackClick" class="back-button">Go back</span>
+      <span @click="goBack" class="back-button">Go back</span>
     </div>
     <div class="course-container">
       <base-form
@@ -11,7 +11,6 @@
         <field
           v-model="name"
           class="form-item-full"
-          :debounce="300"
           name="name"
           label="Name*"
           rules="required|between:2,50|uniqueCourse">
@@ -111,10 +110,12 @@ export default {
   },
   methods: {
     async onSubmit() {
+      const categoryId = this.categories.find(category => category.name === this.category).id;
+
       const courseToAdd = {
         name: this.name,
         description: this.description,
-        categoryId: this.categories.find(category => category.name === this.category).id,
+        categoryId,
         startDate: this.startDate,
         endDate: this.endDate
       };
@@ -127,7 +128,7 @@ export default {
         this.$toasted.global.formError({ message: 'Something went wrong' });
       }
     },
-    handleBackClick() {
+    goBack() {
       this.$router.push(paths.lecturer.base);
     }
   },
@@ -147,13 +148,13 @@ export default {
 
 <style scoped>
 .course-container {
-  padding: 50px 0;
+  padding: var(--spacing-xl) var(--spacing-md);
   display: flex;
   justify-content: center;
 }
 .course-form {
-  width: 90%;
-  max-width: 550px;
+  width: 100%;
+  max-width: var(--measure-md);
 }
 .form-item-full {
   margin: var(--spacing-sm) var(--spacing-xxs);
@@ -179,9 +180,9 @@ export default {
 }
 @media only screen and (max-width: 480px) {
   .form-item-half {
-  display: block;
-  margin: var(--spacing-sm) var(--spacing-xxs);
-  width: auto;
+    display: block;
+    margin: var(--spacing-sm) var(--spacing-xxs);
+    width: auto;
   }
 }
 </style>
