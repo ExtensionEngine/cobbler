@@ -23,7 +23,7 @@ function getCoursesByUser(req, res) {
       }
     ]
   })
-    .then(course => res.json({ data: course, offset: {} }));
+    .then(course => res.json({ data: course }));
 }
 
 function isEnrolled(req, res) {
