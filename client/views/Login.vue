@@ -8,7 +8,7 @@
         v-model="email"
         name="email"
         label="Email"
-        rules="required|email">
+        :rules="emailRules">
         <template v-slot="{ on, value }">
           <base-input
             v-on="on"
@@ -21,7 +21,7 @@
         v-model="password"
         name="password"
         label="Password"
-        rules="required|min:5">
+        :rules="passwordRules">
         <template v-slot="{ on, value }">
           <base-input
             v-on="on"
@@ -59,6 +59,14 @@ export default {
       password: '',
       error: null
     };
+  },
+  computed: {
+    emailRules() {
+      return { required: true, email: true };
+    },
+    passwordRules() {
+      return { required: true, min: { min: 5 } };
+    }
   },
   methods: {
     ...mapActions(['login']),
