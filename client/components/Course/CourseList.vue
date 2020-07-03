@@ -28,10 +28,10 @@
 </template>
 
 <script>
-import { get, searchName } from '../../api/courses';
 import BaseSearch from '../common/BaseSearch';
 import compareAsc from 'date-fns/compareAsc';
 import CourseCard from './CourseCard';
+import { get } from '../../api/courses';
 import parseISO from 'date-fns/parseISO';
 
 export default {
@@ -75,8 +75,7 @@ export default {
         : 0;
     },
     handleSearch(searchTerm) {
-      console.log(searchTerm);
-      searchName(searchTerm)
+      get(`?limit=${this.limit}&offset=${this.offset}&name=ts.${searchTerm}`)
         .then(courses => {
           this.courses = courses.data;
         });
