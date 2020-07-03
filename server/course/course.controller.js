@@ -1,6 +1,6 @@
 'use strict';
 
-const { BAD_REQUEST, CREATED, FORBIDDEN, NOT_FOUND } = require('http-status-codes');
+const { BAD_REQUEST, CREATED, NOT_FOUND } = require('http-status-codes');
 const { Category, Course, Enrollment, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
@@ -10,7 +10,6 @@ const { validateFilters } = require('../shared/util/apiQueryParser');
 module.exports = {
   create,
   getAll,
-  enroll,
   getCourseById,
   update
 };
@@ -71,13 +70,6 @@ function getCourseById(req, res) {
       if (!course) return res.status(NOT_FOUND).send('Course not found');
       return res.json({ data: course });
     });
-}
-
-async function enroll(req, res) {
-  const course = await Course.findByPk(req.params.id);
-  if (!course.available) return res.status(FORBIDDEN).json('Course unavailable');
-  await course.addUser(req.user);
-  return res.status(CREATED).json('Successfully enrolled');
 }
 
 async function update(req, res) {
