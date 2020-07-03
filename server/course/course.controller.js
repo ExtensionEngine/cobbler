@@ -28,7 +28,7 @@ function create(req, res) {
     .then(course => res.status(CREATED).json({ data: course }));
 }
 
-async function getAll(req, res) {
+function getAll(req, res, next) {
   const { filters, pagination } = req.query;
   const errors = validateFilters(filters, Course.rawAttributes, Course.name);
   if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
@@ -47,8 +47,11 @@ async function getAll(req, res) {
     ],
     where: filters
   };
-  const courses = await Course.findAll(query);
-  return res.json({ data: courses });
+  return Course.findAll(query)
+    .then(courses => {
+      return res.json({ data: courses });
+    })
+    .catch(next);
 }
 
 function getCourseById(req, res) {
