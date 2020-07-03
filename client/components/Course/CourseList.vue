@@ -1,38 +1,40 @@
 <template>
-  <div class="container">
-    <base-search @search="handleSearch" />
-    <div class="cards">
-      <course-card
-        v-for="course in getEnrolledCourses"
-        :key="course.id"
-        :course="course"
-        :enrolled="true" />
-      <course-card
-        v-for="course in getNotEnrolledCourses"
-        :key="course.id"
-        :course="course" />
-    </div>
-    <div class="page-btns">
-      <button @click="paginateBack" class="arrow-btn">
-        <i class="material-icons">
-          keyboard_arrow_left
-        </i>
-      </button>
-      <button @click="paginateForward" class="arrow-btn">
-        <i class="material-icons">
-          keyboard_arrow_right
-        </i>
-      </button>
+  <div class="wrapper">
+    <side-bar />
+    <div class="container">
+      <div class="cards">
+        <course-card
+          v-for="course in getEnrolledCourses"
+          :key="course.id"
+          :course="course"
+          :enrolled="true" />
+        <course-card
+          v-for="course in getNotEnrolledCourses"
+          :key="course.id"
+          :course="course" />
+      </div>
+      <div class="page-btns">
+        <button @click="paginateBack" class="arrow-btn">
+          <i class="material-icons">
+            keyboard_arrow_left
+          </i>
+        </button>
+        <button @click="paginateForward" class="arrow-btn">
+          <i class="material-icons">
+            keyboard_arrow_right
+          </i>
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import BaseSearch from '../common/BaseSearch';
 import compareAsc from 'date-fns/compareAsc';
 import CourseCard from './CourseCard';
 import { get } from '../../api/courses';
 import parseISO from 'date-fns/parseISO';
+import SideBar from './SideBar';
 
 export default {
   name: 'course-list',
@@ -96,12 +98,16 @@ export default {
       });
   },
   components: {
-    CourseCard, BaseSearch
+    CourseCard, SideBar
   }
 };
 </script>
 
 <style lang="css" scoped>
+.wrapper {
+  display: flex;
+}
+
 .container {
   padding: var(--spacing-md);
   font-size: 0.7rem;
@@ -110,8 +116,7 @@ export default {
 .page-btns {
   display: flex;
   justify-content: flex-end;
-  position: relative;
-  bottom: 5%;
+
 }
 
 i {

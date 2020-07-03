@@ -36,6 +36,7 @@ export default {
     padding: 5px;
     width: fit-content;
     display: flex;
+    background-color: white;
   }
 
   .search-wrapper:focus-within {
