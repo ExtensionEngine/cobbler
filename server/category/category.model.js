@@ -31,7 +31,10 @@ class Category extends Model {
   }
 
   static associate({ Course }) {
-    this.hasMany(Course, { foreignKey: 'categoryId' });
+    this.hasMany(Course, {
+      foreignKey: 'categoryId',
+      as: 'course'
+    });
   }
 }
 

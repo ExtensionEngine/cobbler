@@ -15,10 +15,12 @@ function getCoursesByUser(req, res) {
         model: User,
         where: { email },
         attributes: [],
-        through: []
+        through: [],
+        as: 'user'
       },
       {
         model: Category,
+        as: 'category',
         attributes: ['name']
       }
     ]

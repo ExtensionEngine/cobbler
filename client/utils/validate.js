@@ -28,6 +28,6 @@ extend('between', {
 extend('uniqueCourse', {
   async validate(name) {
     const { data } = await checkNameAvailability(name);
-    return data.valid || 'The name is taken';
+    return data || 'The name is taken';
   }
 });

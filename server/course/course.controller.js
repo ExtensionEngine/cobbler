@@ -34,12 +34,14 @@ function getAll(req, res) {
     include: [
       {
         model: Category,
+        as: 'category',
         attributes: ['name']
       },
       {
         model: User,
         attributes: ['firstName', 'lastName', 'email'],
-        through: { model: Enrollment, attributes: [] }
+        through: { model: Enrollment, attributes: [] },
+        as: 'user'
       }
     ]
   };
@@ -59,6 +61,7 @@ function getCourseById(req, res) {
     include: [
       {
         model: Category,
+        as: 'category',
         attributes: ['name']
       }
     ]
@@ -95,8 +98,8 @@ async function update(req, res) {
 
 async function checkNameAvailability(req, res) {
   try {
-    const valid = !await Course.findOne({ where: { name: req.body.name } });
-    res.status(200).json({ data: valid });
+    const course = await Course.findOne({ where: { name: req.body.name } });
+    res.status(200).json({ data: !course });
   } catch (e) {
     res.status(400).json(e);
   }
