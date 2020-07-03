@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <base-search @search="handleSearch" />
     <div class="cards">
       <course-card
         v-for="course in getEnrolledCourses"
@@ -27,6 +28,7 @@
 </template>
 
 <script>
+import BaseSearch from '../common/BaseSearch';
 import compareAsc from 'date-fns/compareAsc';
 import CourseCard from './CourseCard';
 import { get } from '../../api/courses';
@@ -88,7 +90,7 @@ export default {
       });
   },
   components: {
-    CourseCard
+    CourseCard, BaseSearch
   }
 };
 </script>
