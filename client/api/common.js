@@ -11,7 +11,8 @@ export const endpoints = {
     all: params => `courses/${params}`,
     byId: id => `courses/${id}`,
     enroll: id => `courses/${id}/enroll`,
-    checkIfEnrolled: id => `me/courses/${id}`
+    checkIfEnrolled: id => `me/courses/${id}`,
+    textSearch: text => `courses?name=ts.${text}`
   }
 };
 

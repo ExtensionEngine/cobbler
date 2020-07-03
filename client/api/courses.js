@@ -16,3 +16,7 @@ export function enroll(id) {
 export function checkIfEnrolled(id) {
   return thwack.get(endpoints.course.checkIfEnrolled(id));
 }
+
+export function searchName(text) {
+  return thwack.get(endpoints.course.textSearch(text));
+}
