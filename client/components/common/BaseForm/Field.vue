@@ -55,6 +55,7 @@ export default {
 }
 .input:focus + .field-label,
 .text-area:focus + .field-label,
+.select:focus + .field-label,
 .field-filled {
   font-size: 11px;
   top: -26px;

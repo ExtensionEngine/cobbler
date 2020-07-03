@@ -175,6 +175,7 @@ export default {
   grid-template-columns: [start] 1fr [middle] 1fr [end];
   grid-template-rows: [first] 1fr [second] 1fr [third] 1fr [fourth] 1fr [fifth] 1fr;
   grid-column-gap: var(--spacing-xs);
+  grid-row-gap: var(--spacing-xs);
 }
 .name-form-item {
   grid-column: start / end;
