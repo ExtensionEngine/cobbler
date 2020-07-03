@@ -26,7 +26,7 @@
 
 <script>
 import BaseButton from '../common/BaseButton';
-import { enroll } from '../../api/courses';
+import { enroll } from '../../api/enroll';
 import format from 'date-fns/format';
 import LectureContainer from '../Lectures/LectureContainer';
 

@@ -12,6 +12,9 @@ export const endpoints = {
     byId: id => `courses/${id}`,
     enroll: id => `courses/${id}/enroll`,
     checkIfEnrolled: id => `me/courses/${id}`
+  },
+  enroll: {
+    base: 'enroll'
   }
 };
 
