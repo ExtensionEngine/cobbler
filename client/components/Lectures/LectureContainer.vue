@@ -1,7 +1,8 @@
 <template>
-  <div class="lecture-container">
-    <ul class="lecture-list">
-      <li v-for="lecture in dummyLectures" :key="lecture.id">
+  <div>
+    <h2>Lectures:</h2>
+    <ul class="list">
+      <li v-for="lecture in dummyLectures" :key="lecture.id" class="lecture">
         <lecture-box
           :title="lecture.name"
           :description="lecture.description" />
@@ -36,14 +37,15 @@ export default {
 </script>
 
 <style lang="css" scoped>
-  .lecture-container {
-    background: rgb(247, 247, 247);
-  }
-  .lecture-list {
+  .list {
     list-style-type: none;
     padding: 0;
-    height : 300px;
     overflow: scroll;
   }
-
+  .lecture {
+    border-top: 1px solid var(--color-gray-500);
+  }
+  .lecture:first-of-type {
+    border-top: none;
+  }
 </style>

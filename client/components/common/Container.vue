@@ -12,8 +12,10 @@ export default {
 
 <style lang="css" scoped>
   .container {
-    padding: var(--spacing-xs);
-    width: 90%;
-    margin: var(--spacing-sm) auto;
+    display: flex;
+    flex-flow: column nowrap;
+    position: relative;
+    min-height: calc(100vh - var(--navbar-height));
+    width: 100%;
   }
 </style>

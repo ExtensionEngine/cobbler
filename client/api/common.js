@@ -15,6 +15,9 @@ export const endpoints = {
   },
   enroll: {
     base: 'enroll'
+  },
+  categories: {
+    base: 'categories'
   }
 };
 

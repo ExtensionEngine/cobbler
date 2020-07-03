@@ -1,20 +1,22 @@
 <template>
-  <div>
-    <div class="course-tags">
-      <span class="small-label category-label">{{ category }}</span>
-      <span class="small-label date-label">
+  <div class="page">
+    <div class="tags">
+      <span class="small-label mr-xs category-label">{{ category }}</span>
+      <span class="small-label mr-xs date-label">
         {{ formatDate(start) }} - {{ formatDate(end) }}
       </span>
     </div>
-    <div class="course-content">
+    <base-button
+      @click="sendEnrollRequest"
+      :disabled="enrolled"
+      class="enroll-btn justify-end"
+      contained>
+      Enroll
+    </base-button>
+    <div class="overview">
       <div>
-        <div class="course-title">
+        <div class="flex-h">
           <h1>{{ title }}</h1>
-          <div class="btn-container">
-            <base-button @click="sendEnrollRequest" :disabled="enrolled" class="enroll-btn" contained>
-              Enroll
-            </base-button>
-          </div>
         </div>
         <p>{{ description }}</p>
         <p>By: {{ lecturers }}</p>
@@ -71,13 +73,19 @@ export default {
 </script>
 
 <style scoped>
+  .page {
+    display: grid;
+    height: 100%;
+    padding: var(--spacing-xl);
+    gap: var(--spacing-md);
+    grid-template: repeat(3, auto) 1fr / 1fr;
+    grid-template-areas:
+    'tags'
+    'enroll'
+    'overview'
+    'lectures';
+  }
 
-  .course-title {
-    display: flex;
-  }
-  .course-title h1{
-    margin-right: 20px;
-  }
   .category-label {
     background: var(--color-info);
     color: white;
@@ -87,11 +95,9 @@ export default {
     background: var(--color-gray);
     color: white;
   }
-  .btn-container *{
-    margin-top: 30%;
-  }
 
   .enroll-btn {
+    grid-area: enroll;
     color: white;
     background-color: var(--color-success);
     box-shadow: 0 2px 3px var(--color-gray), 0 2px 3px var(--color-gray);
@@ -106,20 +112,21 @@ export default {
     box-shadow: inset 0px 0px 5px #c1c1c1;
   }
 
-  .small-label{
+  .small-label {
     font-size: 0.7rem;
     border-radius: 5px;
     padding: 5px 10px;
-    margin-right: var(--spacing-xs);
   }
 
-  .course-tags {
+  .tags {
     display: flex;
     justify-content: flex-start;
+    grid-area: tags;
   }
 
   .lectures {
     width: 100%;
+    grid-area: lectures;
   }
 
 </style>

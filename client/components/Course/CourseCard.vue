@@ -1,6 +1,5 @@
 <template>
   <div
-    @click="showCourse"
     class="course-card"
     :class="{ enrolled }">
     <div class="course-card-title">
@@ -14,6 +13,7 @@
         {{ formatDate(course.startDate) }} - {{ formatDate(course.endDate) }}
       </p>
     </div>
+    <base-button @click="showCourse">{{ enrolled ? 'Continue' : 'Enroll' }}</base-button>
   </div>
 </template>
 

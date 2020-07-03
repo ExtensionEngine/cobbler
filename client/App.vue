@@ -6,6 +6,7 @@
 
 <script>
 import 'normalize.css';
+import './theme/global.css';
 import './theme/colors.css';
 import './theme/layout.css';
 import './theme/typography.css';
@@ -16,6 +17,8 @@ export default { name: 'app' };
 <style>
 
 #app {
+  display: flex;
+  flex-flow: column nowrap;
   padding-top: var(--spacing-xl);
 }
 </style>

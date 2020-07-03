@@ -106,6 +106,7 @@ export default {
 <style lang="css" scoped>
 .wrapper {
   display: flex;
+  height: 100vh;
 }
 
 .container {
