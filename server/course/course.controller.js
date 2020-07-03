@@ -29,10 +29,11 @@ function create(req, res) {
 }
 
 async function getAll(req, res) {
-  const { filters } = req.query;
+  const { filters, pagination } = req.query;
   const errors = validateFilters(filters, Course.rawAttributes, Course.name);
   if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
   const query = {
+    ...pagination,
     include: [
       {
         model: Category,
