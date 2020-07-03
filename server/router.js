@@ -8,7 +8,6 @@ const resource = require('./shared/user-resources');
 const router = require('express').Router();
 const user = require('./user');
 
-router.get('/test', (req, res) => { res.json(req.query); });
 router.use(auth.path, auth.router);
 router.use(authenticate('jwt'));
 router.use(user.path, user.router);
