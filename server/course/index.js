@@ -8,8 +8,8 @@ router
   .get('/', ctrl.getAll)
   .get('/:id', ctrl.getCourseById)
   .post('/:id/enroll', ctrl.enroll)
-  .post('/check-name', ctrl.checkNameAvailability)
-  .patch('/:id', ctrl.update);
+  .patch('/:id', ctrl.update)
+  .post('/check-name', ctrl.checkNameAvailability);
 
 module.exports = {
   path: '/courses',
