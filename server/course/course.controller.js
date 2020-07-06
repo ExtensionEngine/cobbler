@@ -38,16 +38,20 @@ function getAll(req, res, next) {
         model: Category,
         attributes: ['name']
       },
+      Enrollment,
       {
         model: User,
-        attributes: ['firstName', 'lastName', 'email', 'role'],
+        attributes: ['firstName', 'lastName', 'email'],
         through: { model: Enrollment, attributes: [] }
       }
     ],
-    where: filters
+    where: filters,
+    subQuery: false,
+    order: [[Enrollment, 'userId', 'asc']]
   };
   return Course.findAll(query)
     .then(courses => {
+      console.log(courses);
       return res.json({ data: courses });
     })
     .catch(next);

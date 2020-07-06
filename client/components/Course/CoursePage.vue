@@ -1,36 +1,26 @@
 <template>
-  <div class="page">
-    <div class="tags">
-      <span class="small-label mr-xs category-label">{{ category }}</span>
-      <span class="small-label mr-xs date-label">
-        {{ formatDate(start) }} - {{ formatDate(end) }}
+  <div>
+    <div class="course-tags">
+      <span class="small-label category-label">{{ course.Category.name }}</span>
+      <span class="small-label date-label">
+        {{ course | getDateRange }}
       </span>
     </div>
-    <base-button
-      @click="sendEnrollRequest"
-      :disabled="enrolled"
-      class="enroll-btn justify-end"
-      contained>
-      Enroll
-    </base-button>
-    <div class="overview">
+    <div class="course-content">
       <div>
-        <div class="flex-h">
-          <h1>{{ title }}</h1>
-          <div class="course-title">
-            <h1>{{ course.name }}</h1>
-            <div class="btn-container">
-              <base-button @click="sendEnrollRequest" :disabled="enrolled" class="enroll-btn" contained>
-                Enroll
-              </base-button>
-            </div>
+        <div class="course-title">
+          <h1>{{ course.name }}</h1>
+          <div class="btn-container">
+            <base-button @click="sendEnrollRequest" :disabled="enrolled" class="enroll-btn" contained>
+              Enroll
+            </base-button>
           </div>
-          <p>{{ course.description }}</p>
-          <p>By: {{ lecturers }}</p>
         </div>
+        <p>{{ course.description }}</p>
+        <p>By: {{ lecturers }}</p>
       </div>
-      <lecture-container class="lectures" />
     </div>
+    <lecture-container class="lectures" />
   </div>
 </template>
 
@@ -39,7 +29,6 @@ import BaseButton from '../common/BaseButton';
 import { enroll } from '../../api/enroll';
 import format from 'date-fns/format';
 import LectureContainer from '../Lectures/LectureContainer';
-
 export default {
   name: 'course-page',
   props: {
@@ -86,19 +75,6 @@ export default {
 </script>
 
 <style scoped>
-  .page {
-    display: grid;
-    height: 100%;
-    padding: var(--spacing-xl);
-    gap: var(--spacing-md);
-    grid-template: repeat(3, auto) 1fr / 1fr;
-    grid-template-areas:
-    'tags'
-    'enroll'
-    'overview'
-    'lectures';
-  }
-
   .course-title {
     display: flex;
   }
@@ -109,15 +85,15 @@ export default {
     background: var(--color-info);
     color: var(--color-white);
   }
-
   .date-label {
     background: var(--color-gray);
     color: var(--color-white);
   }
-
+  .btn-container *{
+    margin-top: 30%;
+  }
   .enroll-btn {
     color: var(--color-white);
-    grid-area: enroll;
     background-color: var(--color-success);
     box-shadow: 0 2px 3px var(--color-gray), 0 2px 3px var(--color-gray);
     padding: var(--spacing-xs) var(--spacing-sd);
@@ -125,27 +101,17 @@ export default {
     text-transform: uppercase;
     letter-spacing: var(--spacing-xxxs);
   }
-
   .small-label{
     font-size: var(--text-sm);
     border-radius: var(--spacing-xxs);
     padding: var(--spacing-xxs) var(--spacing-sm);
     margin-right: var(--spacing-xs);
-  .enroll-btn:focus {
-    outline: none;
-    box-shadow: inset 0px 0px 5px #c1c1c1;
   }
-  }
-
-  .tags {
+  .course-tags {
     display: flex;
     justify-content: flex-start;
-    grid-area: tags;
   }
-
   .lectures {
     width: 100%;
-    grid-area: lectures;
   }
-
 </style>

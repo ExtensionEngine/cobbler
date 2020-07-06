@@ -35,7 +35,7 @@ export default {
   .filter-element {
     margin: 10px;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
   }
 
 </style>

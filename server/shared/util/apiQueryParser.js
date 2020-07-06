@@ -22,6 +22,7 @@ const apiQueryParser = (req, res, next) => {
       filters[attribute] = parseFilter(filter);
     });
   req.query = { filters, pagination: { limit, offset } };
+  console.log(req.query);
   next();
 };
 

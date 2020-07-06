@@ -49,6 +49,7 @@ class Course extends Model {
       through: Enrollment,
       foreignKey: { name: 'courseId', field: 'course_id' }
     });
+    this.hasMany(Enrollment, { foreignKey: 'course_id' });
   }
 
   static options() {
