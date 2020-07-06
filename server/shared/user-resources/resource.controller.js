@@ -3,7 +3,8 @@
 const { Category, Course, User } = require('../database');
 
 module.exports = {
-  getCoursesByUser, isEnrolled
+  getCoursesByUser,
+  isEnrolled
 };
 
 function getCoursesByUser(req, res) {
