@@ -8,6 +8,18 @@
           :course="course"
           :enrolled="checkEnrolled(course)" />
       </div>
+      <div class="page-btns">
+        <button @click="paginateBack" class="arrow-btn">
+          <i class="material-icons">
+            keyboard_arrow_left
+          </i>
+        </button>
+        <button @click="paginateForward" class="arrow-btn">
+          <i class="material-icons">
+            keyboard_arrow_right
+          </i>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -25,7 +37,9 @@ export default {
   },
   data() {
     return {
-      courses: { data: [] }
+      limit: 6,
+      offset: 0,
+      courses: []
     };
   },
   methods: {
@@ -43,13 +57,31 @@ export default {
     },
     sortByEnrollment(courses) {
       return sortBy(this.sortByUpdated(courses), this.checkEnrolled).reverse();
+    },
+    paginateForward() {
+      if (this.courses.length === this.limit) { this.offset += this.limit; }
+    },
+    paginateBack() {
+      this.offset = (this.offset > this.limit)
+        ? this.offset -= this.limit
+        : 0;
     }
   },
-  mounted() {
-    get().then(({ data }) => {
-      this.courses =
+  watch: {
+    offset() {
+      get(`?limit=${this.limit}&offset=${this.offset}`)
+        .then(({ data }) => {
+          this.courses =
         this.sortByEnrollment(this.sortByUpdated(data.data));
-    });
+        });
+    }
+  },
+  created() {
+    get(`?limit=${this.limit}&offset=${this.offset}`)
+      .then(({ data }) => {
+        this.courses =
+        this.sortByEnrollment(this.sortByUpdated(data.data));
+      });
   },
   components: {
     CourseCard
@@ -68,7 +100,7 @@ export default {
 }
 .page-btns {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 i {
   font-size: var(--text-lg);

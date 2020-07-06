@@ -130,7 +130,7 @@ export default {
   background-color: var(--color-primary);
   color: var(--color-white);
   width: 100%;
-  max-height: 30%;
+  height: 50%;
   padding: var(--spacing-sm);
 }
 .course-card-title h1 {
