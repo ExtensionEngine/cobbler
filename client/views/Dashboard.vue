@@ -64,7 +64,7 @@ export default {
 }
 .container {
   padding: var(--spacing-md);
-  font-size: 0.7rem;
+  font-size: var(--text-sm);
 }
 .page-btns {
   display: flex;
