@@ -37,7 +37,6 @@ import parseISO from 'date-fns/parseISO';
 import SideBar from './SideBar';
 
 export default {
-  name: 'course-list',
   props: {
     loading: { type: Boolean, default: false }
   },
@@ -143,13 +142,11 @@ i {
   grid: auto-flow auto / 1fr;
   grid-gap: var(--spacing-lg);
 }
-
 @media (min-width: 600px) {
   .cards {
     grid: auto-flow auto / repeat(2, 1fr);
   }
 }
-
 @media (min-width: 900px) {
   .cards {
     grid: auto-flow auto / repeat(3, 1fr);

@@ -41,13 +41,13 @@ export default {
     category: { type: String, default: '' },
     start: { type: String, default: '' },
     end: { type: String, default: '' },
-    users: { type: Array, default: () => [] },
+    authors: { type: Array, default: () => [] },
     enrolled: { type: Boolean, default: false }
   },
   computed: {
     lecturers() {
       const temp = [];
-      this.users.forEach(element => {
+      this.authors.forEach(element => {
         temp.push(`${element.firstName} ${element.lastName}`);
       });
       return temp.join(', ');
@@ -63,7 +63,7 @@ export default {
       }
     },
     formatDate(dateString) {
-      return format(new Date(dateString), 'dd/MM/yyyy');
+      return dateString ? format(new Date(dateString), 'dd/MM/yyyy') : '';
     }
   },
   components: {

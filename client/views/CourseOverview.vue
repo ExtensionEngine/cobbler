@@ -7,7 +7,7 @@
       :category="course.Category.name"
       :start="course.startDate"
       :end="course.endDate"
-      :users="course.Users"
+      :authors="getAuthors"
       :enrolled="enrolled" />
   </container>
 </template>
@@ -24,6 +24,11 @@ export default {
       course: { Category: {} },
       enrolled: false
     };
+  },
+  computed: {
+    getAuthors() {
+      return this.course.Users.filter(user => user.role === 'LECTURER');
+    }
   },
   async created() {
     await getById(this.$route.params.id).then(course => {
