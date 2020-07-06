@@ -34,7 +34,7 @@ export default {
     border: 1px solid var(--color-gray-500);
     border-radius: 3px;
     padding: 5px;
-    width: fit-content;
+    width: 100%;
     display: flex;
     background-color: white;
   }
