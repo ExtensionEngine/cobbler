@@ -1,7 +1,7 @@
 import { endpoints } from './common';
 import thwack from 'thwack';
 
-export function getAllCourses() {
+export function get() {
   return thwack.get(endpoints.course.available);
 }
 
