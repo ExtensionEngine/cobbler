@@ -31,10 +31,10 @@
 
 <script>
 import compareAsc from 'date-fns/compareAsc';
-import CourseCard from './CourseCard';
-import { get } from '../../api/courses';
+import CourseCard from '../components/Course/CourseCard';
+import { get } from '../api/courses';
 import parseISO from 'date-fns/parseISO';
-import SideBar from './SideBar';
+import SideBar from '../components/Course/SideBar';
 
 export default {
   props: {
