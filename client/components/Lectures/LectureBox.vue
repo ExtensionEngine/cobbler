@@ -19,7 +19,7 @@ export default {
 
 .container {
     border-top: 1px solid var(--color-gray-500);
-    padding: 0 15px;
+    padding: 0 var(--spacing-sd);
   }
 
 </style>

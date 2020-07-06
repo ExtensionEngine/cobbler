@@ -25,9 +25,10 @@ export default {
   props: {
     course: {
       type: Object,
+      required: true,
       default() {
         return {
-          id: { type: Number, default: null, required: true },
+          id: '',
           name: '',
           category: {},
           description: '',
@@ -75,7 +76,7 @@ export default {
   max-height: 250px;
   min-width: 300px;
   position: relative;
-  font-size: 0.5rem;
+  font-size: var(--text-xs);
 }
 
 .course-card:empty {
@@ -129,15 +130,15 @@ export default {
   background-color: var(--color-primary);
   color: var(--color-white);
   width: 100%;
-  max-height: 100px;
-  padding: 15px;
+  max-height: 30%;
+  padding: var(--spacing-sm);
 }
 .course-card-title h1 {
-  font-size: 1.3rem;
+  font-size: var(--text-md);
 }
 .course-card-description {
   padding: 0 var(--spacing-md);
-  font-size: 0.7rem;
+  font-size: var(--text-sm);
 }
 
 .date {
@@ -145,6 +146,6 @@ export default {
 }
 
 .enrolled {
-  border: 2px solid var(--color-success);
+  border: var(--spacing-xxxs) solid var(--color-success);
 }
 </style>

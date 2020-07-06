@@ -1,29 +1,12 @@
 <template>
   <div class="wrapper">
-    <side-bar />
     <div class="container">
       <div class="cards">
         <course-card
-          v-for="course in getEnrolledCourses"
+          v-for="course in courses"
           :key="course.id"
           :course="course"
-          :enrolled="true" />
-        <course-card
-          v-for="course in getNotEnrolledCourses"
-          :key="course.id"
-          :course="course" />
-      </div>
-      <div class="page-btns">
-        <button @click="paginateBack" class="arrow-btn">
-          <i class="material-icons">
-            keyboard_arrow_left
-          </i>
-        </button>
-        <button @click="paginateForward" class="arrow-btn">
-          <i class="material-icons">
-            keyboard_arrow_right
-          </i>
-        </button>
+          :enrolled="checkEnrolled(course)" />
       </div>
     </div>
   </div>
@@ -34,66 +17,39 @@ import compareAsc from 'date-fns/compareAsc';
 import CourseCard from '../components/Course/CourseCard';
 import { get } from '../api/courses';
 import parseISO from 'date-fns/parseISO';
+import sortBy from 'lodash/sortBy';
+
 export default {
-  name: 'course-list',
   props: {
     loading: { type: Boolean, default: false }
   },
   data() {
     return {
-      limit: 6,
-      offset: 0,
       courses: { data: [] }
     };
   },
-  computed: {
-    getEnrolledCourses() {
-      return this.courses.data.filter(course =>
-        course.Users.find(user => user.email === this.$store.state.auth.email)
-      );
-    },
-    getNotEnrolledCourses() {
-      return this.courses.data
-        .filter(
-          course =>
-            !course.Users.find(
-              user => user.email === this.$store.state.auth.email
-            )
-        )
-        .sort((prev, next) => {
-          return compareAsc(parseISO(prev.updatedAt), parseISO(next.updatedAt));
-        });
-    }
-  },
   methods: {
-    paginateForward() {
-      if (this.courses.data.length === this.limit) { this.offset += this.limit; }
+    checkEnrolled(course) {
+      if (!course.Users.length) return false;
+      if (course.Users.find(user => user.email === this.$store.state.auth.email)) {
+        return true;
+      }
+      return false;
     },
-    paginateBack() {
-      this.offset = (this.offset > this.limit)
-        ? this.offset -= this.limit
-        : 0;
-    },
-    handleSearch(searchTerm) {
-      get(`?limit=${this.limit}&offset=${this.offset}&name=ts.${searchTerm}`)
-        .then(courses => {
-          this.courses = courses.data;
-        });
-    }
-  },
-  watch: {
-    offset() {
-      get(`?limit=${this.limit}&offset=${this.offset}`)
-        .then(courses => {
-          this.courses = courses.data;
-        });
-    }
-  },
-  created() {
-    get(`?limit=${this.limit}&offset=${this.offset}`)
-      .then(courses => {
-        this.courses = courses.data;
+    sortByUpdated(courses) {
+      return courses.sort((prev, next) => {
+        return compareAsc(parseISO(prev.updatedAt), parseISO(next.updatedAt));
       });
+    },
+    sortByEnrollment(courses) {
+      return sortBy(this.sortByUpdated(courses), this.checkEnrolled).reverse();
+    }
+  },
+  mounted() {
+    get().then(({ data }) => {
+      this.courses =
+        this.sortByEnrollment(this.sortByUpdated(data.data));
+    });
   },
   components: {
     CourseCard
@@ -108,14 +64,14 @@ export default {
 }
 .container {
   padding: var(--spacing-md);
-  font-size: 0.7rem;
+  font-size: var(--text-sm);
 }
 .page-btns {
   display: flex;
   justify-content: flex-end;
 }
 i {
-  font-size: 2.2rem;
+  font-size: var(--text-lg);
 }
 .arrow-btn {
   background: none;
@@ -129,7 +85,7 @@ i {
 }
 .cards {
   max-width: 1200px;
-  margin: 20px auto;
+  margin: var(--spacing-md) auto;
   display: grid;
   grid: auto-flow auto / 1fr;
   grid-gap: var(--spacing-lg);
