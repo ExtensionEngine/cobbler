@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper">
-    <side-bar />
     <div class="container">
       <div class="cards">
         <course-card
@@ -13,18 +12,6 @@
           :key="course.id"
           :course="course" />
       </div>
-      <div class="page-btns">
-        <button @click="paginateBack" class="arrow-btn">
-          <i class="material-icons">
-            keyboard_arrow_left
-          </i>
-        </button>
-        <button @click="paginateForward" class="arrow-btn">
-          <i class="material-icons">
-            keyboard_arrow_right
-          </i>
-        </button>
-      </div>
     </div>
   </div>
 </template>
@@ -35,14 +22,11 @@ import CourseCard from '../components/Course/CourseCard';
 import { get } from '../api/courses';
 import parseISO from 'date-fns/parseISO';
 export default {
-  name: 'course-list',
   props: {
     loading: { type: Boolean, default: false }
   },
   data() {
     return {
-      limit: 6,
-      offset: 0,
       courses: { data: [] }
     };
   },
@@ -65,32 +49,8 @@ export default {
         });
     }
   },
-  methods: {
-    paginateForward() {
-      if (this.courses.data.length === this.limit) { this.offset += this.limit; }
-    },
-    paginateBack() {
-      this.offset = (this.offset > this.limit)
-        ? this.offset -= this.limit
-        : 0;
-    },
-    handleSearch(searchTerm) {
-      get(`?limit=${this.limit}&offset=${this.offset}&name=ts.${searchTerm}`)
-        .then(courses => {
-          this.courses = courses.data;
-        });
-    }
-  },
-  watch: {
-    offset() {
-      get(`?limit=${this.limit}&offset=${this.offset}`)
-        .then(courses => {
-          this.courses = courses.data;
-        });
-    }
-  },
   created() {
-    get(`?limit=${this.limit}&offset=${this.offset}`)
+    get()
       .then(courses => {
         this.courses = courses.data;
       });
