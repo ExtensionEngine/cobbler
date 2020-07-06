@@ -1,8 +1,8 @@
 <template>
   <div
     @click="showCourse"
-    class="course-card"
-    :class="{ enrolled }">
+    :class="{ enrolled }"
+    class="course-card">
     <div class="course-card-title">
       <p class="category-name">{{ course.Category.name }}</p>
       <h1>{{ course.name }}</h1>
@@ -11,7 +11,7 @@
       <p>{{ course.description }}</p>
       <p>By: {{ lecturer }}</p>
       <p class="date">
-        {{ formatDate(course.startDate) }} - {{ formatDate(course.endDate) }}
+        {{ course | getDateRange }}
       </p>
     </div>
   </div>
@@ -23,11 +23,11 @@ import format from 'date-fns/format';
 export default {
   name: 'course-card',
   props: {
-    id: { type: Number, default: null },
     course: {
       type: Object,
       default() {
         return {
+          id: { type: Number, default: null, required: true },
           name: '',
           category: {},
           description: '',
@@ -41,7 +41,10 @@ export default {
   },
   computed: {
     lecturer() {
-      return this.course.Users.find(user => user.role === 'LECTURER') || 'No Lecturer specified';
+      const lecturer = this.course.Users
+        .find(user => user.role === 'LECTURER');
+      if (!lecturer) return 'No Lecturer specified';
+      return `${lecturer.firstName} ${lecturer.lastName}`;
     }
   },
   methods: {
@@ -50,6 +53,16 @@ export default {
     },
     formatDate(dateString) {
       return format(new Date(dateString), 'dd/MM/yyyy');
+    }
+  },
+  filters: {
+    getDateRange(course) {
+      const { startDate, endDate } = course;
+      if (!(startDate || endDate)) {
+        return 'No Date specified';
+      }
+      return `${format(new Date(startDate), 'dd/MM/yyyy')} - 
+              ${format(new Date(endDate), 'dd/MM/yyyy')}`;
     }
   }
 };
@@ -114,10 +127,9 @@ export default {
 
 .course-card-title {
   background-color: var(--color-primary);
-  color: white;
+  color: var(--color-white);
   width: 100%;
   max-height: 100px;
-  height: fit-content;
   padding: 15px;
 }
 .course-card-title h1 {
