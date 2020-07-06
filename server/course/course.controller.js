@@ -65,7 +65,8 @@ function getCourseById(req, res) {
         attributes: ['name']
       },
       {
-        model: Lecture
+        model: Lecture,
+        as: 'lectures'
       }
     ]
   })

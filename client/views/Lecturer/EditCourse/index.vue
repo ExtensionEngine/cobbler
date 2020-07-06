@@ -40,7 +40,7 @@ export default {
   },
   async created() {
     const { data } = await getCourse(this.$route.params.id);
-    const { id, name, description, startDate, endDate, category, Lectures } = data.data;
+    const { id, name, description, startDate, endDate, category, lectures } = data;
     this.course = {
       id,
       name,
@@ -49,7 +49,7 @@ export default {
       startDate: startDate && DateFormat(new Date(startDate), 'yyyy-MM-dd'),
       endDate: endDate && DateFormat(new Date(endDate), 'yyyy-MM-dd')
     };
-    this.lectures = Lectures;
+    this.lectures = lectures;
   },
   components: {
     CourseForm,

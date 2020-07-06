@@ -74,6 +74,9 @@ export default {
           description: this.description,
           courseId: this.$route.params.id
         });
+        this.isActive = false;
+        this.name = '';
+        this.description = '';
         this.$emit('add', data);
         this.$toasted.global.formSuccess({ message: 'Lecture added!' });
       } catch (err) {

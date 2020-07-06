@@ -26,19 +26,22 @@ class Lecture extends Model {
       },
       deletedAt: {
         type: DATE,
-        field: 'deleted_at',
-        paranoid: true
+        field: 'deleted_at'
       }
     };
   }
 
   static associate({ Course }) {
-    this.belongsTo(Course, { foreignKey: 'courseId' });
+    this.belongsTo(Course, {
+      foreignKey: 'courseId',
+      as: 'lecture'
+    });
   }
 
   static options() {
     return {
-      tableName: 'lectures'
+      tableName: 'lectures',
+      paranoid: true
     };
   }
 }

@@ -1,6 +1,6 @@
-import { endpoints } from '.';
-import thwack from 'thwack';
+import thwack, { endpoints, flattenData } from '.';
 
 export function addLecture(data) {
-  return thwack.post(endpoints.lectures.base, data);
+  return thwack.post(endpoints.lectures.base, data)
+  .then(flattenData);
 }

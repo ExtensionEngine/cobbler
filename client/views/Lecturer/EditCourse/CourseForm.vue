@@ -121,7 +121,7 @@ export default {
           categoryId: this.categories.find(
             category => category.name === this.course.category).id
         });
-        this.originalName = data.data.name;
+        this.originalName = data.name;
         this.$toasted.global.formSuccess({ message: 'Course added successfully!' });
       } catch (err) {
         this.$toasted.global.formError({ message: 'Something went wrong!' });

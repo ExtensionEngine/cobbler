@@ -1,6 +1,6 @@
 'use strict';
 
-const { BAD_REQUEST, CREATED, INTERNAL_SERVER_ERROR } = require('http-status-codes');
+const { BAD_REQUEST, CREATED } = require('http-status-codes');
 const { HttpError } = require('../shared/error');
 const { Lecture } = require('../shared/database');
 const pick = require('lodash/pick');
@@ -10,27 +10,27 @@ module.exports = {
   update
 };
 
-async function create(req, res) {
+function create(req, res, next) {
   const lectureInfo = pick(req.body, ['name', 'description', 'courseId']);
-  try {
-    if (!lectureInfo.name || isNaN(lectureInfo.courseId)) {
-      throw new HttpError('Invalid request body', BAD_REQUEST);
-    }
-    const createdLecture = await Lecture.create({ ...lectureInfo });
-    res.status(CREATED).json(createdLecture);
-  } catch (e) {
-    if (e.status) res.status(e.status).json({ error: e.message });
-    res.status(INTERNAL_SERVER_ERROR).json();
+  if (!lectureInfo.name || isNaN(lectureInfo.courseId)) {
+    throw new HttpError('Invalid request body', BAD_REQUEST);
   }
+
+  Lecture.create({ ...lectureInfo }).then(createdLecture => {
+    res.status(CREATED).json({ data: createdLecture });
+  }).catch(next);
 }
 
-async function update(req, res) {
+function update(req, res, next) {
   const lectureInfo = pick(req.body, ['name', 'description']);
-  try {
-    const lecture = await Lecture.findByPk(req.params.id);
-    const updatedLecture = await lecture.update({ ...lectureInfo });
-    res.status(CREATED).json(updatedLecture);
-  } catch (err) {
-    res.status(BAD_REQUEST).json(err);
+  if (isNaN(req.params.id)) {
+    throw new HttpError('The provided course id is not a number', BAD_REQUEST);
   }
+
+  Lecture.findByPk(req.params.id)
+    .then(lecture => lecture.update({ ...lectureInfo }))
+    .then(updatedLecture => {
+      res.status(CREATED).json({ data: updatedLecture });
+    })
+    .catch(next);
 }
