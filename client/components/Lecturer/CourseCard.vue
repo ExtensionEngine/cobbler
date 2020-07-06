@@ -6,7 +6,7 @@
     <div class="card-info">
       <h3 class="course-title">{{ course.name }}</h3>
       <p>{{ course.description }}</p>
-      <span>{{ getDateRange(course) }}</span>
+      <span>{{ course | formatDates }}</span>
     </div>
     <div class="category">
       <span>{{ course.Category.name }}</span>
@@ -23,14 +23,16 @@ export default {
     course: { type: Object, required: true }
   },
   methods: {
-    getDateRange({ startDate, endDate }) {
+    handleCourseClick(id) {
+      this.$router.push(paths.lecturer.editCourse(id));
+    }
+  },
+  filters: {
+    formatDates({ startDate, endDate }) {
       if (!startDate || !endDate) {
         return 'The start date, end date or both are not defined yet!';
       }
       return `${new Date(startDate).toDateString()} - ${new Date(endDate).toDateString()}`;
-    },
-    handleCourseClick(id) {
-      this.$router.push(paths.lecturer.editCourse(id));
     }
   }
 };

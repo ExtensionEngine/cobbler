@@ -8,7 +8,7 @@ export default {
     editCourse: id => `/lecturer/edit-course/${id}`
   },
   learner: {
-    base: '/learner'
+    base: '/'
   },
   admin: {
     base: '/admin'

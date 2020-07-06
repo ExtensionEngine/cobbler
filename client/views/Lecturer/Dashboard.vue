@@ -2,7 +2,7 @@
   <div class="dashboard-wrapper">
     <div class="dashboard-container">
       <base-button
-        @click="handleCreateNewCourse"
+        @click="goToAddCourse"
         class="new-course-btn"
         contained
         primary>
@@ -21,7 +21,7 @@ import paths from '../../router/paths';
 export default {
   name: 'lecturer-dashboard',
   methods: {
-    handleCreateNewCourse() {
+    goToAddCourse() {
       this.$router.push(paths.lecturer.addCourse);
     }
   },
@@ -39,7 +39,7 @@ export default {
 }
 .dashboard-container {
   width: 90%;
-  max-width: 550px;
+  max-width: var(--measure-md);
   box-shadow: 2px 6px 9px 0px var(--color-gray);
 }
 .new-course-btn {

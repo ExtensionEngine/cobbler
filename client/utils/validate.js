@@ -1,5 +1,4 @@
 import { email, required } from 'vee-validate/dist/rules';
-import { checkNameAvailability } from '../api/courses';
 import { extend } from 'vee-validate';
 
 extend('email', email);

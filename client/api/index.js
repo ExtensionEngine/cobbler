@@ -21,6 +21,8 @@ export const endpoints = {
   }
 };
 
+export const flattenData = ({ data }) => data;
+
 const configureThwack = () => {
   thwack.defaults.baseURL = process.env.VUE_APP_API_HOST;
 

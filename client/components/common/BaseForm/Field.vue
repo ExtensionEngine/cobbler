@@ -27,8 +27,8 @@ export default {
     label: { type: String, default: null },
     name: { type: String, required: true },
     value: { type: String, default: null },
-    rules: { type: String, default: null },
-    debounce: { type: Number, default: null }
+    rules: { type: Object, default: null },
+    debounce: { type: Number, default: 300 }
   },
   methods: {
     input(value) {
@@ -55,6 +55,7 @@ export default {
 }
 .input:focus + .field-label,
 .text-area:focus + .field-label,
+.select:focus + .field-label,
 .field-filled {
   font-size: 11px;
   top: -26px;

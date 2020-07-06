@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-if="loading">
+    <template v-if="loading">
       <div v-for="n in 5" :key="n" class="course-card"></div>
-    </div>
+    </template>
     <div v-else-if="!courses.length" class="no-content">There are no courses so far</div>
     <course-card
       v-for="course in courses"
@@ -18,27 +18,14 @@ import { getMyCourses } from '../../api/courses';
 
 export default {
   name: 'lecturer-course-list',
-  data() {
-    return ({
-      courses: [],
-      loading: true
-    });
-  },
-  methods: {
-    getDateRange({ startDate, endDate }) {
-      if (!startDate || !endDate) {
-        return 'The start date, end date or both are not defined yet!';
-      }
-      return `${new Date(startDate).toDateString()} - ${new Date(endDate).toDateString()}`;
-    }
-  },
+  data: () => ({ courses: [], loading: true }),
   async created() {
     try {
       const { data } = await getMyCourses();
-      this.courses = data.data;
-      this.loading = false;
+      this.courses = data;
     } catch (err) {
       this.$toasted.global.formError({ message: 'Something went wrong while getting you courses' });
+    } finally {
       this.loading = false;
     }
   },

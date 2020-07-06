@@ -1,7 +1,7 @@
 'use strict';
 
-const { Category, Course, Enrollment, Lecture, User } = require('../shared/database');
-const { BAD_REQUEST } = require('http-status-codes');
+const { BAD_REQUEST, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR, NOT_FOUND, OK } = require('http-status-codes');
+const { Category, Course, Enrollment, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const { Op } = require('sequelize');
 const pick = require('lodash/pick');
@@ -25,7 +25,7 @@ function create(req, res) {
   ]);
   return Course.create(courseInfo)
     .then(course => course.addUser(req.user))
-    .then(course => res.status(201).json({ data: course }));
+    .then(course => res.status(CREATED).json({ data: course }));
 }
 
 function getAll(req, res) {
@@ -34,12 +34,14 @@ function getAll(req, res) {
     include: [
       {
         model: Category,
+        as: 'category',
         attributes: ['name']
       },
       {
         model: User,
         attributes: ['firstName', 'lastName', 'email'],
-        through: { model: Enrollment, attributes: [] }
+        through: { model: Enrollment, attributes: [] },
+        as: 'user'
       }
     ]
   };
@@ -59,6 +61,7 @@ function getCourseById(req, res) {
     include: [
       {
         model: Category,
+        as: 'category',
         attributes: ['name']
       },
       {
@@ -67,16 +70,16 @@ function getCourseById(req, res) {
     ]
   })
     .then(course => {
-      if (!course) return res.status(404).send('Course not found');
+      if (!course) return res.status(NOT_FOUND).send('Course not found');
       return res.json({ data: course });
     });
 }
 
 async function enroll(req, res) {
   const course = await Course.findByPk(req.params.id);
-  if (!course.available) return res.status(403).json('Course unavailable');
+  if (!course.available) return res.status(FORBIDDEN).json('Course unavailable');
   await course.addUser(req.user);
-  return res.status(201).json('Successfully enrolled');
+  return res.status(CREATED).json('Successfully enrolled');
 }
 
 async function update(req, res) {
@@ -89,18 +92,21 @@ async function update(req, res) {
   ]);
   const course = await Course.findByPk(req.params.id);
   if (!course) {
-    return res.status(404).json('Course does not exist');
+    return res.status(NOT_FOUND).json('Course does not exist');
   }
   return course
     .update(courseInfo)
-    .then(course => res.status(201).json({ data: course }));
+    .then(course => res.status(CREATED).json({ data: course }));
 }
 
 async function checkNameAvailability(req, res) {
   try {
-    const valid = !await Course.findOne({ where: { name: req.body.name } });
-    res.status(200).json({ valid });
+    if (!req.body.name) throw new HttpError('Invalid request body', BAD_REQUEST);
+
+    const course = await Course.findOne({ where: { name: req.body.name } });
+    res.status(OK).json({ data: !course });
   } catch (e) {
-    res.status(400).json(e);
+    if (e.status) res.status(e.status).json({ error: e.message });
+    res.status(INTERNAL_SERVER_ERROR).json();
   }
 }

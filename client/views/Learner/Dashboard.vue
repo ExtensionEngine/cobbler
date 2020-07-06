@@ -7,7 +7,3 @@ export default {
   name: 'learner-dashboard'
 };
 </script>
-
-<style>
-
-</style>

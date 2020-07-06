@@ -1,6 +1,6 @@
-import { endpoints } from './common';
-import thwack from 'thwack';
+import thwack, { endpoints, flattenData } from '.';
 
 export function getAllCategories() {
-  return thwack.get(endpoints.categories.base);
+  return thwack.get(endpoints.categories.base)
+  .then(flattenData);
 }

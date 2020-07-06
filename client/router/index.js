@@ -80,13 +80,11 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const { role } = store.state.auth;
+  const isAuthorized = to.matched.some(({ meta }) =>
+    meta.roles && meta.roles.includes(role));
 
-  if (!to.matched.some(({ meta }) => meta.roles && meta.roles.includes(role))) {
+  if (!isAuthorized) {
     next(paths.forbidden);
-  }
-
-  if (to.fullPath === '/') {
-    next(getBasePath());
   }
 
   next();

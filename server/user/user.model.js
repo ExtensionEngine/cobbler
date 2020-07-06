@@ -62,7 +62,8 @@ class User extends Model {
     this.belongsToMany(Course,
       {
         through: Enrollment,
-        foreignKey: { name: 'userId', field: 'user_id' }
+        foreignKey: { name: 'userId', field: 'user_id' },
+        as: 'course'
       });
   }
 

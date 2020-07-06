@@ -1,12 +1,11 @@
 <template>
   <validation-observer
     v-slot="{ invalid }"
+    @submit.prevent="onSubmit"
     mode="eager"
-    tag="div">
-    <form @submit.prevent="onSubmit">
-      <slot :isFormInvalid="invalid">
-      </slot>
-    </form>
+    tag="form">
+    <slot :isFormInvalid="invalid">
+    </slot>
   </validation-observer>
 </template>
 
