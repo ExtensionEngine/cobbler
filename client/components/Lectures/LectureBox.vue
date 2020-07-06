@@ -17,6 +17,8 @@ export default {
 
 <style lang="css" scoped>
 .container {
-  padding: 0 15px;
-}
+    border-top: 1px solid var(--color-gray-500);
+    padding: 0 var(--spacing-sd);
+  }
+
 </style>

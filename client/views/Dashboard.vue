@@ -4,15 +4,6 @@
     <div class="main-content">
       <div class="card-container">
         <div class="cards">
-          <course-card
-            v-for="course in getEnrolledCourses"
-            :key="course.id"
-            :course="course"
-            :enrolled="true" />
-          <course-card
-            v-for="course in getNotEnrolledCourses"
-            :key="course.id"
-            :course="course" />
         </div>
       </div>
       <div class="page-btns">
@@ -49,25 +40,6 @@ export default {
       courses: { data: [] }
     };
   },
-  computed: {
-    getEnrolledCourses() {
-      return this.courses.data.filter(course =>
-        course.Users.find(user => user.email === this.$store.state.auth.email)
-      );
-    },
-    getNotEnrolledCourses() {
-      return this.courses.data
-        .filter(
-          course =>
-            !course.Users.find(
-              user => user.email === this.$store.state.auth.email
-            )
-        )
-        .sort((prev, next) => {
-          return compareAsc(parseISO(prev.updatedAt), parseISO(next.updatedAt));
-        });
-    }
-  },
   methods: {
     paginateForward() {
       if (this.courses.data.length === this.limit) { this.offset += this.limit; }
@@ -92,11 +64,6 @@ export default {
         });
     }
   },
-  created() {
-    get(`?limit=${this.limit}&offset=${this.offset}`)
-      .then(courses => {
-        this.courses = courses.data;
-      });
   },
   components: {
     CourseCard, SideBar
@@ -110,11 +77,6 @@ export default {
   height: 100%;
 }
 
-.card-container {
-  padding: var(--spacing-md);
-  font-size: 0.7rem;
-  height: 90%;
-}
 
 .page-btns {
   display: flex;
@@ -122,9 +84,6 @@ export default {
 
 }
 
-i {
-  font-size: 2.2rem;
-}
 
 .arrow-btn {
   background: none;
@@ -156,3 +115,38 @@ i {
   }
 }
 </style>
+
+        <course-card
+          v-for="course in courses"
+          :key="course.id"
+          :course="course"
+          :enrolled="checkEnrolled(course)" />
+    },
+      });
+        return compareAsc(parseISO(prev.updatedAt), parseISO(next.updatedAt));
+      return courses.sort((prev, next) => {
+    sortByUpdated(courses) {
+    },
+      return false;
+      }
+        return true;
+      if (course.Users.find(user => user.email === this.$store.state.auth.email)) {
+      if (!course.Users.length) return false;
+    checkEnrolled(course) {
+    sortByEnrollment(courses) {
+      return sortBy(this.sortByUpdated(courses), this.checkEnrolled).reverse();
+    }
+  },
+  mounted() {
+    get().then(({ data }) => {
+      this.courses =
+        this.sortByEnrollment(this.sortByUpdated(data.data));
+    });
+  },
+i {
+  font-size: var(--text-lg);
+}
+  padding: var(--spacing-md);
+.container {
+  font-size: var(--text-sm);
+}

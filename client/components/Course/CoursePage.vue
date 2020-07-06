@@ -17,8 +17,15 @@
       <div>
         <div class="flex-h">
           <h1>{{ title }}</h1>
+        <div class="course-title">
+          <h1>{{ course.name }}</h1>
+          <div class="btn-container">
+            <base-button @click="sendEnrollRequest" :disabled="enrolled" class="enroll-btn" contained>
+              Enroll
+            </base-button>
+          </div>
         </div>
-        <p>{{ description }}</p>
+        <p>{{ course.description }}</p>
         <p>By: {{ lecturers }}</p>
       </div>
     </div>
@@ -35,28 +42,23 @@ import LectureContainer from '../Lectures/LectureContainer';
 export default {
   name: 'course-page',
   props: {
-    id: { type: Number, default: null },
-    title: { type: String, default: '' },
-    description: { type: String, default: '' },
-    category: { type: String, default: '' },
-    start: { type: String, default: '' },
-    end: { type: String, default: '' },
-    authors: { type: Array, default: () => [] },
+    course: { type: Object, required: true },
     enrolled: { type: Boolean, default: false }
   },
   computed: {
     lecturers() {
-      const temp = [];
-      this.authors.forEach(element => {
-        temp.push(`${element.firstName} ${element.lastName}`);
+      const lecturers = [];
+      if (!this.course.Users) return;
+      this.course.Users.forEach(user => {
+        lecturers.push(`${user.firstName} ${user.lastName}`);
       });
-      return temp.join(', ');
+      return lecturers.join(', ');
     }
   },
   methods: {
     sendEnrollRequest() {
-      if (this.id) {
-        enroll(this.id)
+      if (this.course.id) {
+        enroll(this.course.id)
           .then(success => {
             this.$router.push('/');
           });
@@ -64,6 +66,16 @@ export default {
     },
     formatDate(dateString) {
       return dateString ? format(new Date(dateString), 'dd/MM/yyyy') : '';
+    }
+  },
+  filters: {
+    getDateRange(course) {
+      const { startDate, endDate } = course;
+      if (!(startDate || endDate)) {
+        return 'No Date specified';
+      }
+      return `${format(new Date(startDate), 'dd/MM/yyyy')} - 
+              ${format(new Date(endDate), 'dd/MM/yyyy')}`;
     }
   },
   components: {
@@ -86,36 +98,42 @@ export default {
     'lectures';
   }
 
+  .course-title {
+    display: flex;
+  }
+  .course-title h1{
+    margin-right: var(--spacing-md);
+  }
   .category-label {
     background: var(--color-info);
-    color: white;
+    color: var(--color-white);
   }
 
   .date-label {
     background: var(--color-gray);
-    color: white;
+    color: var(--color-white);
   }
 
   .enroll-btn {
+    color: var(--color-white);
     grid-area: enroll;
-    color: white;
     background-color: var(--color-success);
     box-shadow: 0 2px 3px var(--color-gray), 0 2px 3px var(--color-gray);
-    padding: 8px 15px;
-    font-size: 0.8rem;
+    padding: var(--spacing-xs) var(--spacing-sd);
+    font-size: var(--spacing-sm);
     text-transform: uppercase;
     letter-spacing: var(--spacing-xxxs);
   }
 
+  .small-label{
+    font-size: var(--text-sm);
+    border-radius: var(--spacing-xxs);
+    padding: var(--spacing-xxs) var(--spacing-sm);
+    margin-right: var(--spacing-xs);
   .enroll-btn:focus {
     outline: none;
     box-shadow: inset 0px 0px 5px #c1c1c1;
   }
-
-  .small-label {
-    font-size: 0.7rem;
-    border-radius: 5px;
-    padding: 5px 10px;
   }
 
   .tags {

@@ -1,13 +1,7 @@
 <template>
   <container>
     <course-page
-      :id="course.id"
-      :title="course.name"
-      :description="course.description"
-      :category="course.Category.name"
-      :start="course.startDate"
-      :end="course.endDate"
-      :authors="getAuthors"
+      :course="course"
       :enrolled="enrolled" />
   </container>
 </template>
@@ -27,6 +21,7 @@ export default {
   },
   computed: {
     getAuthors() {
+      if (!this.course.Users) return;
       return this.course.Users.filter(user => user.role === 'LECTURER');
     }
   },
