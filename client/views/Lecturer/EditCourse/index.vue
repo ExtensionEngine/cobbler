@@ -40,12 +40,12 @@ export default {
   },
   async created() {
     const { data } = await getCourse(this.$route.params.id);
-    const { id, name, description, startDate, endDate, Category, Lectures } = data.data;
+    const { id, name, description, startDate, endDate, category, Lectures } = data.data;
     this.course = {
       id,
       name,
       description,
-      category: Category.name,
+      category: category.name,
       startDate: startDate && DateFormat(new Date(startDate), 'yyyy-MM-dd'),
       endDate: endDate && DateFormat(new Date(endDate), 'yyyy-MM-dd')
     };

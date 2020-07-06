@@ -1,17 +1,29 @@
 <template>
-  <div class="course-wrapper">
+  <div class="course-container">
     <base-form
       v-slot="{ isFormInvalid }"
       @submit="onUpdate"
-      class="course-container">
+      class="course-form">
       <span class="course-title">{{ originalName }}</span>
       <field
         v-model="course.name"
-        class="form-item-half"
-        :debounce="300"
+        :rules="nameRules"
         name="name"
-        label="Name*"
-        :rules="`required|between:2,50|uniqueCourse:${originalName}`">
+        label="Name"
+        class="name-form-item">
+        <template v-slot="{ on, value }">
+          <base-input
+            v-on="on"
+            :value="value"
+            outlined />
+        </template>
+      </field>
+      <field
+        v-model="course.description"
+        rules="required|between:2,50"
+        name="description"
+        label="Description"
+        class="description-form-item">
         <template v-slot="{ on, value }">
           <base-input
             v-on="on"
@@ -21,10 +33,10 @@
       </field>
       <field
         v-model="course.category"
-        class="form-item-half"
+        rules="required"
         name="category"
-        label="Category*"
-        rules="required">
+        label="Category"
+        class="category-form-item">
         <template v-slot="{ on, value }">
           <base-select
             v-on="on"
@@ -34,9 +46,9 @@
       </field>
       <field
         v-model="course.startDate"
-        class="form-item-half"
+        class="start-date-form-item"
         name="Start date"
-        label="Start date">
+        label="Start date (optional)">
         <template v-slot="{ on, value }">
           <base-input
             v-on="on"
@@ -48,9 +60,9 @@
       </field>
       <field
         v-model="course.endDate"
-        class="form-item-half"
+        class="end-date-form-item"
         name="End date"
-        label="End date">
+        label="End date (optional)">
         <template v-slot="{ on, value }">
           <base-input
             v-on="on"
@@ -60,21 +72,9 @@
             outlined />
         </template>
       </field>
-      <field
-        v-model="course.description"
-        class="form-item-full"
-        name="description"
-        label="Description*"
-        rules="required|between:2,50">
-        <template v-slot="{ on, value }">
-          <base-input
-            v-on="on"
-            :value="value"
-            outlined />
-        </template>
-      </field>
       <base-button
         :disabled="isFormInvalid"
+        class="button-form-item"
         type="submit"
         contained primary>
         Save
@@ -84,13 +84,13 @@
 </template>
 
 <script>
+import { checkNameAvailability, updateCourse } from '../../../api/courses';
 import BaseButton from '../../../components/common/BaseButton';
 import BaseForm from '../../../components/common/BaseForm';
 import BaseInput from '../../../components/common/BaseInput';
 import BaseSelect from '../../../components/common/BaseSelect';
 import Field from '../../../components/common/BaseForm/Field';
 import { getAllCategories } from '../../../api/categories';
-import { updateCourse } from '../../../api/courses';
 
 export default {
   name: 'course-form',
@@ -102,6 +102,15 @@ export default {
       categories: [],
       originalName: null
     });
+  },
+  computed: {
+    nameRules() {
+      return {
+        required: true,
+        between: { min: 2, max: 50 },
+        uniqueCourse: { checkName: this.checkName, exception: this.originalName }
+      };
+    }
   },
   methods: {
     async onUpdate() {
@@ -117,12 +126,16 @@ export default {
       } catch (err) {
         this.$toasted.global.formError({ message: 'Something went wrong!' });
       }
+    },
+    async checkName(name) {
+      const { data } = await checkNameAvailability(name);
+      return data;
     }
   },
   async created() {
     this.originalName = this.course.name;
     const { data } = await getAllCategories();
-    this.categories = data.data;
+    this.categories = data;
   },
   components: {
     BaseButton,
@@ -135,37 +148,73 @@ export default {
 </script>
 
 <style scoped>
-.course-wrapper {
-  padding: var(--spacing-md) 0;
+.course-container {
+  padding: var(--spacing-xl) 0;
   display: flex;
   justify-content: center;
 }
-.course-container {
-  max-width: 550px;
+.course-form {
+  width: 100%;
+  max-width: var(--measure-md);
+  padding: var(--spacing-md);
+  display: grid;
+  grid-template-columns: [start] 1fr [middle] 1fr [end];
+  grid-template-rows: [first] 1fr [second] 1fr [third] 1fr [fourth] 1fr [fifth] 1fr;
+  grid-column-gap: var(--spacing-xs);
+  grid-row-gap: var(--spacing-xs);
   border: solid 1px var(--color-gray);
   border-radius: 3px;
-  padding: var(--spacing-sm);
-  padding-top: var(--spacing-md);
   position: relative;
 }
 .course-title {
   position: absolute;
-  top: -12px;
-  left: 14px;
+  top: -10px;
+  left: 15px;
   background: var(--color-white);
-  padding: 0 5px;
+  padding: 0 var(--spacing-xxs);
 }
-.form-item-full {
-  margin: var(--spacing-xs) var(--spacing-xxs);
+.name-form-item {
+  grid-column: start / end;
+  grid-row: first;
 }
-.form-item-half {
-  display: inline-block;
-  margin: var(--spacing-xxs);
-  width: calc(50% - 2 * var(--spacing-xxs))
+.description-form-item {
+  grid-column: start / end;
+  grid-row: second;
 }
-.form-item-full input,
-.form-item-full select,
-.form-item-half input {
-  padding: var(--spacing-sm);
+.category-form-item {
+  grid-column: start / end;
+  grid-row: third;
+}
+.start-date-form-item {
+  grid-column: start / middle;
+  grid-row: fourth;
+}
+.end-date-form-item {
+  grid-column: middle / end;
+  grid-row: fourth;
+}
+.button-form-item {
+  grid-column: start / end;
+  grid-row: fifth;
+  max-height: 30px;
+}
+@media only screen and (max-width: 480px) {
+  .course-form {
+    grid-template-rows:
+      [first] 1fr [second] 1fr [third] 1fr [fourth] 1fr [fifth] 1fr [sixth] 1fr;
+  }
+  .start-date-form-item {
+    grid-column: start / end;
+    grid-row: fourth;
+  }
+  .end-date-form-item {
+    grid-column: start / end;
+    grid-row: fifth;
+  }
+  .button-form-item {
+    grid-column: start / end;
+    grid-row: sixth;
+    max-height: 30px;
+  }
 }
 </style>

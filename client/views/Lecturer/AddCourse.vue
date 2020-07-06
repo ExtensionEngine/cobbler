@@ -24,7 +24,7 @@
           class="description-form-item"
           name="description"
           label="Description"
-          :rules="descriptionRules">
+          rules="required|between:2,50">
           <template v-slot="{ on, value }">
             <base-input
               v-on="on"
@@ -37,7 +37,7 @@
           class="category-form-item"
           name="category"
           label="Category"
-          :rules="categoryRules">
+          rules="required">
           <template v-slot="{ on, value }">
             <base-select
               v-on="on"
@@ -110,18 +110,17 @@ export default {
   },
   computed: {
     nameRules() {
-      return { required: true, between: { min: 2, max: 50 }, uniqueCourse: { checkName: this.checkName } };
-    },
-    descriptionRules() {
-      return { required: true, between: { min: 2, max: 50 } };
-    },
-    categoryRules() {
-      return { required: true };
+      return {
+        required: true,
+        between: { min: 2, max: 50 },
+        uniqueCourse: { checkName: this.checkName }
+      };
     }
   },
   methods: {
     async onSubmit() {
-      const categoryId = this.categories.find(category => category.name === this.category).id;
+      const categoryId = this.categories.find(category =>
+        category.name === this.category).id;
 
       const courseToAdd = {
         name: this.name,
@@ -138,6 +137,10 @@ export default {
       } catch (err) {
         this.$toasted.global.formError({ message: 'Something went wrong' });
       }
+    },
+    async checkName(name) {
+      const { data } = await checkNameAvailability(name);
+      return data;
     }
   },
   async created() {
@@ -155,7 +158,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .course-container {
   padding: var(--spacing-xl) var(--spacing-md);
   display: flex;
@@ -195,25 +198,23 @@ export default {
   grid-row: fifth;
   max-height: 30px;
 }
-.second-bar {
-  background: var(--color-gray-500);
-  padding: var(--spacing-sm) var(--spacing-lg);
-}
-.back-button {
-  background: var(--color-gray);
-  border-radius: 3px;
-  padding: var(--spacing-xxs) var(--spacing-xs);
-  cursor: pointer;
-  color: var(--color-white)
-}
-.back-button:hover {
-  opacity: .8;
-}
 @media only screen and (max-width: 480px) {
-  .form-item-half {
-    display: block;
-    margin: var(--spacing-sm) var(--spacing-xxs);
-    width: auto;
+  .course-form {
+    grid-template-rows:
+      [first] 1fr [second] 1fr [third] 1fr [fourth] 1fr [fifth] 1fr [sixth] 1fr;
+  }
+  .start-date-form-item {
+    grid-column: start / end;
+    grid-row: fourth;
+  }
+  .end-date-form-item {
+    grid-column: start / end;
+    grid-row: fifth;
+  }
+  .button-form-item {
+    grid-column: start / end;
+    grid-row: sixth;
+    max-height: 30px;
   }
 }
 </style>

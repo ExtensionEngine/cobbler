@@ -1,7 +1,7 @@
 'use strict';
 
 const { BAD_REQUEST, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR, NOT_FOUND, OK } = require('http-status-codes');
-const { Category, Course, Enrollment, User } = require('../shared/database');
+const { Category, Course, Enrollment, Lecture, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const { Op } = require('sequelize');
 const pick = require('lodash/pick');

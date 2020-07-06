@@ -16,7 +16,7 @@
           v-model="name"
           class="form-item-half"
           name="name"
-          label="Name*"
+          label="Name"
           rules="required|between:2,50">
           <template v-slot="{ on, value }">
             <base-input
@@ -29,7 +29,7 @@
           v-model="description"
           class="form-item-half"
           name="description"
-          label="Description">
+          label="Description (optional)">
           <template v-slot="{ on, value }">
             <base-input
               v-on="on"

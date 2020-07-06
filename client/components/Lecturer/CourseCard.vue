@@ -9,7 +9,7 @@
       <span>{{ course | formatDates }}</span>
     </div>
     <div class="category">
-      <span>{{ course.Category.name }}</span>
+      <span>{{ course.category.name }}</span>
     </div>
   </div>
 </template>

@@ -27,7 +27,7 @@ export default {
     label: { type: String, default: null },
     name: { type: String, required: true },
     value: { type: String, default: null },
-    rules: { type: Object, default: null },
+    rules: { type: [Object, String], default: null },
     debounce: { type: Number, default: 300 }
   },
   methods: {

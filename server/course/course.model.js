@@ -44,7 +44,7 @@ class Course extends Model {
     };
   }
 
-  static associate({ Category, User, Enrollment }) {
+  static associate({ Category, User, Enrollment, Lecture }) {
     this.belongsTo(Category, {
       foreignKey: 'categoryId',
       as: 'category'
