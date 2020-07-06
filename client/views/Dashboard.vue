@@ -4,6 +4,11 @@
     <div class="main-content">
       <div class="card-container">
         <div class="cards">
+          <course-card
+            v-for="course in courses"
+            :key="course.id"
+            :course="course"
+            :enrolled="checkEnrolled(course)" />
         </div>
       </div>
       <div class="page-btns">
@@ -28,6 +33,7 @@ import CourseCard from '../components/Course/CourseCard';
 import { get } from '../api/courses';
 import parseISO from 'date-fns/parseISO';
 import SideBar from '../components/Course/SideBar';
+import sortBy from 'lodash/sortBy';
 
 export default {
   props: {
@@ -37,12 +43,12 @@ export default {
     return {
       limit: 6,
       offset: 0,
-      courses: { data: [] }
+      courses: []
     };
   },
   methods: {
     paginateForward() {
-      if (this.courses.data.length === this.limit) { this.offset += this.limit; }
+      if (this.courses.length === this.limit) { this.offset += this.limit; }
     },
     paginateBack() {
       this.offset = (this.offset > this.limit)
@@ -54,16 +60,36 @@ export default {
         .then(courses => {
           this.courses = courses.data;
         });
+    },
+    checkEnrolled(course) {
+      if (!course.Users.length) return false;
+      if (course.Users.find(user => user.email === this.$store.state.auth.email)) {
+        return true;
+      }
+      return false;
+    },
+    sortByUpdated(courses) {
+      return courses.sort((prev, next) => {
+        return compareAsc(parseISO(prev.updatedAt), parseISO(next.updatedAt));
+      });
+    },
+    sortByEnrollment(courses) {
+      return sortBy(courses, this.checkEnrolled).reverse();
     }
   },
   watch: {
     offset() {
-      get(`?limit=${this.limit}&offset=${this.offset}`)
-        .then(courses => {
-          this.courses = courses.data;
-        });
+      get(`?limit=${this.limit}&offset=${this.offset}`).then(({ data }) => {
+        this.courses =
+        this.sortByEnrollment(this.sortByUpdated(data.data));
+      });
     }
   },
+  mounted() {
+    get(`?limit=${this.limit}&offset=${this.offset}`).then(({ data }) => {
+      this.courses =
+        this.sortByEnrollment(this.sortByUpdated(data.data));
+    });
   },
   components: {
     CourseCard, SideBar
@@ -76,14 +102,23 @@ export default {
   display: flex;
   height: 100%;
 }
-
-
 .page-btns {
   display: flex;
   justify-content: center;
 
 }
 
+.main-content {
+  padding: var(--spacing-lg);
+}
+
+i {
+  font-size: var(--text-lg);
+}
+  padding: var(--spacing-md);
+.container {
+  font-size: var(--text-sm);
+}
 
 .arrow-btn {
   background: none;
@@ -115,38 +150,3 @@ export default {
   }
 }
 </style>
-
-        <course-card
-          v-for="course in courses"
-          :key="course.id"
-          :course="course"
-          :enrolled="checkEnrolled(course)" />
-    },
-      });
-        return compareAsc(parseISO(prev.updatedAt), parseISO(next.updatedAt));
-      return courses.sort((prev, next) => {
-    sortByUpdated(courses) {
-    },
-      return false;
-      }
-        return true;
-      if (course.Users.find(user => user.email === this.$store.state.auth.email)) {
-      if (!course.Users.length) return false;
-    checkEnrolled(course) {
-    sortByEnrollment(courses) {
-      return sortBy(this.sortByUpdated(courses), this.checkEnrolled).reverse();
-    }
-  },
-  mounted() {
-    get().then(({ data }) => {
-      this.courses =
-        this.sortByEnrollment(this.sortByUpdated(data.data));
-    });
-  },
-i {
-  font-size: var(--text-lg);
-}
-  padding: var(--spacing-md);
-.container {
-  font-size: var(--text-sm);
-}

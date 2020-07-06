@@ -17,19 +17,20 @@
       <div>
         <div class="flex-h">
           <h1>{{ title }}</h1>
-        <div class="course-title">
-          <h1>{{ course.name }}</h1>
-          <div class="btn-container">
-            <base-button @click="sendEnrollRequest" :disabled="enrolled" class="enroll-btn" contained>
-              Enroll
-            </base-button>
+          <div class="course-title">
+            <h1>{{ course.name }}</h1>
+            <div class="btn-container">
+              <base-button @click="sendEnrollRequest" :disabled="enrolled" class="enroll-btn" contained>
+                Enroll
+              </base-button>
+            </div>
           </div>
+          <p>{{ course.description }}</p>
+          <p>By: {{ lecturers }}</p>
         </div>
-        <p>{{ course.description }}</p>
-        <p>By: {{ lecturers }}</p>
       </div>
+      <lecture-container class="lectures" />
     </div>
-    <lecture-container class="lectures" />
   </div>
 </template>
 
