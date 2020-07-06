@@ -40,7 +40,7 @@ function getAll(req, res, next) {
       },
       {
         model: User,
-        attributes: ['firstName', 'lastName', 'email'],
+        attributes: ['firstName', 'lastName', 'email', 'role'],
         through: { model: Enrollment, attributes: [] }
       }
     ],
@@ -67,10 +67,7 @@ function getCourseById(req, res) {
       {
         model: User,
         required: false,
-        attributes: ['firstName', 'lastName', 'email'],
-        where: {
-          role: 'LECTURER'
-        }
+        attributes: ['firstName', 'lastName', 'email', 'role']
       }
     ]
   })
