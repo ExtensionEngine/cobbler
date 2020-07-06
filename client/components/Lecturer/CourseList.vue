@@ -70,7 +70,7 @@ export default {
 }
 .no-content {
   text-align: center;
-  padding: 15px 0;
+  padding: var(--spacing-md) 0;
 
 }
 @media only screen and (max-width: 480px) {

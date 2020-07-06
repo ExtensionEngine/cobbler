@@ -5,7 +5,7 @@
       :class="{'add-lecture-btn-active': isActive}"
       class="add-lecture-btn"
       outlined>
-      <span :class="{rotate: isActive}">+</span>
+      <span :class="{ rotate: isActive }">+</span>
     </base-button>
     <div :class="{'lecture-add-active': isActive}" class="lecture-add">
       <base-form

@@ -54,9 +54,7 @@ class Course extends Model {
       foreignKey: { name: 'courseId', field: 'course_id' },
       as: 'user'
     });
-    this.hasMany(Lecture, {
-      foreignKey: 'courseId'
-    });
+    this.hasMany(Lecture, { foreignKey: 'courseId' });
   }
 
   static options() {

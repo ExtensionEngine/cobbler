@@ -5,11 +5,20 @@ import jwtDecode from 'jwt-decode';
 
 const token = localStorage.getItem('token');
 
-const state = {
-  token: token || null,
-  email: token ? jwtDecode(token).sub : null,
-  role: token ? jwtDecode(token).role : 'GUEST'
-};
+let state;
+try {
+  state = {
+    token: token || null,
+    email: token ? jwtDecode(token).sub : null,
+    role: token ? jwtDecode(token).role : 'GUEST'
+  };
+} catch (err) {
+  state = {
+    token: null,
+    email: null,
+    role: 'GUEST'
+  };
+}
 
 export default {
   state,

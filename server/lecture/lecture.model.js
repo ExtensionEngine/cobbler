@@ -3,8 +3,7 @@
 const { Model } = require('sequelize');
 
 class Lecture extends Model {
-  static fields(DataTypes) {
-    const { STRING, TEXT, DATE, INTEGER } = DataTypes;
+  static fields({ STRING, TEXT, DATE, INTEGER }) {
     return {
       name: {
         type: STRING,
@@ -27,7 +26,8 @@ class Lecture extends Model {
       },
       deletedAt: {
         type: DATE,
-        field: 'deleted_at'
+        field: 'deleted_at',
+        paranoid: true
       }
     };
   }

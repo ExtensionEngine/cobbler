@@ -75,10 +75,10 @@ export default {
   top: -12px;
   left: 14px;
   background: var(--color-white);
-  padding: 0 5px;
+  padding: 0 var(--spacing-xxs);
 }
 .lectures-container {
-  width: 550px;
+  width: var(--measure-md);
   border: solid 1px var(--color-gray);
   border-radius: 3px;
   padding: var(--spacing-sm);
