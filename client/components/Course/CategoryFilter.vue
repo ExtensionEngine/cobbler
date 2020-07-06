@@ -31,9 +31,9 @@ export default {
 };
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
   .filter-element {
-    margin: 5px;
+    margin: 10px;
     display: flex;
     justify-content: start;
   }

@@ -1,17 +1,19 @@
 <template>
   <div class="wrapper">
     <side-bar />
-    <div class="container">
-      <div class="cards">
-        <course-card
-          v-for="course in getEnrolledCourses"
-          :key="course.id"
-          :course="course"
-          :enrolled="true" />
-        <course-card
-          v-for="course in getNotEnrolledCourses"
-          :key="course.id"
-          :course="course" />
+    <div class="main-content">
+      <div class="card-container">
+        <div class="cards">
+          <course-card
+            v-for="course in getEnrolledCourses"
+            :key="course.id"
+            :course="course"
+            :enrolled="true" />
+          <course-card
+            v-for="course in getNotEnrolledCourses"
+            :key="course.id"
+            :course="course" />
+        </div>
       </div>
       <div class="page-btns">
         <button @click="paginateBack" class="arrow-btn">
@@ -105,17 +107,18 @@ export default {
 <style lang="css" scoped>
 .wrapper {
   display: flex;
-  height: 100vh;
+  height: 100%;
 }
 
-.container {
+.card-container {
   padding: var(--spacing-md);
   font-size: 0.7rem;
+  height: 90%;
 }
 
 .page-btns {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 
 }
 
@@ -142,12 +145,12 @@ i {
   grid: auto-flow auto / 1fr;
   grid-gap: var(--spacing-lg);
 }
-@media (min-width: 600px) {
+@media (min-width: 748px) {
   .cards {
     grid: auto-flow auto / repeat(2, 1fr);
   }
 }
-@media (min-width: 900px) {
+@media (min-width: 1140px) {
   .cards {
     grid: auto-flow auto / repeat(3, 1fr);
   }

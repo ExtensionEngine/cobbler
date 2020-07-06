@@ -15,7 +15,7 @@ export default {
     display: flex;
     flex-flow: column nowrap;
     position: relative;
-    min-height: calc(100vh - var(--navbar-height));
+    min-height: calc(100% - var(--navbar-height));
     width: 100%;
   }
 </style>
