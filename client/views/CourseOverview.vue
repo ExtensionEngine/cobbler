@@ -29,8 +29,8 @@ export default {
     await getById(this.$route.params.id).then(course => {
       this.course = course.data.data;
     });
-    await checkIfEnrolled(this.course.id).then(result => {
-      const { enrolled } = result.data;
+    await checkIfEnrolled(this.course.id).then(course => {
+      const { enrolled } = course.data;
       this.enrolled = enrolled;
     });
   },
