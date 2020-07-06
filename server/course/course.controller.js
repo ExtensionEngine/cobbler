@@ -44,8 +44,7 @@ function getAll(req, res) {
   if (available) {
     query.where = { endDate: { [Op.gte]: new Date() } };
   }
-  return Course.findAll(query)
-    .then(course => res.json({ data: course }));
+  return Course.findAll(query).then(course => res.json({ data: course }));
 }
 
 function getCourseById(req, res) {
@@ -60,14 +59,13 @@ function getCourseById(req, res) {
         attributes: ['name']
       }
     ]
-  })
-    .then(course => {
-      if (!course) return res.status(NOT_FOUND).send('Course not found');
-      return res.json({ data: course });
-    });
+  }).then(course => {
+    if (!course) return res.status(NOT_FOUND).send('Course not found');
+    return res.json({ data: course });
+  });
 }
 
-async function update(req, res) {
+function update(req, res) {
   const courseInfo = pick(req.body, [
     'name',
     'description',
@@ -75,11 +73,18 @@ async function update(req, res) {
     'endDate',
     'categoryId'
   ]);
-  const course = await Course.findByPk(req.params.id);
-  if (!course) {
-    return res.status(NOT_FOUND).json('Course does not exist');
-  }
-  return course
-    .update(courseInfo)
-    .then(course => res.status(CREATED).json({ data: course }));
+  return Course.update(
+    courseInfo,
+    {
+      where: {
+        id: req.params.id
+      },
+      returning: true
+    }
+  ).then(course => {
+    if (!course[1].length) {
+      return res.status(NOT_FOUND).json('Course does not exist');
+    }
+    return res.status(CREATED).json({ data: course });
+  });
 }

@@ -27,12 +27,10 @@ class Course extends Model {
         type: DATE
       },
       startDate: {
-        type: DATE,
-        field: 'start_date'
+        type: DATE
       },
       endDate: {
-        type: DATE,
-        field: 'end_date'
+        type: DATE
       },
       available: {
         type: VIRTUAL,

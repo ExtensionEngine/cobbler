@@ -2,12 +2,12 @@
 
 require('dotenv').config();
 const auth = require('./shared/auth');
-const { BAD_GATEWAY } = require('http-status-codes');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const database = require('./shared/database');
 const express = require('express');
 const helmet = require('helmet');
+const { INTERNAL_SERVER_ERROR } = require('http-status-codes');
 const { port } = require('../config/server');
 const router = require('./router.js');
 const app = express();
@@ -29,7 +29,7 @@ app.use((req, res, next) => res.status(404).end());
 
 function errorHandler(err, req, res, next) {
   if (err.status) return res.status(err.status).json({ error: err.message });
-  res.status(BAD_GATEWAY).json('Something went wrong');
+  res.status(INTERNAL_SERVER_ERROR).json('Something went wrong');
 }
 
 database.initialize();
