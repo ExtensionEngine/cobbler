@@ -1,6 +1,6 @@
 'use strict';
 
-const { BAD_REQUEST, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR, NOT_FOUND, OK } = require('http-status-codes');
+const { BAD_REQUEST, CREATED, FORBIDDEN, NOT_FOUND, OK } = require('http-status-codes');
 const { Category, Course, Enrollment, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const { Op } = require('sequelize');
@@ -8,6 +8,7 @@ const pick = require('lodash/pick');
 
 module.exports = {
   create,
+  enroll,
   getAll,
   getCourseById,
   checkNameAvailability,
@@ -28,7 +29,10 @@ function create(req, res, next) {
   }
 
   return Course.create(courseInfo)
-    .then(course => course.addUser(req.user))
+    .then(course => {
+      course.addUser(req.user);
+      return course;
+    })
     .then(course => res.status(CREATED).json({ data: course }))
     .catch(next);
 }
@@ -86,7 +90,7 @@ function enroll(req, res, next) {
   .catch(next);
 }
 
-function update(req, res) {
+function update(req, res, next) {
   const courseInfo = pick(req.body, [
     'name',
     'description',
@@ -107,7 +111,7 @@ function update(req, res) {
       return res.status(NOT_FOUND).json('Course does not exist');
     }
     return res.status(CREATED).json({ data: course });
-  });
+  }).catch(next);
 }
 
 function checkNameAvailability(req, res, next) {
