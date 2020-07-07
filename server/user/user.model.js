@@ -45,8 +45,7 @@ class User extends Model {
         type: DATE
       },
       deletedAt: {
-        type: DATE,
-        paranoid: true
+        type: DATE
       }
     };
   }
@@ -54,7 +53,8 @@ class User extends Model {
   static options() {
     return {
       tableName: 'users',
-      underscored: true
+      underscored: true,
+      paranoid: true
     };
   }
 

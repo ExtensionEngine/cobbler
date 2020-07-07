@@ -17,8 +17,7 @@ class Category extends Model {
         type: DATE
       },
       deletedAt: {
-        type: DATE,
-        paranoid: true
+        type: DATE
       }
     };
   }
@@ -26,7 +25,8 @@ class Category extends Model {
   static options() {
     return {
       tableName: 'categories',
-      underscored: true
+      underscored: true,
+      paranoid: true
     };
   }
 
