@@ -7,6 +7,7 @@ const cors = require('cors');
 const database = require('./shared/database');
 const express = require('express');
 const helmet = require('helmet');
+const { INTERNAL_SERVER_ERROR } = require('http-status-codes');
 const { port } = require('../config/server');
 const router = require('./router.js');
 const app = express();
@@ -27,8 +28,8 @@ app.use(errorHandler);
 app.use((req, res, next) => res.status(404).end());
 
 function errorHandler(err, req, res, next) {
-  if (err.status) return res.status(err.status).send(err.message);
-  res.status(500).send('Something went wrong');
+  if (err.status) return res.status(err.status).json({ error: err.message });
+  res.status(INTERNAL_SERVER_ERROR).json('Something went wrong');
 }
 
 database.initialize();

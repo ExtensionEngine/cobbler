@@ -5,7 +5,6 @@ const ctrl = require('./user.controller');
 
 router
   .post('/', ctrl.create);
-
 module.exports = {
   path: '/users',
   router

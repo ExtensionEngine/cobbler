@@ -5,7 +5,7 @@ const { INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED } = require('http-status-
 const { HttpError } = require('../error');
 const LocalStrategy = require('passport-local');
 const passport = require('passport');
-const User = require('../../user/user.model');
+const { User } = require('../database');
 
 const options = {
   usernameField: 'email'
@@ -31,7 +31,7 @@ const opts = {
 };
 
 passport.use(new JwtStrategy(opts, ({ sub: email }, done) => {
-  User.findOne({ email })
+  User.findOne({ where: { email } })
     .then(user => done(null, user || false));
 }));
 
