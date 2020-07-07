@@ -4,7 +4,13 @@
     :value="value"
     class="select">
     <option selected disabled value=""></option>
-    <option v-for="option in options" :key="option.id">{{ option.name }}</option>
+    <option
+      v-for="option in options"
+      :key="option.id"
+      :selected="isSelected(option)"
+      :value="option.name">
+      {{ option.name }}
+    </option>
   </select>
 </template>
 
@@ -18,6 +24,9 @@ export default {
   methods: {
     onChange(event) {
       this.$emit('input', event.target.value);
+    },
+    isSelected(option) {
+      return option.name === this.value;
     }
   }
 };
