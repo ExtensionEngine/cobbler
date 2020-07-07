@@ -9,7 +9,6 @@ const pick = require('lodash/pick');
 module.exports = {
   create,
   getAll,
-  enroll,
   getCourseById,
   checkNameAvailability,
   update
@@ -54,8 +53,7 @@ function getAll(req, res) {
   if (available) {
     query.where = { endDate: { [Op.gte]: new Date() } };
   }
-  return Course.findAll(query)
-    .then(course => res.json({ data: course }));
+  return Course.findAll(query).then(course => res.json({ data: course }));
 }
 
 function getCourseById(req, res, next) {
@@ -88,7 +86,7 @@ function enroll(req, res, next) {
   .catch(next);
 }
 
-function update(req, res, next) {
+function update(req, res) {
   const courseInfo = pick(req.body, [
     'name',
     'description',
@@ -96,16 +94,20 @@ function update(req, res, next) {
     'endDate',
     'categoryId'
   ]);
-
-  Course.findByPk(req.params.id).then(course => {
-    if (!course) {
-      return res.status(NOT_FOUND).json('Course does not exist');
-    } else {
-      course.update(courseInfo).then(course => {
-        res.status(CREATED).json({ data: course });
-      }).catch(next);
+  return Course.update(
+    courseInfo,
+    {
+      where: {
+        id: req.params.id
+      },
+      returning: true
     }
-  }).catch(next);
+  ).then(course => {
+    if (!course[1].length) {
+      return res.status(NOT_FOUND).json('Course does not exist');
+    }
+    return res.status(CREATED).json({ data: course });
+  });
 }
 
 function checkNameAvailability(req, res, next) {

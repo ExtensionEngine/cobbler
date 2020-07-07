@@ -20,8 +20,7 @@ class Enrollment extends Model {
         type: DATE
       },
       deletedAt: {
-        type: DATE,
-        paranoid: true
+        type: DATE
       }
     };
   }
@@ -29,7 +28,8 @@ class Enrollment extends Model {
   static options() {
     return {
       tableName: 'enrollments',
-      underscored: true
+      underscored: true,
+      paranoid: true
     };
   }
 

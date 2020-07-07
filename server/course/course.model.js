@@ -24,16 +24,13 @@ class Course extends Model {
         type: DATE
       },
       deletedAt: {
-        type: DATE,
-        paranoid: true
+        type: DATE
       },
       startDate: {
-        type: DATE,
-        field: 'start_date'
+        type: DATE
       },
       endDate: {
-        type: DATE,
-        field: 'end_date'
+        type: DATE
       },
       available: {
         type: VIRTUAL,
@@ -59,7 +56,8 @@ class Course extends Model {
   static options() {
     return {
       tableName: 'courses',
-      underscored: true
+      underscored: true,
+      paranoid: true
     };
   }
 }
