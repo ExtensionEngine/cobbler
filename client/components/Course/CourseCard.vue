@@ -5,7 +5,7 @@
     class="course-card">
     <div class="course-card-title">
       <p class="category-name">{{ course.Category.name }}</p>
-      <h1>{{ course.name }}</h1>
+      <h3>{{ course.name }}</h3>
     </div>
     <div class="course-card-description">
       <p>{{ course.description }}</p>
@@ -71,12 +71,11 @@ export default {
 
 <style scoped>
 .course-card {
-  box-shadow: 2px 2px 8px 0px var(--color-gray);
-  min-height: 200px;
-  max-height: 250px;
+  box-shadow: 3px 3px 8px 0px var(--color-gray);
+  min-height: 150px;
   min-width: 300px;
   position: relative;
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
 }
 
 .course-card:empty {
@@ -91,9 +90,9 @@ export default {
   position: absolute;
   left: var(--spacing-lg);
   right: var(--spacing-lg);
-  bottom: 20%;
-  background: linear-gradient(to left, #c2c1c1da 0, #dadadae3);
-  background-size: 200% 200%;
+  bottom: 30%;
+  background: linear-gradient(to left, #c3c1c1da 0, #dadadae3);
+  background-size: 300% 300%;
   background-position: 15px 140px;
   animation: loadingGradient 1s infinite;
 }
@@ -105,8 +104,8 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  background: linear-gradient(to left, #c2c1c1da 0, #dadadae3);
-  background-size: 200% 200%;
+  background: linear-gradient(to left, #c3c1c1da 0, #dadadae3);
+  background-size: 300% 300%;
   animation: loadingGradient 1s infinite;
 }
 
@@ -115,7 +114,7 @@ export default {
     background-position: 0% 50%;
   }
   100% {
-    background-position: -200% 0%;
+    background-position: -300% 0%;
   }
 }
 

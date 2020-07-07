@@ -36,20 +36,19 @@ export default {
     padding: 5px;
     width: 100%;
     display: flex;
+    justify-content: space-between;
     background-color: white;
   }
 
   .search-wrapper:focus-within {
-    box-shadow: 0 0 0 2px var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-info);
   }
 
   .search-input {
     border:none;
     vertical-align: middle;
     height: 30px;
-    padding: 10px;
-    margin: 0 10px;
-    font-size: 0.8rem;
+    padding: var(--spacing-sm);
   }
   .search-input:focus {
     outline: none;
@@ -58,5 +57,6 @@ export default {
   figure {
     margin: 0;
     margin-top: 2%;
+    margin-right: 2%;
   }
 </style>

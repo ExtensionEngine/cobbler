@@ -1,10 +1,9 @@
 'use strict';
 
 const { BAD_REQUEST, CREATED, NOT_FOUND } = require('http-status-codes');
-const { Category, Course, User } = require('../shared/database');
+const { Category, Course, Enrollment, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
-const { literal } = require('sequelize');
 const pick = require('lodash/pick');
 const { validateFilters } = require('../shared/util/apiQueryParser');
 
@@ -28,31 +27,12 @@ function create(req, res) {
     .then(course => res.status(CREATED).json({ data: course }));
 }
 
-// SELECT * FROM (
-// 	SELECT
-//     DISTINCT ON (c.id) *,
-//     COALESCE(("e"."user_id" = 2)::int, 0) AS "enrolled"
-//   FROM courses c
-//   LEFT OUTER JOIN enrollments AS e ON e.course_id = c.id
-// ) e
-// LEFT OUTER JOIN  users u ON u.id = e.user_id
-// LEFT OUTER JOIN  categories ca ON e.category_id = ca.id
-// ORDER BY enrolled DESC
-// limit 20
-// offset 0;
-
 function getAll(req, res, next) {
   const { filters, pagination } = req.query;
-  const { id } = req.user;
   const errors = validateFilters(filters, Course.rawAttributes, Course.name);
   if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
   const query = {
     ...pagination,
-    attributes: [
-      literal('DISTINCT ON("Course"."id") *'),
-      [literal(`COALESCE(("Users->Enrollment"."user_id" = ${id})::int, 0)`), 'enrolled'],
-      'id'
-    ],
     include: [
       {
         model: Category,
@@ -60,6 +40,7 @@ function getAll(req, res, next) {
       },
       {
         model: User,
+        through: { model: Enrollment, attributes: [] },
         attributes: ['firstName', 'lastName', 'email']
       }
     ],

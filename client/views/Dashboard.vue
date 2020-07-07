@@ -87,7 +87,6 @@ export default {
   },
   mounted() {
     get(`?limit=${this.limit}&offset=${this.offset}`).then(({ data }) => {
-      console.log(data.data);
       this.courses =
         this.sortByEnrollment(this.sortByUpdated(data.data));
     });
@@ -106,13 +105,14 @@ export default {
 .page-btns {
   display: flex;
   justify-content: center;
-
+  position: absolute;
+  bottom: 1%;
 }
 
 .main-content {
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
+  max-height: calc(100vh - var(--navbar-height))
 }
-
 i {
   font-size: var(--text-lg);
 }
@@ -135,7 +135,7 @@ i {
 
 .cards {
   max-width: 1200px;
-  margin: 20px auto;
+  margin: var(--spacing-sm) auto;
   display: grid;
   grid: auto-flow auto / 1fr;
   grid-gap: var(--spacing-lg);

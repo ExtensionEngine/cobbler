@@ -1,16 +1,10 @@
 <template>
   <div class="side-bar-wrapper">
     <base-search @search="handleSearch" class="search" />
-    <category-filter />
-    <div class="date-pick-group">
-      <h3>Scheduled date</h3>
-      <field label="Start Date">
-        <base-input type="date" class="date-picker" outlined />
-      </field>
-      <field label="End Date">
-        <base-input type="date" class="date-picker" outlined />
-      </field>
-    </div>
+    <category-filter @checked="categoryHandler" />
+    <date-picker
+      @addStart="dateHandler('start')"
+      @addEnd="dateHandler('end')" />
     <base-button class="filter-btn">
       Filter
     </base-button>
@@ -19,19 +13,25 @@
 
 <script>
 import BaseButton from '../common/BaseButton';
-import BaseInput from '../common/BaseInput';
 import BaseSearch from '../common/BaseSearch';
 import CategoryFilter from './CategoryFilter';
-import Field from '../common/BaseForm/Field';
+import DatePicker from './DatePicker';
 
 export default {
   name: 'side-bar',
+  data() {
+    return {
+      searchParams: []
+    };
+  },
+  methods: {
+
+  },
   components: {
     BaseButton,
-    BaseInput,
     BaseSearch,
     CategoryFilter,
-    Field
+    DatePicker
   }
 };
 </script>
@@ -44,21 +44,18 @@ export default {
     padding: var(--spacing-sm);
     display: flex;
     flex-flow: column;
-    height: calc(100vh - var(--navbar-height));
+    max-height: calc(100vh - var(--navbar-height));
   }
   .side-bar-wrapper > * {
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xxs);
   }
 
-  .date-pick-group .date-picker:first-of-type {
-    margin-bottom: var(--spacing-sm);
-  }
   .filter-btn {
     color: var(--color-green);
     border: none;
     background-color: var(--color-accent);
     box-shadow: 0 2px 3px var(--color-gray), 0 2px 3px var(--color-gray);
-    padding: 8px 15px;
+    padding: var(--spacing-xs) var(--spacing-sd);
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: var(--spacing-xxxs);

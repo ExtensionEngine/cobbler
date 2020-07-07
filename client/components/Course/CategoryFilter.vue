@@ -5,8 +5,13 @@
       v-for="category in categories"
       :key="category.id"
       class="filter-element">
-      <input type="checkbox" class="mr-xxs">
-      {{ category.name }}
+      <input
+        v-model="checkedCategories"
+        @input="propagateChoice"
+        :value="category.id"
+        type="checkbox"
+        class="mr-xxs">
+      <span>{{ category.name }}</span>
     </div>
     <div>
     </div>
@@ -20,8 +25,14 @@ export default {
   name: 'category-filter',
   data() {
     return {
-      categories: []
+      categories: [],
+      checkedCategories: []
     };
+  },
+  methods: {
+    propagateChoice() {
+      this.$emit('checked', this.categories);
+    }
   },
   created() {
     get().then(categories => {
@@ -33,9 +44,14 @@ export default {
 
 <style lang="css" scoped>
   .filter-element {
-    margin: 10px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: flex-start;
+    font-size: var(--text-sm);
+  }
+
+  span {
+    margin-left: var(--spacing-xs);
   }
 
 </style>
