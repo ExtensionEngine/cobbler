@@ -121,7 +121,6 @@ export default {
           categoryId: this.categories.find(
             category => category.name === this.course.category).id
         });
-        console.log(data);
         if (data[0]) {
           this.originalName = data[1][0].name;
           this.$toasted.global.formSuccess({
