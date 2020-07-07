@@ -1,7 +1,7 @@
 'use strict';
 
 const { BAD_REQUEST, CREATED, NOT_FOUND } = require('http-status-codes');
-const { Category, Course, User } = require('../shared/database');
+const { Category, Course, Enrollment, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
 const { literal } = require('sequelize');
@@ -28,30 +28,22 @@ function create(req, res) {
     .then(course => res.status(CREATED).json({ data: course }));
 }
 
-// SELECT * FROM (
-// 	SELECT
-//     DISTINCT ON (c.id) *,
-//     COALESCE(("e"."user_id" = 2)::int, 0) AS "enrolled"
-//   FROM courses c
-//   LEFT OUTER JOIN enrollments AS e ON e.course_id = c.id
-// ) e
-// LEFT OUTER JOIN  users u ON u.id = e.user_id
-// LEFT OUTER JOIN  categories ca ON e.category_id = ca.id
-// ORDER BY enrolled DESC
-// limit 20
-// offset 0;
-
 function getAll(req, res, next) {
   const { filters, pagination } = req.query;
   const { id } = req.user;
   const errors = validateFilters(filters, Course.rawAttributes, Course.name);
   if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
+  const { courseId, userId, createdAt } = Enrollment.rawAttributes;
+  const enrollmentsQuery = `
+    SELECT ${createdAt.field}
+    FROM ${Enrollment.tableName} as Enrollment
+    WHERE Enrollment.${userId.field} = ${id}
+    AND Enrollment.${courseId.field} = "Course"."id"
+  `;
   const query = {
-    ...pagination,
     attributes: [
-      literal('DISTINCT ON("Course"."id") *'),
-      [literal(`COALESCE(("Users->Enrollment"."user_id" = ${id})::int, 0)`), 'enrolled'],
-      'id'
+      [literal(`EXISTS(${enrollmentsQuery})`), 'isEnrolled'],
+      ...Object.keys(Course.rawAttributes)
     ],
     include: [
       {
@@ -63,8 +55,10 @@ function getAll(req, res, next) {
         attributes: ['firstName', 'lastName', 'email']
       }
     ],
+    ...pagination,
     where: filters,
-    subQuery: false
+    subQuery: false,
+    order: [literal('"isEnrolled"', 'DESC')]
   };
   return Course.findAll(query)
     .then(courses => {
