@@ -87,6 +87,7 @@ export default {
   },
   mounted() {
     get(`?limit=${this.limit}&offset=${this.offset}`).then(({ data }) => {
+      console.log(data.data);
       this.courses =
         this.sortByEnrollment(this.sortByUpdated(data.data));
     });

@@ -29,6 +29,7 @@ app.use(errorHandler);
 app.use((req, res, next) => res.status(404).end());
 
 function errorHandler(err, req, res, next) {
+  console.log({ err });
   if (err.status) return res.status(err.status).json({ error: err.message });
   res.status(BAD_GATEWAY).json('Something went wrong');
 }
