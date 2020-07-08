@@ -47,9 +47,7 @@ function getAll(req, res, next) {
     where: filters
   };
   return Course.findAll(query)
-    .then(courses => {
-      return res.json({ data: courses });
-    })
+    .then(courses => res.json({ data: courses }))
     .catch(next);
 }
 

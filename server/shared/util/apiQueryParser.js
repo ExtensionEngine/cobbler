@@ -30,7 +30,7 @@ module.exports = { apiQueryParser, validateFilters };
 function parseFilter(raw) {
   const [maybeOperation, value] = raw.split('.');
   const operation = mapper.get(maybeOperation);
-  return (operation) ? operation(value) : raw;
+  return operation ? operation(value) : raw;
 }
 
 function validateFilters(filters, rawAttributes, modelName) {
