@@ -1,11 +1,9 @@
 <template>
   <div class="side-bar-wrapper">
-    <base-search @search="handleSearch" class="search" />
+    <base-search @search="searchHandler" class="search" />
     <category-filter @checked="categoryHandler" />
-    <date-picker
-      @addStart="dateHandler('start')"
-      @addEnd="dateHandler('end')" />
-    <base-button class="filter-btn">
+    <date-picker @dateChanged="dateHandler" />
+    <base-button @click="emitFilterParams" class="filter-btn">
       Filter
     </base-button>
   </div>
@@ -21,11 +19,28 @@ export default {
   name: 'side-bar',
   data() {
     return {
-      searchParams: []
+      searchParams: {
+        courseName: '',
+        categories: [],
+        startDate: '',
+        endDate: ''
+      }
     };
   },
   methods: {
-
+    searchHandler(searchTerm) {
+      this.searchParams.courseName = searchTerm;
+    },
+    categoryHandler(categories) {
+      this.searchParams.categories = categories;
+    },
+    dateHandler({ startDate, endDate }) {
+      this.searchParams.startDate = startDate;
+      this.searchParams.endDate = endDate;
+    },
+    emitFilterParams() {
+      this.$emit('filter', this.searchParams);
+    }
   },
   components: {
     BaseButton,
@@ -40,11 +55,11 @@ export default {
 
   .side-bar-wrapper {
     border-right: 1px solid var(--color-gray-500);
-    width: 25%;
+    max-width: 20%;
     padding: var(--spacing-sm);
     display: flex;
     flex-flow: column;
-    max-height: calc(100vh - var(--navbar-height));
+    height: calc(100vh - var(--navbar-height));
   }
   .side-bar-wrapper > * {
     margin-bottom: var(--spacing-xxs);

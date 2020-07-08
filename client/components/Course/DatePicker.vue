@@ -1,18 +1,18 @@
 <template>
   <div class="date-pick-group">
     <h3>Scheduled date</h3>
-    <field label="Start Date">
+    <field label="Start Date" name="start">
       <base-input
         v-model="start"
-        @input="propagateDate('start')"
+        @input="propagateDate"
         type="date"
         class="date-picker"
         outlined />
     </field>
-    <field label="End Date">
+    <field label="End Date" name="end">
       <base-input
         v-model="end"
-        @input="propagateDate('end')"
+        @input="propagateDate"
         type="date"
         class="date-picker"
         outlined />
@@ -33,11 +33,8 @@ export default {
     };
   },
   methods: {
-    propagateDate(time) {
-      if (time === 'start') {
-        return this.$emit('addStart', this.start);
-      }
-      this.$emit('addEnd', this.end);
+    propagateDate() {
+      return this.$emit('dateChanged', { startDate: this.start, endDate: this.end });
     }
   },
   components: {

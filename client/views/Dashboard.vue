@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <side-bar />
+    <side-bar @filter="refreshCourseList" />
     <div class="main-content">
       <div class="card-container">
         <div class="cards">
@@ -30,10 +30,10 @@
 <script>
 import compareAsc from 'date-fns/compareAsc';
 import CourseCard from '../components/Course/CourseCard';
+import { generateQuery } from '../utils/queryParamGenerator';
 import { get } from '../api/courses';
 import parseISO from 'date-fns/parseISO';
 import SideBar from '../components/Course/SideBar';
-import sortBy from 'lodash/sortBy';
 
 export default {
   props: {
@@ -43,8 +43,15 @@ export default {
     return {
       limit: 6,
       offset: 0,
-      courses: []
+      courses: [],
+      filterParams: {}
     };
+  },
+  computed: {
+    queryString() {
+      const { limit, offset, filterParams } = this;
+      return generateQuery(filterParams, limit, offset);
+    }
   },
   methods: {
     paginateForward() {
@@ -73,23 +80,25 @@ export default {
         return compareAsc(parseISO(prev.updatedAt), parseISO(next.updatedAt));
       });
     },
-    sortByEnrollment(courses) {
-      return sortBy(courses, this.checkEnrolled).reverse();
+
+    refreshCourseList(filterParams) {
+      this.filterParams = filterParams;
+      this.getFilteredCourses();
+    },
+    getFilteredCourses() {
+      get(this.queryString).then(({ data }) => {
+        this.courses =
+        this.sortByUpdated(data.data);
+      });
     }
   },
   watch: {
     offset() {
-      get(`?limit=${this.limit}&offset=${this.offset}`).then(({ data }) => {
-        this.courses =
-        this.sortByEnrollment(this.sortByUpdated(data.data));
-      });
+      this.getFilteredCourses();
     }
   },
-  mounted() {
-    get(`?limit=${this.limit}&offset=${this.offset}`).then(({ data }) => {
-      this.courses =
-        this.sortByEnrollment(this.sortByUpdated(data.data));
-    });
+  created() {
+    this.getFilteredCourses();
   },
   components: {
     CourseCard, SideBar
@@ -101,6 +110,7 @@ export default {
 .wrapper {
   display: flex;
   height: 100%;
+  width: 100%;
 }
 .page-btns {
   display: flex;
@@ -111,7 +121,8 @@ export default {
 
 .main-content {
   padding: var(--spacing-md);
-  max-height: calc(100vh - var(--navbar-height))
+  max-height: calc(100vh - var(--navbar-height));
+  max-width: 80%
 }
 i {
   font-size: var(--text-lg);

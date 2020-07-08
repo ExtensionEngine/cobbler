@@ -4,6 +4,7 @@ const { BAD_REQUEST, CREATED, NOT_FOUND } = require('http-status-codes');
 const { Category, Course, Enrollment, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
+const { literal } = require('sequelize');
 const pick = require('lodash/pick');
 const { validateFilters } = require('../shared/util/apiQueryParser');
 
@@ -29,6 +30,7 @@ function create(req, res) {
 
 function getAll(req, res, next) {
   const { filters, pagination } = req.query;
+  const { id } = req.user;
   const errors = validateFilters(filters, Course.rawAttributes, Course.name);
   if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
   const { courseId, userId, createdAt } = Enrollment.rawAttributes;
@@ -58,7 +60,7 @@ function getAll(req, res, next) {
     ...pagination,
     where: filters,
     subQuery: false,
-    order: [literal('"isEnrolled"', 'DESC')]
+    order: [[literal('"isEnrolled"'), 'DESC']]
   };
   return Course.findAll(query)
     .then(courses => {

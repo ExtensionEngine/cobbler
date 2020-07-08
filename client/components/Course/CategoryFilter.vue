@@ -7,7 +7,7 @@
       class="filter-element">
       <input
         v-model="checkedCategories"
-        @input="propagateChoice"
+        @change="propagateChoice"
         :value="category.id"
         type="checkbox"
         class="mr-xxs">
@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     propagateChoice() {
-      this.$emit('checked', this.categories);
+      this.$emit('checked', this.checkedCategories);
     }
   },
   created() {
