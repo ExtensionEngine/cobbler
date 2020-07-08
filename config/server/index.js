@@ -2,10 +2,12 @@
 
 const port = resolvePort();
 const roles = ['ADMIN', 'LECTURER', 'LEARNER'];
+const teachingElements = ['TEXT', 'IMAGE', 'VIDEO'];
 
 module.exports = {
   port,
-  roles
+  roles,
+  teachingElements
 };
 
 function resolvePort() {

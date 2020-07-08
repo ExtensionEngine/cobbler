@@ -10,6 +10,7 @@ const Umzug = require('umzug');
 /* eslint-disable require-sort/require-sort */
 const User = require('../../user/user.model');
 const Category = require('../../category/category.model');
+const TeachingElement = require('../../teaching-element/teaching-element.model');
 const Course = require('../../course/course.model');
 const Enrollment = require('../../enrollment/enrollment.model');
 const Lecture = require('../../lecture/lecture.model');
@@ -43,6 +44,7 @@ const models = {
   User: defineModel(User),
   Category: defineModel(Category),
   Course: defineModel(Course),
+  TeachingElement: defineModel(TeachingElement),
   Enrollment: defineModel(Enrollment),
   Lecture: defineModel(Lecture)
 };
