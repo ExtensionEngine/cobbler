@@ -4,7 +4,7 @@
     <div
       v-for="category in categories"
       :key="category.id"
-      class="filter-element">
+      class="filter-element mb-xs">
       <input
         v-model="checkedCategories"
         @change="propagateChoice"
@@ -44,7 +44,6 @@ export default {
 
 <style lang="css" scoped>
   .filter-element {
-    margin-bottom: 10px;
     display: flex;
     justify-content: flex-start;
     font-size: var(--text-sm);

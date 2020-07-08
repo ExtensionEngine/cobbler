@@ -28,7 +28,7 @@ export default {
   name: 'date-picker',
   data() {
     return {
-      start: '',
+      start: new Date().toString(),
       end: ''
     };
   },

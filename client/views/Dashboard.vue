@@ -31,6 +31,7 @@
 <script>
 import compareAsc from 'date-fns/compareAsc';
 import CourseCard from '../components/Course/CourseCard';
+import debounce from 'lodash/debounce';
 import { generateQuery } from '../utils/queryParamGenerator';
 import { get } from '../api/courses';
 import parseISO from 'date-fns/parseISO';
@@ -45,9 +46,7 @@ export default {
       limit: 6,
       offset: 0,
       courses: [],
-      filterParams: {
-        startDate: new Date()
-      }
+      filterParams: {}
     };
   },
   computed: {
@@ -88,12 +87,12 @@ export default {
       this.filterParams = filterParams;
       this.getFilteredCourses();
     },
-    getFilteredCourses() {
+    getFilteredCourses: debounce(function () {
       get(this.queryString).then(({ data }) => {
         this.courses =
         this.sortByUpdated(data.data);
       });
-    }
+    })
   },
   watch: {
     offset() {
