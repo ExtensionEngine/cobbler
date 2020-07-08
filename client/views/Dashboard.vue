@@ -46,7 +46,9 @@ export default {
       limit: 6,
       offset: 0,
       courses: [],
-      filterParams: {}
+      filterParams: {
+        startDate: new Date()
+      }
     };
   },
   computed: {
@@ -64,12 +66,6 @@ export default {
         ? this.offset -= this.limit
         : 0;
     },
-    handleSearch(searchTerm) {
-      get(`?limit=${this.limit}&offset=${this.offset}&name=ts.${searchTerm}`)
-        .then(courses => {
-          this.courses = courses.data;
-        });
-    },
     checkEnrolled(course) {
       if (!course.Users.length) return false;
       if (course.Users.find(user => user.email === this.$store.state.auth.email)) {
@@ -82,9 +78,12 @@ export default {
         return compareAsc(parseISO(prev.updatedAt), parseISO(next.updatedAt));
       });
     },
-
     refreshCourseList(filterParams) {
       this.filterParams = filterParams;
+      // eslint-disable-next-line no-prototype-builtins
+      if (!filterParams.hasOwnProperty('startDate')) {
+        filterParams.startDate = new Date();
+      }
       this.getFilteredCourses();
     },
     getFilteredCourses: debounce(function () {

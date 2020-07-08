@@ -87,11 +87,11 @@ export default {
 
 .course-card:empty:before {
   content: "";
-  height: 60px;
+  height: 20%;
   position: absolute;
   left: var(--spacing-lg);
   right: var(--spacing-lg);
-  bottom: 30%;
+  bottom: 10%;
   background: linear-gradient(to left, #c3c1c1da 0, #dadadae3);
   background-size: 300% 300%;
   background-position: 15px 140px;
@@ -152,6 +152,7 @@ export default {
 .unavailable .course-card-title {
   background-color: var(--color-gray);
   color: var(--color-white);
+  text-decoration: line-through;
 }
 
 .unavailable:hover {

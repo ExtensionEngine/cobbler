@@ -55,7 +55,12 @@ function defineModel(Model, connection = sequelize) {
 
 Object.values(models).forEach(model => {
   invoke(model, 'associate', models);
+  addScopes(model, models);
 });
+
+function addScopes(model, models) {
+  invoke(model, 'scopes', models);
+}
 
 const db = {
   Sequelize,

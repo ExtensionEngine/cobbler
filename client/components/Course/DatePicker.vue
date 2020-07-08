@@ -1,7 +1,7 @@
 <template>
   <div class="date-pick-group">
     <h3>Scheduled date</h3>
-    <field label="Start Date" name="start">
+    <field name="start">
       <base-input
         v-model="start"
         @input="propagateDate"
@@ -9,7 +9,7 @@
         class="date-picker"
         outlined />
     </field>
-    <field label="End Date" name="end">
+    <field name="end">
       <base-input
         v-model="end"
         @input="propagateDate"

@@ -30,21 +30,11 @@ function create(req, res) {
 
 function getAll(req, res, next) {
   const { filters, pagination } = req.query;
-  const { id } = req.user;
   const errors = validateFilters(filters, Course.rawAttributes, Course.name);
+  const { id } = req.user;
   if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
-  const { courseId, userId, createdAt } = Enrollment.rawAttributes;
-  const enrollmentsQuery = `
-    SELECT ${createdAt.field}
-    FROM ${Enrollment.tableName} as Enrollment
-    WHERE Enrollment.${userId.field} = ${id}
-    AND Enrollment.${courseId.field} = "Course"."id"
-  `;
+
   const query = {
-    attributes: [
-      [literal(`EXISTS(${enrollmentsQuery})`), 'isEnrolled'],
-      ...Object.keys(Course.rawAttributes)
-    ],
     ...pagination,
     include: [
       {
@@ -57,12 +47,9 @@ function getAll(req, res, next) {
         attributes: ['firstName', 'lastName', 'email']
       }
     ],
-    ...pagination,
-    where: filters,
-    subQuery: false,
-    order: [[literal('"isEnrolled"'), 'DESC']]
+    where: filters
   };
-  return Course.findAll(query)
+  return Course.scope({ method: ['filterScope', id] }).findAll(query)
     .then(courses => {
       return res.json({ data: courses });
     })
