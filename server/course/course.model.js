@@ -63,21 +63,21 @@ class Course extends Model {
   static scopes({ Enrollment }) {
     const { courseId, userId, createdAt } = Enrollment.rawAttributes;
 
-    const enrollmentsQuery = enrollUserId => `
-    SELECT ${createdAt.field}
-    FROM ${Enrollment.tableName} as Enrollment
-    WHERE Enrollment.${userId.field} = ${enrollUserId}
-    AND Enrollment.${courseId.field} = "Course"."id"`;
-
     return [
-      this.addScope('filterScope', id => ({
-        attributes: [
-          [literal(`EXISTS(${enrollmentsQuery(id)})`), 'isEnrolled'],
-          ...Object.keys(Course.rawAttributes)
-        ],
-        subQuery: false,
-        order: [[literal('"isEnrolled"'), 'DESC']]
-      }))
+      this.addScope('filterScope', id => {
+        const enrollmentsQuery = `
+        SELECT ${createdAt.field}
+        FROM ${Enrollment.tableName} as Enrollment
+        WHERE Enrollment.${userId.field} = ${id}
+        AND Enrollment.${courseId.field} = "Course"."id"`;
+        return {
+          attributes: [
+            [literal(`EXISTS(${enrollmentsQuery})`), 'isEnrolled'],
+            ...Object.keys(Course.rawAttributes)
+          ]
+        };
+      }
+      )
     ];
   }
 }

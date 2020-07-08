@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h3>Categories</h3>
+    <h4 class="mb-sm">Categories</h4>
     <div
       v-for="category in categories"
       :key="category.id"
-      class="filter-element mb-xs">
+      class="filter-element mb-sm">
       <input
         v-model="checkedCategories"
         @change="propagateChoice"
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import debounce from 'lodash/debounce';
 import { get } from '../../api/categories';
 
 export default {
@@ -30,11 +31,11 @@ export default {
     };
   },
   methods: {
-    propagateChoice() {
+    propagateChoice: debounce(function () {
       this.$emit('checked', this.checkedCategories);
-    }
+    }, 400)
   },
-  created() {
+  mounted() {
     get().then(categories => {
       this.categories = categories.data.data;
     });
@@ -46,7 +47,7 @@ export default {
   .filter-element {
     display: flex;
     justify-content: flex-start;
-    font-size: var(--text-sm);
+    font-size: var(--text-sd);
   }
 
   span {

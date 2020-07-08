@@ -47,7 +47,9 @@ function getAll(req, res, next) {
         attributes: ['firstName', 'lastName', 'email']
       }
     ],
-    where: filters
+    where: filters,
+    subQuery: false,
+    order: [[literal('"isEnrolled"'), 'DESC']]
   };
   return Course.scope({ method: ['filterScope', id] }).findAll(query)
     .then(courses => {

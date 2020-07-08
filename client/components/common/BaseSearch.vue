@@ -13,6 +13,9 @@
 </template>
 
 <script>
+
+import debounce from 'lodash/debounce';
+
 export default {
   name: 'base-search',
   data() {
@@ -21,9 +24,9 @@ export default {
     };
   },
   methods: {
-    doSearch() {
+    doSearch: debounce(function () {
       this.$emit('search', this.search);
-    }
+    }, 400)
   }
 };
 </script>

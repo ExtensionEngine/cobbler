@@ -63,4 +63,5 @@ export default {
   background: var(--color-white);
   border-radius: 3px 3px 0 0;
 }
+
 </style>
