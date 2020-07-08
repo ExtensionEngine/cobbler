@@ -1,13 +1,14 @@
 'use strict';
 
-const { BAD_REQUEST, CREATED } = require('http-status-codes');
+const { BAD_REQUEST, CREATED, NOT_FOUND } = require('http-status-codes');
+const { Lecture, TeachingElement } = require('../shared/database');
 const { HttpError } = require('../shared/error');
-const { Lecture } = require('../shared/database');
 const pick = require('lodash/pick');
 
 module.exports = {
   create,
-  update
+  update,
+  getLectureById
 };
 
 function create(req, res, next) {
@@ -31,6 +32,25 @@ function update(req, res, next) {
     .then(lecture => lecture.update({ ...lectureInfo }))
     .then(updatedLecture => {
       res.status(CREATED).json({ data: updatedLecture });
+    })
+    .catch(next);
+}
+
+function getLectureById(req, res, next) {
+  const { id } = req.params;
+  if (!Number(id)) {
+    throw new HttpError('ID is not a number', BAD_REQUEST);
+  }
+
+  return Lecture.findByPk(id, {
+    include: [{
+      model: TeachingElement,
+      as: 'teachingElements'
+    }]
+  })
+    .then(lecture => {
+      if (!lecture) return res.status(NOT_FOUND).send('Lecture not found');
+      return res.json({ data: lecture });
     })
     .catch(next);
 }

@@ -31,10 +31,14 @@ class Lecture extends Model {
     };
   }
 
-  static associate({ Course }) {
+  static associate({ Course, TeachingElement }) {
     this.belongsTo(Course, {
       foreignKey: 'courseId',
       as: 'lecture'
+    });
+    this.hasMany(TeachingElement, {
+      foreignKey: 'lectureId',
+      as: 'teachingElements'
     });
   }
 
