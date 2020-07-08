@@ -8,7 +8,8 @@
             v-for="course in courses"
             :key="course.id"
             :course="course"
-            :enrolled="checkEnrolled(course)" />
+            :enrolled="checkEnrolled(course)"
+            :available="course.available" />
         </div>
       </div>
       <div class="page-btns">
@@ -44,7 +45,9 @@ export default {
       limit: 6,
       offset: 0,
       courses: [],
-      filterParams: {}
+      filterParams: {
+        startDate: new Date()
+      }
     };
   },
   computed: {

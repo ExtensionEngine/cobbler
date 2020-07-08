@@ -11,7 +11,7 @@
         <div class="course-title">
           <h1>{{ course.name }}</h1>
           <div class="btn-container">
-            <base-button @click="sendEnrollRequest" :disabled="enrolled" class="enroll-btn" contained>
+            <base-button @click="sendEnrollRequest" :disabled="enrolled || !course.available" class="enroll-btn" contained>
               Enroll
             </base-button>
           </div>

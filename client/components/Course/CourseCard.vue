@@ -1,7 +1,7 @@
 <template>
   <div
     @click="showCourse"
-    :class="{ enrolled }"
+    :class="{ enrolled, unavailable: !available }"
     class="course-card">
     <div class="course-card-title">
       <p class="category-name">{{ course.Category.name }}</p>
@@ -38,7 +38,8 @@ export default {
         };
       }
     },
-    enrolled: { type: Boolean, default: false }
+    enrolled: { type: Boolean, default: false },
+    available: { type: Boolean, default: true }
   },
   computed: {
     lecturer() {
@@ -146,5 +147,14 @@ export default {
 
 .enrolled {
   border: var(--spacing-xxxs) solid var(--color-success);
+}
+
+.unavailable .course-card-title {
+  background-color: var(--color-gray);
+  color: var(--color-white);
+}
+
+.unavailable:hover {
+  transform: none;
 }
 </style>

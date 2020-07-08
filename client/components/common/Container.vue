@@ -17,5 +17,6 @@ export default {
     position: relative;
     min-height: calc(100% - var(--navbar-height));
     width: 100%;
+    padding: var(--spacing-lg);
   }
 </style>
