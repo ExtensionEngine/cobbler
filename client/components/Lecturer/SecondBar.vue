@@ -5,13 +5,11 @@
 </template>
 
 <script>
-import paths from '../../router/paths';
-
 export default {
   name: 'second-bar',
   methods: {
     handleBackClick() {
-      this.$router.push(paths.lecturer.base);
+      this.$router.go(-1);
     }
   }
 };

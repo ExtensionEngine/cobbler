@@ -24,6 +24,10 @@ module.exports = {
         type: Sequelize.JSONB,
         defaultValue: {}
       },
+      position: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       lectureId: {
         type: Sequelize.INTEGER,
         field: 'lecture_id',

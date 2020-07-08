@@ -17,7 +17,8 @@ export const endpoints = {
     update: id => `courses/${id}`
   },
   lectures: {
-    base: 'lectures'
+    base: 'lectures',
+    getById: id => `lectures/${id}`
   }
 };
 

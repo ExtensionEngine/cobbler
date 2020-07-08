@@ -1,6 +1,7 @@
 import AddCourse from '../views/Lecturer/AddCourse';
 import AdminDashboard from '../views/Admin/Dashboard';
 import EditCourse from '../views/Lecturer/EditCourse';
+import EditLecture from '../views/Lecturer/EditLecture';
 import Forbidden from '../views/Forbidden';
 import Layout from '../components/common/Layout';
 import LearnerDashboard from '../views/Learner/Dashboard';
@@ -35,6 +36,13 @@ const routes = [
       path: paths.lecturer.editCourse(':id'),
       name: 'Edit course',
       component: EditCourse,
+      meta: {
+        roles: ['LECTURER']
+      }
+    }, {
+      path: paths.lecturer.editLecture(':id'),
+      name: 'Edit lecture',
+      component: EditLecture,
       meta: {
         roles: ['LECTURER']
       }

@@ -5,7 +5,8 @@ export default {
   lecturer: {
     base: '/lecturer',
     addCourse: '/lecturer/add-course',
-    editCourse: id => `/lecturer/edit-course/${id}`
+    editCourse: id => `/lecturer/edit-course/${id}`,
+    editLecture: id => `/lecturer/edit-lecture/${id}`
   },
   learner: {
     base: '/'

@@ -9,13 +9,20 @@
       :expanded="lecture.expanded"
       class="lecture">
       <p>{{ lecture.description || 'No description available yet' }}</p>
+      <base-button
+        @click="toEdit(lecture.id)"
+        class="edit-btn mb-xs">
+        Edit
+      </base-button>
     </collapsible>
     <p v-if="!lectures.length">No lectures added yet!</p>
   </div>
 </template>
 
 <script>
+import BaseButton from '../../../components/common/BaseButton';
 import Collapsible from '../../../components/common/Collapsible';
+import paths from '../../../router/paths';
 
 export default {
   name: 'lecture-list',
@@ -25,9 +32,13 @@ export default {
   methods: {
     handleExpandToggle(lectureId) {
       this.$emit('expand', lectureId);
+    },
+    toEdit(lectureId) {
+      this.$router.push(paths.lecturer.editLecture(lectureId));
     }
   },
   components: {
+    BaseButton,
     Collapsible
   }
 };
@@ -42,6 +53,10 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+.edit-btn {
+  background: var(--color-gray-500);
+  color: var(--color-black);
 }
 @media only screen and (max-width: 480px) {
   .lecture {

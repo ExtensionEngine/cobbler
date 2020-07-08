@@ -20,6 +20,10 @@ class TeachingElement extends Model {
       data: {
         type: JSONB
       },
+      position: {
+        type: INTEGER,
+        unique: true
+      },
       lectureId: {
         type: INTEGER,
         field: 'lecture_id'
