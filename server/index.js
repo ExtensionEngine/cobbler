@@ -21,7 +21,7 @@ app.use(auth.initialize());
 app.use('/api/v1', router);
 
 app.listen(port, () =>
-  console.log(`Server is listening on port ${port}! Also here is env ${Object.keys(process.env)}`)
+  console.log(`Server is listening on port ${port}!`)
 );
 
 app.use(errorHandler);
