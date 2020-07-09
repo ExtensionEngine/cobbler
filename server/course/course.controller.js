@@ -1,6 +1,6 @@
 'use strict';
 
-const { BAD_REQUEST, CREATED, NOT_FOUND } = require('http-status-codes');
+const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
 const { Category, Course, Enrollment, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const { Op } = require('sequelize');
@@ -13,7 +13,7 @@ module.exports = {
   update
 };
 
-function create(req, res) {
+async function create(req, res) {
   const courseInfo = pick(req.body, [
     'name',
     'description',
@@ -21,12 +21,12 @@ function create(req, res) {
     'startDate',
     'endDate'
   ]);
-  return Course.create(courseInfo)
-    .then(course => course.addUser(req.user))
-    .then(course => res.status(CREATED).json({ data: course }));
+  const course = await Course.create(courseInfo);
+  const enrollment = await course.addUser(req.user);
+  return res.status(CREATED).json({ data: { course, enrollment } });
 }
 
-function getAll(req, res) {
+async function getAll(req, res) {
   const { available } = req.query;
   const query = {
     include: [
@@ -44,28 +44,28 @@ function getAll(req, res) {
   if (available) {
     query.where = { endDate: { [Op.gte]: new Date() } };
   }
-  return Course.findAll(query).then(course => res.json({ data: course }));
+  const courses = await Course.findAll(query);
+  return res.status(OK).json({ data: courses });
 }
 
-function getCourseById(req, res) {
+async function getCourseById(req, res) {
   const { id } = req.params;
   if (!Number(id)) {
     throw new HttpError('ID is not a number', BAD_REQUEST);
   }
-  return Course.findByPk(id, {
+  const course = await Course.findByPk(id, {
     include: [
       {
         model: Category,
         attributes: ['name']
       }
     ]
-  }).then(course => {
-    if (!course) return res.status(NOT_FOUND).send('Course not found');
-    return res.json({ data: course });
   });
+  if (!course) return res.status(NOT_FOUND).send('Course not found');
+  return res.json({ data: course });
 }
 
-function update(req, res) {
+async function update(req, res) {
   const courseInfo = pick(req.body, [
     'name',
     'description',
@@ -73,7 +73,7 @@ function update(req, res) {
     'endDate',
     'categoryId'
   ]);
-  return Course.update(
+  const course = await Course.update(
     courseInfo,
     {
       where: {
@@ -81,10 +81,9 @@ function update(req, res) {
       },
       returning: true
     }
-  ).then(course => {
-    if (!course[1].length) {
-      return res.status(NOT_FOUND).json('Course does not exist');
-    }
-    return res.status(CREATED).json({ data: course });
-  });
+  );
+  if (!course[1].length) {
+    return res.status(NOT_FOUND).json('Course does not exist');
+  }
+  return res.status(CREATED).json({ data: course });
 }
