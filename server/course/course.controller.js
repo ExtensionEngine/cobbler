@@ -1,5 +1,6 @@
 'use strict';
 
+const { assert, date, number, object, optional, string } = require('superstruct');
 const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
 const { Category, Course, Enrollment, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
@@ -14,14 +15,7 @@ module.exports = {
 };
 
 async function create(req, res) {
-  const courseInfo = pick(req.body, [
-    'name',
-    'description',
-    'categoryId',
-    'startDate',
-    'endDate'
-  ]);
-  const course = await Course.create(courseInfo);
+  const course = await Course.create(parseCourse(req.body));
   const enrollment = await course.addUser(req.user);
   return res.status(CREATED).json({ data: { course, enrollment } });
 }
@@ -66,15 +60,8 @@ async function getCourseById(req, res) {
 }
 
 async function update(req, res) {
-  const courseInfo = pick(req.body, [
-    'name',
-    'description',
-    'startDate',
-    'endDate',
-    'categoryId'
-  ]);
   const course = await Course.update(
-    courseInfo,
+    parseCourse(req.body),
     {
       where: {
         id: req.params.id
@@ -86,4 +73,20 @@ async function update(req, res) {
     return res.status(NOT_FOUND).json('Course does not exist');
   }
   return res.status(CREATED).json({ data: course });
+}
+
+function parseCourse(course) {
+  const courseStruct = object({
+    name: string(),
+    description: string(),
+    startDate: optional(date()),
+    endDate: optional(date()),
+    categoryId: number()
+  });
+  const parsedCourse = pick(course,
+    ['name', 'description', 'categoryId']);
+  parsedCourse.startDate = course.startDate && new Date(course.startDate);
+  parsedCourse.endDate = course.endDate && new Date(course.endDate);
+  assert(parsedCourse, courseStruct);
+  return parsedCourse;
 }
