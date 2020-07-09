@@ -1,7 +1,7 @@
 'use strict';
 
 const { BAD_REQUEST, CREATED, FORBIDDEN, NOT_FOUND, OK } = require('http-status-codes');
-const { Category, Course, Enrollment, User } = require('../shared/database');
+const { Category, Course, Enrollment, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const { Op } = require('sequelize');
 const pick = require('lodash/pick');
@@ -27,14 +27,13 @@ function create(req, res, next) {
   if (!courseInfo.name || !courseInfo.description || isNaN(courseInfo.categoryId)) {
     throw new HttpError('The provided body is invalid', BAD_REQUEST);
   }
-
-  return Course.create(courseInfo)
-    .then(course => {
-      course.addUser(req.user);
-      return course;
-    })
-    .then(course => res.status(CREATED).json({ data: course }))
-    .catch(next);
+  return sequelize.transaction(transaction => Course.create(courseInfo, { transaction })
+  .then(course => {
+    course.addUser(req.user, { transaction });
+    return course;
+  })
+  .then(course => res.status(CREATED).json({ data: course }))
+  .catch(next));
 }
 
 function getAll(req, res) {
@@ -114,10 +113,10 @@ function update(req, res, next) {
   }).catch(next);
 }
 
-function checkNameAvailability(req, res, next) {
-  if (!req.body.name) throw new HttpError('Invalid request body', BAD_REQUEST);
+function checkNameAvailability({ body: { name } }, res, next) {
+  if (!name) throw new HttpError('Invalid request body', BAD_REQUEST);
 
-  Course.findOne({ where: { name: req.body.name } }).then(course => {
+  return Course.findOne({ where: { name } }).then(course => {
     res.status(OK).json({ data: !course });
   }).catch(next);
 }

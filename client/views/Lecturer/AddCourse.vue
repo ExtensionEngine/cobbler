@@ -5,7 +5,7 @@
     </div>
     <div class="course-container">
       <base-form
-        v-slot="{ isFormInvalid }"
+        v-slot="{ isFormValid }"
         @submit="onSubmit"
         class="course-form">
         <field
@@ -76,7 +76,7 @@
           </template>
         </field>
         <base-button
-          :disabled="isFormInvalid"
+          :disabled="!isFormValid"
           class="button-form-item"
           type="submit"
           contained primary>
@@ -111,7 +111,11 @@ export default {
   },
   computed: {
     nameRules() {
-      return { required: true, between: { min: 2, max: 50 }, uniqueCourse: { checkName: this.checkName } };
+      return {
+        required: true,
+        between: { min: 2, max: 50 },
+        uniqueCourse: { checkName: this.checkName }
+      };
     },
     descriptionRules() {
       return { required: true, between: { min: 2, max: 50 } };
@@ -122,8 +126,8 @@ export default {
   },
   methods: {
     async onSubmit() {
-      const categoryId = this.categories.find(category => category.name === this.category).id;
-
+      const { id: categoryId } = this.categories.find(category =>
+        category.name === this.category);
       const courseToAdd = {
         name: this.name,
         description: this.description,
