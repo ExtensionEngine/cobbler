@@ -26,7 +26,7 @@ export default {
 <style lang="css" scoped>
 .select {
   width: 100%;
-  font-size: 16px;
+  font-size: 1rem;
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: 3px;
   outline: none;

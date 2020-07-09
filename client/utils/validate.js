@@ -14,7 +14,7 @@ extend('min', {
 
 extend('between', {
   validate(value, { min, max }) {
-    if (Number(value.length) <= min) {
+    if (value.length <= min) {
       return 'The {_field_} field has to contain more than {min} characters';
     } else if (value.length >= max) {
       return 'The {_field_} field has to contain less than {max} characters';

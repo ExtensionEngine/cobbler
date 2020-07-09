@@ -4,7 +4,7 @@
     @submit.prevent="onSubmit"
     mode="eager"
     tag="form">
-    <slot :isFormInvalid="invalid">
+    <slot :isFormValid="!invalid">
     </slot>
   </validation-observer>
 </template>

@@ -4,13 +4,19 @@
       <div v-for="n in 5" :key="n" class="course-card"></div>
     </template>
     <div v-else-if="!courses.length" class="no-content">There are no courses so far</div>
-    <div v-for="course in courses" :key="course.id" class="course-card">
+    <div
+      v-for="{ name, description, category, startDate, endDate, id } in courses"
+      :key="id"
+      class="course-card">
       <div class="card-info">
-        <h3 class="course-title">{{ course.name }}</h3>
-        <p>{{ course.description }}</p>
-        <span>{{ course | formatDates }}</span>
+        <h3 class="course-title">{{ name }}</h3>
+        <p>{{ description }}</p>
+        <span
+          v-if="startDate && endDate">
+          {{ startDate | formatDate }} - {{ endDate | formatDate }}
+        </span>
       </div>
-      <span class="category">{{ course.category.name }}</span>
+      <span class="category">{{ category.name }}</span>
     </div>
   </div>
 </template>
@@ -32,11 +38,8 @@ export default {
     }
   },
   filters: {
-    formatDates({ startDate, endDate }) {
-      if (!startDate || !endDate) {
-        return 'The start date, end date or both are not defined yet!';
-      }
-      return `${new Date(startDate).toDateString()} - ${new Date(endDate).toDateString()}`;
+    formatDate(date) {
+      return new Date(date).toDateString();
     }
   }
 };
@@ -84,8 +87,7 @@ export default {
 }
 .no-content {
   text-align: center;
-  padding: 15px 0;
-
+  padding: var(--spacing-sm) 0;
 }
 .course-title {
   margin: 0;
