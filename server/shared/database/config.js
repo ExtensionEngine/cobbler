@@ -1,5 +1,7 @@
 'use strict';
 
+const logger = require('../logger');
+
 const {
   DATABASE_ADAPTER,
   DATABASE_HOST,
@@ -12,7 +14,8 @@ const {
 
 module.exports = {
   ...readConfig(),
-  migrationStorageTableName: 'sequelize_meta'
+  migrationStorageTableName: 'sequelize_meta',
+  logging: msg => logger.sql(msg)
 };
 
 function readConfig() {
@@ -29,5 +32,6 @@ function readConfig() {
     host: DATABASE_HOST,
     port: DATABASE_PORT,
     dialect: DATABASE_ADAPTER || 'postgres'
+
   };
 }
