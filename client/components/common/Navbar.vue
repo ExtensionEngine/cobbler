@@ -1,14 +1,20 @@
 <template>
-  <nav class="nav flex-h align-center justify-end">
-    <span
-      @click="logout"
-      class="nav-item clickable">
-      Logout
-    </span>
-    <span
-      class="nav-item">
-      {{ $store.state.auth.email }}
-    </span>
+  <nav class="nav flex-h align-center justify-space-between">
+    <div class="nav-title">
+      <i class="material-icons">analytics</i>
+      Cobbler LMS
+    </div>
+    <div>
+      <span
+        @click="logout"
+        class="nav-item clickable">
+        Logout
+      </span>
+      <span
+        class="nav-item">
+        {{ $store.state.auth.email }}
+      </span>
+    </div>
   </nav>
 </template>
 
@@ -41,6 +47,12 @@ export default {
   margin: 0 var(--spacing-xs);
   padding: var(--spacing-xxs) var(--spacing-xs);
   box-shadow: 2px 2px 2px 0px var(--color-gray-500);
+}
+.nav-title {
+  color: var(--color-accent);
+}
+.nav-title i {
+  vertical-align: middle;
 }
 .clickable {
   cursor: pointer;

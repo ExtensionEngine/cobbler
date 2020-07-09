@@ -2,7 +2,7 @@ import { endpoints } from './common';
 import thwack from 'thwack';
 
 export function get(queryString) {
-  return thwack.get(endpoints.course.all(queryString));
+  return thwack.get(endpoints.course.custom(queryString));
 }
 
 export function getById(id) {

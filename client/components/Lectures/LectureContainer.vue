@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Lectures:</h2>
+    <h2 class="mb-md">Lectures:</h2>
     <ul class="list">
       <li v-for="lecture in dummyLectures" :key="lecture.id" class="lecture">
         <lecture-box

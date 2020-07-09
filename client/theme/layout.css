@@ -33,8 +33,17 @@
 .justify-end {
   justify-content: flex-end;
 }
+.justify-start {
+  justify-content: flex-start;
+}
+.align-start {
+  align-items: start;
+}
 .align-center {
   align-items: center;
+}
+.align-end {
+  align-items: flex-end;
 }
 .place-center {
   justify-content: center;

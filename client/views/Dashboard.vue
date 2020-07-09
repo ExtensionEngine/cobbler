@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper flex-h">
     <side-bar @filter="refreshCourseList" />
     <div class="main-content">
       <div class="card-container">
@@ -102,13 +102,10 @@ export default {
 
 <style lang="css" scoped>
 .wrapper {
-  display: flex;
   height: 100%;
   width: 100%;
 }
 .page-btns {
-  display: flex;
-  justify-content: center;
   position: absolute;
   bottom: 1%;
 }
@@ -121,11 +118,9 @@ export default {
 i {
   font-size: var(--text-lg);
 }
-  padding: var(--spacing-md);
 .container {
   font-size: var(--text-sm);
 }
-
 .arrow-btn {
   background: none;
   border: none;
@@ -133,11 +128,9 @@ i {
 .arrow-btn:hover {
   cursor: pointer;
 }
-
 .arrow-btn:focus {
   outline: none;
 }
-
 .cards {
   max-width: 1200px;
   margin: var(--spacing-sm) auto;

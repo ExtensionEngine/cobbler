@@ -11,7 +11,7 @@
         :value="category.id"
         type="checkbox"
         class="mr-xxs">
-      <span>{{ category.name }}</span>
+      <span class="ml-xs">{{ category.name }}</span>
     </div>
     <div>
     </div>
@@ -20,10 +20,13 @@
 
 <script>
 import debounce from 'lodash/debounce';
-import { get } from '../../api/categories';
+import { getAll } from '../../api/categories';
 
 export default {
   name: 'category-filter',
+  props: {
+    debounce: { type: Boolean, default: false }
+  },
   data() {
     return {
       categories: [],
@@ -33,10 +36,10 @@ export default {
   methods: {
     propagateChoice: debounce(function () {
       this.$emit('checked', this.checkedCategories);
-    }, 400)
+    }, debounce ? 400 : 0)
   },
   mounted() {
-    get().then(categories => {
+    getAll().then(categories => {
       this.categories = categories.data.data;
     });
   }
@@ -49,9 +52,4 @@ export default {
     justify-content: flex-start;
     font-size: var(--text-sd);
   }
-
-  span {
-    margin-left: var(--spacing-xs);
-  }
-
 </style>

@@ -1,24 +1,28 @@
 <template>
   <div>
-    <div class="course-tags">
-      <span class="small-label category-label">{{ course.Category.name }}</span>
-      <span class="small-label date-label">
+    <div class="flex-h justify-start mb-md">
+      <span class="small-label category-label mr-xs pt-xxs pb-xxs pl-sm pr-sm">
+        {{ course.Category.name }}
+      </span>
+      <span class="small-label date-label mr-xs pt-xxs pb-xxs pl-sm pr-sm">
         {{ course | getDateRange }}
       </span>
     </div>
-    <div class="course-content">
-      <div>
-        <div class="course-title">
-          <h1>{{ course.name }}</h1>
-          <div class="btn-container">
-            <base-button @click="sendEnrollRequest" :disabled="enrolled || !course.available" class="enroll-btn" contained>
-              Enroll
-            </base-button>
-          </div>
+    <div>
+      <div class="course-title flex-h">
+        <h1 class="mr-md">{{ course.name }}</h1>
+        <div class="btn-container">
+          <base-button
+            @click="sendEnrollRequest"
+            :disabled="enrolled || !course.available"
+            class="enroll-btn mt-xxs"
+            contained>
+            Enroll
+          </base-button>
         </div>
-        <p>{{ course.description }}</p>
-        <p>By: {{ lecturers }}</p>
       </div>
+      <p>{{ course.description }}</p>
+      <p>By: {{ lecturers }}</p>
     </div>
     <lecture-container class="lectures" />
   </div>
@@ -74,13 +78,8 @@ export default {
 };
 </script>
 
-<style scoped>
-  .course-title {
-    display: flex;
-  }
-  .course-title h1{
-    margin-right: var(--spacing-md);
-  }
+<style lang="css" scoped>
+
   .category-label {
     background: var(--color-info);
     color: var(--color-white);
@@ -88,9 +87,6 @@ export default {
   .date-label {
     background: var(--color-gray);
     color: var(--color-white);
-  }
-  .btn-container *{
-    margin-top: 30%;
   }
   .enroll-btn {
     color: var(--color-white);
@@ -104,12 +100,6 @@ export default {
   .small-label{
     font-size: var(--text-sm);
     border-radius: var(--spacing-xxs);
-    padding: var(--spacing-xxs) var(--spacing-sm);
-    margin-right: var(--spacing-xs);
-  }
-  .course-tags {
-    display: flex;
-    justify-content: flex-start;
   }
   .lectures {
     width: 100%;

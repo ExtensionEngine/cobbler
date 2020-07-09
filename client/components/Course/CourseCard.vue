@@ -70,7 +70,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="css" scoped>
 .course-card {
   box-shadow: 3px 3px 8px 0px var(--color-gray);
   min-height: 150px;

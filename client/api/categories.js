@@ -1,6 +1,6 @@
 import { endpoints } from './common';
 import thwack from 'thwack';
 
-export function get(queryString) {
+export function getAll() {
   return thwack.get(endpoints.categories.base);
 }

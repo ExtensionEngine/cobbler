@@ -9,7 +9,7 @@
         class="date-picker"
         outlined />
     </field>
-    <field name="end" label="end">
+    <field name="end">
       <base-input
         v-model="end"
         @input="propagateDate"
@@ -27,6 +27,9 @@ import Field from '../common/BaseForm/Field';
 
 export default {
   name: 'date-picker',
+  props: {
+    debounce: { type: Boolean, default: false }
+  },
   data() {
     return {
       start: '',
@@ -36,7 +39,7 @@ export default {
   methods: {
     propagateDate: debounce(function () {
       return this.$emit('dateChanged', { startDate: this.start, endDate: this.end });
-    }, 400)
+    }, debounce ? 400 : 0)
   },
   components: {
     BaseInput, Field

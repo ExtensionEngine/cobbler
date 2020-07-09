@@ -1,8 +1,8 @@
 <template>
-  <div class="side-bar-wrapper">
-    <base-search @search="searchHandler" class="mt-md" />
-    <date-picker @dateChanged="dateHandler" />
-    <category-filter @checked="categoryHandler" />
+  <div class="side-bar-wrapper align-start">
+    <base-search @search="searchHandler" class="mt-md" debounce />
+    <date-picker @dateChanged="dateHandler" debounce />
+    <category-filter @checked="categoryHandler" debounce />
   </div>
 </template>
 
@@ -55,7 +55,6 @@ export default {
     height: calc(100vh - var(--navbar-height));
     grid: auto-flow auto / 1fr;
     gap: var(--spacing-sm);
-    align-items: start;
     padding: var(--spacing-xs);
     border-right: 1px solid var(--color-gray-500);
     overflow-y: scroll;
