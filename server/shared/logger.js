@@ -1,30 +1,31 @@
 'use strict';
 
 const { createLogger, format, transports } = require('winston');
+const { cli, colorize, combine, printf, splat } = format;
 
 const levels = {
   error: 0,
   debug: 1,
   warn: 2,
   sql: 3,
-  info: 4,
-  verbose: 5
+  http: 4,
+  info: 5
 };
 
-const logFormat = format.combine(
-  format.cli({
+const logFormat = combine(
+  cli({
     colors: {
       info: 'blue',
       error: 'red',
       debug: 'green',
-      http: 'darkred',
       warn: 'orange',
+      http: 'white',
       sql: 'cyan'
     }
   }),
-  format.colorize({ all: true }),
-  format.simple(),
-  format.printf(({ level, message }) => `[${level}]: ${message}`.replace('undefined', '\t'))
+  colorize({ all: true }),
+  splat(),
+  printf(({ level, message }) => `[${level}]: ${message}`.replace('undefined', '\t'))
 );
 
 const logger = createLogger({
