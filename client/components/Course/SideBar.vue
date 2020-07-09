@@ -18,7 +18,7 @@ export default {
       searchParams: {
         courseName: '',
         categories: [],
-        startDate: '',
+        startDate: new Date(),
         endDate: ''
       }
     };

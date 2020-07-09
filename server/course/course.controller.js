@@ -1,7 +1,7 @@
 'use strict';
 
 const { BAD_REQUEST, CREATED, NOT_FOUND } = require('http-status-codes');
-const { Category, Course, Enrollment, User } = require('../shared/database');
+const { Category, Course, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
 const { literal } = require('sequelize');
@@ -40,16 +40,11 @@ function getAll(req, res, next) {
       {
         model: Category,
         attributes: ['name']
-      },
-      {
-        model: User,
-        through: { model: Enrollment, attributes: [] },
-        attributes: ['firstName', 'lastName', 'email']
       }
     ],
     where: filters,
     subQuery: false,
-    order: [[literal('"isEnrolled"'), 'DESC']]
+    order: [[literal('"isEnrolled"'), 'DESC'], ['updatedAt', 'DESC']]
   };
   return Course.scope({ method: ['filterScope', id] }).findAll(query)
     .then(courses => {
@@ -60,10 +55,11 @@ function getAll(req, res, next) {
 
 function getCourseById(req, res) {
   const { id } = req.params;
+
   if (!Number(id)) {
     throw new HttpError('ID is not a number', BAD_REQUEST);
   }
-  return Course.findByPk(id, {
+  return Course.scope({ method: ['filterScope', req.user.id] }).findByPk(id, {
     include: [
       {
         model: Category,

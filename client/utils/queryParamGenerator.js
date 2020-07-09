@@ -1,24 +1,27 @@
-function generateQuery(queryParams, limit, offset) {
-  const stringBuilder = ['?'];
-  stringBuilder.push(`limit=${limit}&offset=${offset}`);
+import queryString from 'query-string';
+
+export function generateQuery(queryParams, limit, offset) {
+  const queryObject = {};
+  queryObject.limit = limit;
+  queryObject.offset = offset;
 
   Object.entries(queryParams).forEach(([key, value]) => {
     switch (key) {
       case 'categories':
-        if (value.length > 0) stringBuilder.push(`&categoryId=in.${value.join(',')}`);
+        if (value.length > 0) {
+          queryObject.categoryId = `in.${value.join(', ')}`;
+        }
         break;
       case 'courseName':
-        stringBuilder.push(`&name=ts.${value}`);
+        queryObject.name = `ts.${value}`;
         break;
       case 'endDate':
-        if (value !== '') stringBuilder.push(`&endDate=lt.${value}`);
+        if (value !== '') queryObject.endDate = `lt.${value}`;
         break;
       case 'startDate':
-        if (value !== '') stringBuilder.push(`&startDate=gte.${value}`);
+        if (value !== '') queryObject.startDate = `gte.${value}`;
         break;
     }
   });
-  return stringBuilder.join('');
+  return queryString.stringify(queryObject);
 }
-
-module.exports = { generateQuery };

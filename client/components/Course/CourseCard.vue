@@ -9,7 +9,6 @@
     </div>
     <div class="course-card-description">
       <p>{{ course.description }}</p>
-      <p>By: {{ lecturer }}</p>
       <p class="date">
         {{ course | getDateRange }}
       </p>
@@ -32,7 +31,6 @@ export default {
           name: '',
           category: {},
           description: '',
-          users: [],
           start: '',
           end: ''
         };
@@ -41,17 +39,9 @@ export default {
     enrolled: { type: Boolean, default: false },
     available: { type: Boolean, default: true }
   },
-  computed: {
-    lecturer() {
-      const lecturer = this.course.Users
-        .find(user => user.role === 'LECTURER');
-      if (!lecturer) return 'No Lecturer specified';
-      return `${lecturer.firstName} ${lecturer.lastName}`;
-    }
-  },
   methods: {
     showCourse() {
-      this.$router.push(`courses/${this.course.id}`);
+      if (this.available) return this.$router.push(`courses/${this.course.id}`);
     },
     formatDate(dateString) {
       return format(new Date(dateString), 'dd/MM/yyyy');
@@ -60,9 +50,7 @@ export default {
   filters: {
     getDateRange(course) {
       const { startDate, endDate } = course;
-      if (!(startDate || endDate)) {
-        return 'No Date specified';
-      }
+      if (!(startDate || endDate)) { return 'No Date specified'; }
       return `${format(new Date(startDate), 'dd/MM/yyyy')} - 
               ${format(new Date(endDate), 'dd/MM/yyyy')}`;
     }

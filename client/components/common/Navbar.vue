@@ -1,17 +1,17 @@
 <template>
   <nav class="nav flex-h align-center justify-space-between">
-    <div class="nav-title">
+    <div class="nav-title flex-h justify-space-between">
       <i class="material-icons">analytics</i>
-      Cobbler LMS
+      <span class="mt-xxs ml-sm">Cobbler LMS</span>
     </div>
-    <div>
-      <span
+    <div class="flex-h justify-end">
+      <base-button
         @click="logout"
-        class="nav-item clickable">
+        class="nav-item clickable material-btn auth-btn">
         Logout
-      </span>
+      </base-button>
       <span
-        class="nav-item">
+        class="nav-item ">
         {{ $store.state.auth.email }}
       </span>
     </div>
@@ -19,12 +19,18 @@
 </template>
 
 <script>
+import BaseButton from '../common/BaseButton';
+
 export default {
+
   name: 'navbar',
   methods: {
     logout() {
       this.$store.dispatch('logout');
     }
+  },
+  components: {
+    BaseButton
   }
 };
 </script>
@@ -43,16 +49,21 @@ export default {
 }
 .nav-item {
   background: var(--color-gray-500);
-  border-radius: 3px;
+  border-radius: var(--spacing-xxs);
   margin: 0 var(--spacing-xs);
   padding: var(--spacing-xxs) var(--spacing-xs);
   box-shadow: 2px 2px 2px 0px var(--color-gray-500);
 }
-.nav-title {
+.nav-title i{
   color: var(--color-accent);
 }
-.nav-title i {
-  vertical-align: middle;
+.nav-title span {
+  color: var(--color-white);
+}
+.auth-btn {
+  background-color: var(--color-success);
+  color: var(--color-white);
+  box-shadow: 0 2px 3px var(--color-primary), 0 2px 3px var(--color-gray);
 }
 .clickable {
   cursor: pointer;

@@ -44,19 +44,17 @@ export default {
       const lecturers = [];
       if (!this.course.Users) return;
       this.course.Users.forEach(user => {
-        lecturers.push(`${user.firstName} ${user.lastName}`);
+        if (user.role === 'LECTURER') lecturers.push(`${user.firstName} ${user.lastName}`);
       });
       return lecturers.join(', ');
     }
   },
   methods: {
     sendEnrollRequest() {
-      if (this.course.id) {
-        enroll(this.course.id)
+      enroll(this.course.id)
           .then(success => {
             this.$router.push('/');
           });
-      }
     },
     formatDate(dateString) {
       return dateString ? format(new Date(dateString), 'dd/MM/yyyy') : '';

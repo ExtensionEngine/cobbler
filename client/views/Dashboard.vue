@@ -8,7 +8,7 @@
             v-for="course in courses"
             :key="course.id"
             :course="course"
-            :enrolled="checkEnrolled(course)"
+            :enrolled="course.isEnrolled"
             :available="course.available" />
         </div>
       </div>
@@ -29,11 +29,9 @@
 </template>
 
 <script>
-import compareAsc from 'date-fns/compareAsc';
 import CourseCard from '../components/Course/CourseCard';
 import { generateQuery } from '../utils/queryParamGenerator';
 import { get } from '../api/courses';
-import parseISO from 'date-fns/parseISO';
 import SideBar from '../components/Course/SideBar';
 
 export default {
@@ -45,7 +43,9 @@ export default {
       limit: 6,
       offset: 0,
       courses: [],
-      filterParams: {}
+      filterParams: {
+        startDate: new Date()
+      }
     };
   },
   computed: {
@@ -63,26 +63,13 @@ export default {
         ? this.offset -= this.limit
         : 0;
     },
-    checkEnrolled(course) {
-      if (!course.Users.length) return false;
-      if (course.Users.find(user => user.email === this.$store.state.auth.email)) {
-        return true;
-      }
-      return false;
-    },
-    sortByUpdated(courses) {
-      return courses.sort((prev, next) => {
-        return compareAsc(parseISO(prev.updatedAt), parseISO(next.updatedAt));
-      });
-    },
     refreshCourseList(filterParams) {
       this.filterParams = filterParams;
       this.getFilteredCourses();
     },
     getFilteredCourses() {
       get(this.queryString).then(({ data }) => {
-        this.courses =
-        this.sortByUpdated(data.data);
+        this.courses = data.data;
       });
     }
   },
