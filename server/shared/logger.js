@@ -2,14 +2,19 @@
 
 const { createLogger, format, transports } = require('winston');
 const { cli, colorize, combine, printf, splat } = format;
+require('dotenv').config();
 
 const levels = {
   error: 0,
-  debug: 1,
+  info: 1,
   warn: 2,
   sql: 3,
   http: 4,
-  info: 5
+  debug: 5
+};
+
+const selectedLoggingLevel = () => {
+  return (process.env.NODE_ENV === 'production') ? 'info' : 'debug';
 };
 
 const logFormat = combine(
@@ -30,7 +35,7 @@ const logFormat = combine(
 
 const logger = createLogger({
   format: logFormat,
-  level: 'info',
+  level: selectedLoggingLevel(),
   levels,
   transports: [
     new (transports.Console)()
