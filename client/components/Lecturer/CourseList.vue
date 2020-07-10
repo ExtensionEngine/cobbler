@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import format from 'date-fns/format';
 import { getMyCourses } from '../../api/courses';
 
 export default {
@@ -39,7 +40,7 @@ export default {
   },
   filters: {
     formatDate(date) {
-      return new Date(date).toDateString();
+      return format(new Date(date), 'yyyy-MM-dd');
     }
   }
 };
