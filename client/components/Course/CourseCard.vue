@@ -44,15 +44,15 @@ export default {
       if (this.available) return this.$router.push(`courses/${this.course.id}`);
     },
     formatDate(dateString) {
-      return format(new Date(dateString), 'dd/MM/yyyy');
+      return format(new Date(dateString), 'yyyy-MM-dd');
     }
   },
   filters: {
     getDateRange(course) {
       const { startDate, endDate } = course;
       if (!(startDate || endDate)) { return 'No Date specified'; }
-      return `${format(new Date(startDate), 'dd/MM/yyyy')} - 
-              ${format(new Date(endDate), 'dd/MM/yyyy')}`;
+      return `${format(new Date(startDate), 'yyyy-MM-dd')} - 
+              ${format(new Date(endDate), 'yyyy-MM-dd')}`;
     }
   }
 };

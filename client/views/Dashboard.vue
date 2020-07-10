@@ -30,6 +30,7 @@
 
 <script>
 import CourseCard from '../components/Course/CourseCard';
+import { format } from 'date-fns';
 import { generateQuery } from '../utils/queryParamGenerator';
 import { get } from '../api/courses';
 import SideBar from '../components/Course/SideBar';
@@ -44,7 +45,7 @@ export default {
       offset: 0,
       courses: [],
       filterParams: {
-        startDate: new Date()
+        startDate: format(new Date(), 'yyyy-MM-dd')
       }
     };
   },

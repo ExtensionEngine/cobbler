@@ -10,6 +10,7 @@
 import BaseSearch from '../common/BaseSearch';
 import CategoryFilter from './CategoryFilter';
 import DatePicker from './DatePicker';
+import { format } from 'date-fns';
 
 export default {
   name: 'side-bar',
@@ -18,7 +19,7 @@ export default {
       searchParams: {
         courseName: '',
         categories: [],
-        startDate: new Date(),
+        startDate: format(new Date(), 'yyyy-MM-dd'),
         endDate: ''
       }
     };
