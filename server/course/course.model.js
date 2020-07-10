@@ -62,7 +62,7 @@ class Course extends Model {
     const { courseId, userId, createdAt } = Enrollment.rawAttributes;
 
     return [
-      this.addScope('filterScope', id => {
+      this.addScope('enrolledByUserId', id => {
         const enrollmentsQuery = `
         SELECT ${createdAt.field}
         FROM ${Enrollment.tableName} as Enrollment

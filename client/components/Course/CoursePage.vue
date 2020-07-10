@@ -57,7 +57,7 @@ export default {
           });
     },
     formatDate(dateString) {
-      return dateString ? format(new Date(dateString), 'dd/MM/yyyy') : '';
+      return dateString ? format(new Date(dateString), 'yyyy-MM-dd') : '';
     }
   },
   filters: {
@@ -66,8 +66,8 @@ export default {
       if (!(startDate || endDate)) {
         return 'No Date specified';
       }
-      return `${format(new Date(startDate), 'dd/MM/yyyy')} - 
-              ${format(new Date(endDate), 'dd/MM/yyyy')}`;
+      return `${format(new Date(startDate), 'yyyy-MM-dd')} - 
+              ${format(new Date(endDate), 'yyyy-MM-dd')}`;
     }
   },
   components: {

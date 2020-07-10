@@ -2,7 +2,7 @@
   <div class="side-bar-wrapper align-start">
     <base-search @search="searchHandler" class="mt-md" debounce />
     <date-picker @dateChanged="dateHandler" debounce />
-    <category-filter @checked="categoryHandler" debounce />
+    <category-filter @checked="categoryHandler" />
   </div>
 </template>
 
@@ -17,8 +17,8 @@ export default {
   data() {
     return {
       searchParams: {
-        courseName: '',
-        categories: [],
+        name: '',
+        categoryId: [],
         startDate: format(new Date(), 'yyyy-MM-dd'),
         endDate: ''
       }
@@ -26,11 +26,11 @@ export default {
   },
   methods: {
     searchHandler(searchTerm) {
-      this.searchParams.courseName = searchTerm;
+      this.searchParams.name = searchTerm;
       this.$emit('filter', this.searchParams);
     },
     categoryHandler(categories) {
-      this.searchParams.categories = categories;
+      this.searchParams.categoryId = categories;
       this.$emit('filter', this.searchParams);
     },
     dateHandler({ startDate, endDate }) {

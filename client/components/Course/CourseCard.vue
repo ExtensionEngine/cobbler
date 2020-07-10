@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     showCourse() {
-      if (this.available) return this.$router.push(`courses/${this.course.id}`);
+      if (this.available) this.$router.push(`courses/${this.course.id}`);
     },
     formatDate(dateString) {
       return format(new Date(dateString), 'yyyy-MM-dd');

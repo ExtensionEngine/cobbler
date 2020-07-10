@@ -43,7 +43,7 @@
   align-items: center;
 }
 .align-end {
-  align-items: flex-end;
+  align-items: end;
 }
 .place-center {
   justify-content: center;

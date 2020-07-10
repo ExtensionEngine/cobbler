@@ -46,7 +46,7 @@ function getAll(req, res, next) {
     subQuery: false,
     order: [[literal('"isEnrolled"'), 'DESC'], ['updatedAt', 'DESC']]
   };
-  return Course.scope({ method: ['filterScope', id] }).findAll(query)
+  return Course.scope({ method: ['enrolledByUserId', id] }).findAll(query)
     .then(courses => {
       return res.json({ data: courses });
     })
@@ -59,7 +59,7 @@ function getCourseById(req, res) {
   if (!Number(id)) {
     throw new HttpError('ID is not a number', BAD_REQUEST);
   }
-  return Course.scope({ method: ['filterScope', req.user.id] }).findByPk(id, {
+  return Course.scope({ method: ['enrolledByUserId', req.user.id] }).findByPk(id, {
     include: [
       {
         model: Category,
