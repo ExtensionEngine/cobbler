@@ -20,8 +20,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(auth.initialize());
 
-app.use('/api/v1', requestLogger, router);
-app.use('/api/v1', apiQueryParser, router);
+app.use('/api/v1', apiQueryParser, requestLogger, router);
 
 app.listen(port, () =>
   logger.info(`Server is listening on port ${port}!`)
