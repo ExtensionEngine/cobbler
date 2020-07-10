@@ -1,10 +1,14 @@
 <template>
   <select
     @input="onChange"
-    :value="value"
     class="select">
     <option selected disabled value=""></option>
-    <option v-for="option in options" :key="option.id">{{ option.name }}</option>
+    <option
+      v-for="option in options"
+      :key="option[valueKey]"
+      :value="option[valueKey]">
+      {{ option[labelKey] }}
+    </option>
   </select>
 </template>
 
@@ -12,12 +16,15 @@
 export default {
   name: 'base-select',
   props: {
-    value: { type: String, default: '' },
-    options: { type: Array, default: () => [] }
+    options: { type: Array, default: () => [] },
+    labelKey: { type: String, default: 'label' },
+    valueKey: { type: String, default: 'value' }
   },
   methods: {
     onChange(event) {
-      this.$emit('input', event.target.value);
+      const selectedOption = this.options.find(
+        option => option[this.valueKey] === Number(event.target.value));
+      this.$emit('input', selectedOption);
     }
   }
 };

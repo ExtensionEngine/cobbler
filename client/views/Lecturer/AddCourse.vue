@@ -44,6 +44,8 @@
             <base-select
               v-on="on"
               :value="value"
+              value-key="id"
+              label-key="name"
               :options="categories" />
           </template>
         </field>
@@ -103,7 +105,7 @@ export default {
     return ({
       name: '',
       description: '',
-      category: '',
+      category: null,
       categories: [],
       startDate: null,
       endDate: null
@@ -126,12 +128,10 @@ export default {
   },
   methods: {
     async onSubmit() {
-      const { id: categoryId } = this.categories.find(category =>
-        category.name === this.category);
       const courseToAdd = {
         name: this.name,
         description: this.description,
-        categoryId,
+        categoryId: this.category.id,
         startDate: this.startDate,
         endDate: this.endDate
       };
