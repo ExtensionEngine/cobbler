@@ -1,5 +1,5 @@
 <template>
-  <div class="search-wrapper pt">
+  <div class="search-wrapper">
     <input
       v-model="search"
       @input="doSearch"

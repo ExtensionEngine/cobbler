@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper flex-h">
-    <side-bar @filter="refreshCourseList" />
+    <search-group @filter="refreshCourseList" />
     <div class="main-content">
       <div class="card-container">
         <div class="cards">
@@ -33,7 +33,7 @@ import CourseCard from '../components/Course/CourseCard';
 import { format } from 'date-fns';
 import { generateQuery } from '../utils/queryParamGenerator';
 import { get } from '../api/courses';
-import SideBar from '../components/Course/SideBar';
+import SearchGroup from '../components/Course/SearchGroup';
 
 export default {
   props: {
@@ -83,7 +83,7 @@ export default {
     this.getFilteredCourses();
   },
   components: {
-    CourseCard, SideBar
+    CourseCard, SearchGroup
   }
 };
 </script>

@@ -1,5 +1,6 @@
 <template>
   <nav class="nav flex-h align-center justify-space-between">
+    <i v-if="!tablet" class="material-icons">menu</i>
     <div class="nav-title flex-h justify-space-between">
       <i class="material-icons">analytics</i>
       <span class="mt-xxs ml-sm">Cobbler LMS</span>
@@ -24,10 +25,21 @@ import BaseButton from '../common/BaseButton';
 export default {
 
   name: 'navbar',
+  data() {
+    const tabletViewQuery = window.matchMedia('screen and (min-width: 765px)');
+    return {
+      tablet: tabletViewQuery
+    };
+  },
   methods: {
     logout() {
       this.$store.dispatch('logout');
     }
+  },
+  mounted() {
+    this.tablet.addListener(mediaQueryList => {
+      this.tablet = mediaQueryList.matches;
+    });
   },
   components: {
     BaseButton
