@@ -1,7 +1,6 @@
 'use strict';
 
 require('dotenv').config();
-const { apiQueryParser } = require('./shared/util/apiQueryParser');
 const auth = require('./shared/auth');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -21,7 +20,6 @@ app.use(bodyParser.json());
 app.use(auth.initialize());
 
 app.use('/api/v1', requestLogger, router);
-app.use('/api/v1', apiQueryParser, router);
 
 app.listen(port, () =>
   logger.info(`Server is listening on port ${port}!`)

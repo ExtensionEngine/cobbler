@@ -12,7 +12,7 @@ mapper.set('gte', arg => ({ [Op.gte]: arg }));
 mapper.set('lte', arg => ({ [Op.lte]: arg }));
 mapper.set('eq', arg => ({ [Op.eq]: arg }));
 mapper.set('ne', arg => ({ [Op.ne]: arg }));
-mapper.set('ts', arg => ({ [Op.like]: `%${arg}%` }));
+mapper.set('ts', arg => ({ [Op.iLike]: `%${arg}%` }));
 
 const apiQueryParser = (req, res, next) => {
   const filters = {};
