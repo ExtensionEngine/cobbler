@@ -3,8 +3,9 @@
 const { BAD_REQUEST, CREATED, NOT_FOUND } = require('http-status-codes');
 const { Category, Course, Enrollment, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
-const { Op } = require('sequelize');
+const isEmpty = require('lodash/isEmpty');
 const pick = require('lodash/pick');
+const { validateFilters } = require('../shared/util/apiQueryParser');
 
 module.exports = {
   create,
@@ -26,9 +27,12 @@ function create(req, res) {
     .then(course => res.status(CREATED).json({ data: course }));
 }
 
-function getAll(req, res) {
-  const { available } = req.query;
+function getAll(req, res, next) {
+  const { filters, pagination } = req.query;
+  const errors = validateFilters(filters, Course.rawAttributes, Course.name);
+  if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
   const query = {
+    ...pagination,
     include: [
       {
         model: Category,
@@ -39,12 +43,12 @@ function getAll(req, res) {
         attributes: ['firstName', 'lastName', 'email'],
         through: { model: Enrollment, attributes: [] }
       }
-    ]
+    ],
+    where: filters
   };
-  if (available) {
-    query.where = { endDate: { [Op.gte]: new Date() } };
-  }
-  return Course.findAll(query).then(course => res.json({ data: course }));
+  return Course.findAll(query)
+    .then(courses => res.json({ data: courses }))
+    .catch(next);
 }
 
 function getCourseById(req, res) {
