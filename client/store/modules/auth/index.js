@@ -4,18 +4,23 @@ import * as mutations from './mutations';
 import jwtDecode from 'jwt-decode';
 
 const token = localStorage.getItem('token');
+let state;
 
-let decodedToken;
-
-if (token) {
-  decodedToken = jwtDecode(token);
+try {
+  const { role, sub } = jwtDecode(token);
+  state = {
+    token,
+    email: sub,
+    role
+  };
+} catch (err) {
+  localStorage.removeItem('token');
+  state = {
+    token: null,
+    email: null,
+    role: null
+  };
 }
-
-const state = {
-  token: token || null,
-  email: token ? decodedToken.sub : null,
-  role: token ? decodedToken.role : 'GUEST'
-};
 
 export default {
   state,

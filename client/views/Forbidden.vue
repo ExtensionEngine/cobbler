@@ -19,7 +19,7 @@ export default {
     }
   },
   filters: {
-    lowercase: role => role.toLowerCase()
+    lowercase: role => role ? role.toLowerCase() : 'guest'
   },
   components: {
     BaseButton

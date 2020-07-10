@@ -7,5 +7,5 @@ export const login = (state, { token, email, role }) => {
 export const logout = state => {
   state.token = null;
   state.email = null;
-  state.role = 'GUEST';
+  state.role = null;
 };

@@ -49,18 +49,12 @@ const routes = [
   {
     path: paths.login,
     name: 'Login',
-    component: Login,
-    meta: {
-      roles: ['GUEST']
-    }
+    component: Login
   },
   {
     path: paths.forbidden,
     name: 'Forbidden',
-    component: Forbidden,
-    meta: {
-      roles: ['GUEST', 'LEARNER', 'LECTURER', 'ADMIN']
-    }
+    component: Forbidden
   }
 ];
 
@@ -72,8 +66,10 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const { role } = store.state.auth;
-  const isAuthorized = to.matched.some(({ meta }) =>
-    meta.roles && meta.roles.includes(role));
+  const isAuth = true;
+  const isAuthorized = to.matched.reduce((acc, { meta }) =>
+    meta.roles ? isAuth && meta.roles.includes(role) : acc
+  , true);
 
   if (!isAuthorized) {
     next(paths.forbidden);
