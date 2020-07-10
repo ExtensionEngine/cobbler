@@ -1,5 +1,7 @@
 import AddCourse from '../views/Lecturer/AddCourse';
 import AdminDashboard from '../views/Admin/Dashboard';
+import curry from 'lodash/curry';
+import every from 'lodash/every';
 import Forbidden from '../views/Forbidden';
 import Layout from '../components/common/Layout';
 import LearnerDashboard from '../views/Learner/Dashboard';
@@ -66,10 +68,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const { role } = store.state.auth;
-  const isAuth = true;
-  const isAuthorized = to.matched.reduce((acc, { meta }) =>
-    meta.roles ? isAuth && meta.roles.includes(role) : acc
-  , true);
+  const isAuthorized = every(to.matched, isRouteAllowedByRole(role));
 
   if (!isAuthorized) {
     next(paths.forbidden);
@@ -92,3 +91,6 @@ export function getBasePath() {
 }
 
 export default router;
+
+const isRouteAllowedByRole = curry((role, route) =>
+  !route.meta.roles || route.meta.roles.includes(role));
