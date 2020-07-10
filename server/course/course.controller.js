@@ -1,7 +1,7 @@
 'use strict';
 
-const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
-const { Category, Course, Enrollment, User } = require('../shared/database');
+const { BAD_REQUEST, CREATED, INTERNAL_SERVER_ERROR, NOT_FOUND, OK } = require('http-status-codes');
+const { Category, Course, Enrollment, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const { Op } = require('sequelize');
 const pick = require('lodash/pick');
@@ -21,9 +21,16 @@ async function create(req, res) {
     'startDate',
     'endDate'
   ]);
-  const course = await Course.create(courseInfo);
-  const enrollment = await course.addUser(req.user);
-  return res.status(CREATED).json({ data: { course, enrollment } });
+  const transaction = await sequelize.transaction();
+  try {
+    const course = await Course.create(courseInfo, { transaction });
+    await course.addUser(req.user, { transaction });
+    await transaction.commit();
+    res.status(CREATED).json({ data: course });
+  } catch (error) {
+    await transaction.rollback();
+    res.status(INTERNAL_SERVER_ERROR).json({ error });
+  }
 }
 
 async function getAll(req, res) {
