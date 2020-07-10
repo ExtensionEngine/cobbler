@@ -8,7 +8,6 @@ export const endpoints = {
   },
   course: {
     base: 'courses',
-    custom: params => `courses?${params}`,
     byId: id => `courses/${id}`,
     enroll: id => `courses/${id}/enroll`
   },
