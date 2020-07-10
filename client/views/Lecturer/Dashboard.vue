@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-wrapper">
+  <div class="flex-h justify-center">
     <div class="dashboard-container">
       <base-button
         @click="goToAddCourse"
@@ -33,10 +33,6 @@ export default {
 </script>
 
 <style scoped>
-.dashboard-wrapper {
-  display: flex;
-  justify-content: center;
-}
 .dashboard-container {
   width: 100%;
   max-width: var(--measure-md);

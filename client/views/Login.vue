@@ -1,14 +1,14 @@
 <template>
   <div class="login-container">
     <base-form
-      v-slot="{ isFormInvalid }"
+      v-slot="{ isFormValid }"
       @submit="onSubmit"
       class="login-form">
       <field
         v-model="email"
         name="email"
         label="Email"
-        :rules="emailRules">
+        rules="required|email">
         <template v-slot="{ on, value }">
           <base-input
             v-on="on"
@@ -21,7 +21,7 @@
         v-model="password"
         name="password"
         label="Password"
-        :rules="passwordRules">
+        rules="required|min:5">
         <template v-slot="{ on, value }">
           <base-input
             v-on="on"
@@ -32,7 +32,7 @@
         </template>
       </field>
       <base-button
-        :disabled="isFormInvalid"
+        :disabled="!isFormValid"
         type="submit"
         contained primary>
         Login
@@ -59,14 +59,6 @@ export default {
       password: '',
       error: null
     };
-  },
-  computed: {
-    emailRules() {
-      return { required: true, email: true };
-    },
-    passwordRules() {
-      return { required: true, min: { min: 5 } };
-    }
   },
   methods: {
     ...mapActions(['login']),
