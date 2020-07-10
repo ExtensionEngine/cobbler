@@ -57,18 +57,12 @@ const routes = [
   {
     path: paths.login,
     name: 'Login',
-    component: Login,
-    meta: {
-      roles: ['GUEST']
-    }
+    component: Login
   },
   {
     path: paths.forbidden,
     name: 'Forbidden',
-    component: Forbidden,
-    meta: {
-      roles: ['GUEST', 'LEARNER', 'LECTURER', 'ADMIN']
-    }
+    component: Forbidden
   }
 ];
 
@@ -80,8 +74,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const { role } = store.state.auth;
-  const isAuthorized = to.matched.some(({ meta }) =>
-    meta.roles && meta.roles.includes(role));
+  const isAuthorized = every(to.matched, isRouteAllowedByRole(role));
 
   if (!isAuthorized) {
     next(paths.forbidden);
@@ -104,3 +97,6 @@ export function getBasePath() {
 }
 
 export default router;
+
+const isRouteAllowedByRole = curry((role, route) =>
+  !route.meta.roles || route.meta.roles.includes(role));

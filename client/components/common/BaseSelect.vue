@@ -24,12 +24,7 @@ export default {
   },
   methods: {
     onChange(event) {
-      const selectedOption = this.options.find(
-        option => option[this.valueKey] === Number(event.target.value));
-      this.$emit('input', selectedOption);
-    },
-    isSelected(option) {
-      return this.value && option[this.labelKey] === this.value[this.labelKey];
+      this.$emit('input', event.target.value);
     }
   }
 };
