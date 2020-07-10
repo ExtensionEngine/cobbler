@@ -27,16 +27,15 @@ async function create(req, res) {
   if (!courseInfo.name || !courseInfo.description || isNaN(courseInfo.categoryId)) {
     throw new HttpError('The provided body is invalid', BAD_REQUEST);
   }
-  const transaction = await sequelize.transaction();
-  try {
-    const course = await Course.create(courseInfo, { transaction });
-    await course.addUser(req.user, { transaction });
-    await transaction.commit();
-    res.status(CREATED).json({ data: course });
-  } catch (error) {
-    await transaction.rollback();
-    res.status(INTERNAL_SERVER_ERROR).json({ error });
-  }
+  await sequelize.transaction(async transaction => {
+    try {
+      const course = await Course.create(courseInfo, { transaction });
+      await course.addUser(req.user, { transaction });
+      res.status(CREATED).json({ data: course });
+    } catch (error) {
+      res.status(INTERNAL_SERVER_ERROR).json({ error });
+    }
+  });
 }
 
 function getAll(req, res) {
