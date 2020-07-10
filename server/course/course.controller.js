@@ -1,6 +1,6 @@
 'use strict';
 
-const { BAD_REQUEST, CREATED, FORBIDDEN, NOT_FOUND, OK } = require('http-status-codes');
+const { BAD_REQUEST, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR, NOT_FOUND, OK } = require('http-status-codes');
 const { Category, Course, Enrollment, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const { Op } = require('sequelize');
@@ -15,7 +15,7 @@ module.exports = {
   update
 };
 
-function create(req, res, next) {
+async function create(req, res) {
   const courseInfo = pick(req.body, [
     'name',
     'description',
@@ -27,13 +27,16 @@ function create(req, res, next) {
   if (!courseInfo.name || !courseInfo.description || isNaN(courseInfo.categoryId)) {
     throw new HttpError('The provided body is invalid', BAD_REQUEST);
   }
-  return sequelize.transaction(transaction => Course.create(courseInfo, { transaction })
-  .then(course => {
-    course.addUser(req.user, { transaction });
-    return course;
-  })
-  .then(course => res.status(CREATED).json({ data: course }))
-  .catch(next));
+  const transaction = await sequelize.transaction();
+  try {
+    const course = await Course.create(courseInfo, { transaction });
+    await course.addUser(req.user, { transaction });
+    await transaction.commit();
+    res.status(CREATED).json({ data: course });
+  } catch (error) {
+    await transaction.rollback();
+    res.status(INTERNAL_SERVER_ERROR).json({ error });
+  }
 }
 
 function getAll(req, res) {

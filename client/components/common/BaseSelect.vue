@@ -16,6 +16,7 @@
 export default {
   name: 'base-select',
   props: {
+    value: { type: Object, default: () => {} },
     options: { type: Array, default: () => [] },
     labelKey: { type: String, default: 'label' },
     valueKey: { type: String, default: 'value' }

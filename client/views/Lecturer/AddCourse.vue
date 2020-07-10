@@ -26,7 +26,7 @@
           class="description-form-item"
           name="description"
           label="Description"
-          :rules="descriptionRules">
+          rules="required|between:2,50">
           <template v-slot="{ on, value }">
             <base-input
               v-on="on"
@@ -39,7 +39,7 @@
           class="category-form-item"
           name="category"
           label="Category"
-          :rules="categoryRules">
+          rules="required">
           <template v-slot="{ on, value }">
             <base-select
               v-on="on"
@@ -118,12 +118,6 @@ export default {
         between: { min: 2, max: 50 },
         uniqueCourse: { checkName: this.checkName }
       };
-    },
-    descriptionRules() {
-      return { required: true, between: { min: 2, max: 50 } };
-    },
-    categoryRules() {
-      return { required: true };
     }
   },
   methods: {
