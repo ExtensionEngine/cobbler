@@ -2,7 +2,7 @@
   <select
     @input="onChange"
     class="select">
-    <option disabled value=""></option>
+    <option selected disabled value=""></option>
     <option
       v-for="option in options"
       :key="option[valueKey]"
@@ -24,7 +24,12 @@ export default {
   },
   methods: {
     onChange(event) {
-      this.$emit('input', event.target.value);
+      const selectedOption = this.options.find(
+        option => option[this.valueKey] === Number(event.target.value));
+      this.$emit('input', selectedOption);
+    },
+    isSelected(option) {
+      return this.value && option[this.valueKey] === this.value[this.valueKey];
     }
   }
 };
