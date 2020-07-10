@@ -26,10 +26,10 @@ async function create(req, res) {
     const course = await Course.create(courseInfo, { transaction });
     await course.addUser(req.user, { transaction });
     await transaction.commit();
-    res.status(CREATED).json({ data: course });
+    return res.status(CREATED).json({ data: course });
   } catch (error) {
     await transaction.rollback();
-    res.status(INTERNAL_SERVER_ERROR).json({ error });
+    return res.status(INTERNAL_SERVER_ERROR).json({ error });
   }
 }
 

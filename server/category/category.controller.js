@@ -10,10 +10,10 @@ module.exports = {
 
 async function create(req, res) {
   const category = await Category.create(pick(req.body, ['name']));
-  res.status(OK).json({ data: category });
+  return res.status(OK).json({ data: category });
 }
 
 async function getAll(req, res) {
   const categories = await Category.findAll();
-  res.status(OK).json({ data: categories });
+  return res.status(OK).json({ data: categories });
 }
