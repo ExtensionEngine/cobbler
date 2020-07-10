@@ -14,7 +14,6 @@ export default { name: 'app' };
 </script>
 
 <style>
-
 #app {
   padding-top: var(--spacing-xl);
 }

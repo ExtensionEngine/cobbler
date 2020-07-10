@@ -63,10 +63,13 @@ export default {
   methods: {
     ...mapActions(['login']),
     async onSubmit() {
+      this.$toasted.global.formSubmitting();
       try {
         await this.login({ email: this.email, password: this.password });
+        this.$toasted.global.formSuccess({ message: 'Login successful!' });
         this.$router.push('/');
       } catch (err) {
+        this.$toasted.global.formError({ message: 'Login failed!' });
         const { status } = err.thwackResponse;
         if (status === 401) {
           this.error = 'Short password';

@@ -1,5 +1,4 @@
-import Course from '../views/CourseOverview.vue';
-import Dashboard from '../views/Dashboard';
+import Home from '../views/Home';
 import Layout from '../components/common/Layout';
 import Login from '../views/Login';
 import paths from './paths';
@@ -18,13 +17,8 @@ const routes = [
     },
     children: [{
       path: '',
-      name: 'Dashboard',
-      component: Dashboard
-    },
-    {
-      path: paths.courses,
-      name: 'Course',
-      component: Course
+      name: 'Home',
+      component: Home
     }]
   },
   {

@@ -3,9 +3,7 @@
 const router = require('express').Router();
 const ctrl = require('./resource.controller');
 
-router
-  .get('/courses', ctrl.getCoursesByUser)
-  .get('/courses/:id', ctrl.isEnrolled);
+router.get('/courses', ctrl.getCoursesByUser);
 
 module.exports = {
   path: '/me',
