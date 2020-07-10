@@ -15,7 +15,7 @@ const {
 module.exports = {
   ...readConfig(),
   migrationStorageTableName: 'sequelize_meta',
-  logging: msg => logger.sql(msg)
+  logging: msg => logger.debug(msg)
 };
 
 function readConfig() {

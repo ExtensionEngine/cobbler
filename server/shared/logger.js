@@ -8,9 +8,7 @@ const levels = {
   error: 0,
   info: 1,
   warn: 2,
-  sql: 3,
-  http: 4,
-  debug: 5
+  debug: 3
 };
 
 const selectedLoggingLevel = () => {
@@ -23,9 +21,7 @@ const logFormat = combine(
       info: 'blue',
       error: 'red',
       debug: 'green',
-      warn: 'orange',
-      http: 'white',
-      sql: 'cyan'
+      warn: 'orange'
     }
   }),
   colorize({ all: true }),
