@@ -1,7 +1,7 @@
 'use strict';
 
 const { assert, date, number, object, optional, string } = require('superstruct');
-const { BAD_REQUEST, CREATED, NOT_FOUND } = require('http-status-codes');
+const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
 const { Category, Course, Enrollment, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
@@ -15,7 +15,7 @@ module.exports = {
   update
 };
 
-function create(req, res) {
+async function create(req, res) {
   let course;
   try {
     course = parseCourse(req.body);
@@ -23,14 +23,14 @@ function create(req, res) {
     throw new HttpError(err.message, BAD_REQUEST);
   }
 
-  return sequelize.transaction(async transaction => {
+  return await sequelize.transaction(async transaction => {
     const newCourse = await Course.create(course, { transaction });
     const enrollment = await newCourse.addUser(req.user, { transaction });
     return res.status(CREATED).json({ data: { course: newCourse, enrollment } });
   });
 }
 
-function getAll(req, res, next) {
+async function getAll(req, res) {
   const { filters, pagination } = req.query;
   const errors = validateFilters(filters, Course.rawAttributes, Course.name);
   if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
@@ -49,9 +49,8 @@ function getAll(req, res, next) {
     ],
     where: filters
   };
-  return Course.findAll(query)
-    .then(courses => res.json({ data: courses }))
-    .catch(next);
+  const courses = await Course.findAll(query);
+  return res.status(OK).json({ data: courses });
 }
 
 async function getCourseById(req, res) {
