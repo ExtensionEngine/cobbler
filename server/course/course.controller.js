@@ -1,10 +1,11 @@
 'use strict';
 
-const { BAD_REQUEST, CREATED, INTERNAL_SERVER_ERROR, NOT_FOUND, OK } = require('http-status-codes');
+const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
 const { Category, Course, Enrollment, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
-const { Op } = require('sequelize');
+const isEmpty = require('lodash/isEmpty');
 const pick = require('lodash/pick');
+const { validateFilters } = require('../shared/util/apiQueryParser');
 
 module.exports = {
   create,
@@ -21,21 +22,19 @@ async function create(req, res) {
     'startDate',
     'endDate'
   ]);
-  const transaction = await sequelize.transaction();
-  try {
+  return await sequelize.transaction(async transaction => {
     const course = await Course.create(courseInfo, { transaction });
     await course.addUser(req.user, { transaction });
-    await transaction.commit();
     return res.status(CREATED).json({ data: course });
-  } catch (error) {
-    await transaction.rollback();
-    return res.status(INTERNAL_SERVER_ERROR).json({ error });
-  }
+  });
 }
 
 async function getAll(req, res) {
-  const { available } = req.query;
+  const { filters, pagination } = req.query;
+  const errors = validateFilters(filters, Course.rawAttributes, Course.name);
+  if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
   const query = {
+    ...pagination,
     include: [
       {
         model: Category,
@@ -46,11 +45,9 @@ async function getAll(req, res) {
         attributes: ['firstName', 'lastName', 'email'],
         through: { model: Enrollment, attributes: [] }
       }
-    ]
+    ],
+    where: filters
   };
-  if (available) {
-    query.where = { endDate: { [Op.gte]: new Date() } };
-  }
   const courses = await Course.findAll(query);
   return res.status(OK).json({ data: courses });
 }
