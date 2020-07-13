@@ -1,7 +1,8 @@
 import AddCourse from '../views/Lecturer/AddCourse';
 import AdminDashboard from '../views/Admin/Dashboard';
+import curry from 'lodash/curry';
 import EditCourse from '../views/Lecturer/EditCourse';
-import EditLecture from '../views/Lecturer/EditLecture';
+import every from 'lodash/every';
 import Forbidden from '../views/Forbidden';
 import Layout from '../components/common/Layout';
 import LearnerDashboard from '../views/Learner/Dashboard';
@@ -65,18 +66,12 @@ const routes = [
   {
     path: paths.login,
     name: 'Login',
-    component: Login,
-    meta: {
-      roles: ['GUEST']
-    }
+    component: Login
   },
   {
     path: paths.forbidden,
     name: 'Forbidden',
-    component: Forbidden,
-    meta: {
-      roles: ['GUEST', 'LEARNER', 'LECTURER', 'ADMIN']
-    }
+    component: Forbidden
   }
 ];
 
@@ -88,8 +83,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const { role } = store.state.auth;
-  const isAuthorized = to.matched.some(({ meta }) =>
-    meta.roles && meta.roles.includes(role));
+  const isAuthorized = every(to.matched, isRouteAllowedByRole(role));
 
   if (!isAuthorized) {
     next(paths.forbidden);
@@ -112,3 +106,6 @@ export function getBasePath() {
 }
 
 export default router;
+
+const isRouteAllowedByRole = curry((role, route) =>
+  !route.meta.roles || route.meta.roles.includes(role));

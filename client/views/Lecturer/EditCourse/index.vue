@@ -45,7 +45,7 @@ export default {
       id,
       name,
       description,
-      category: category.name,
+      category,
       startDate: startDate && DateFormat(new Date(startDate), 'yyyy-MM-dd'),
       endDate: endDate && DateFormat(new Date(endDate), 'yyyy-MM-dd')
     };

@@ -33,14 +33,16 @@
       </field>
       <field
         v-model="course.category"
-        rules="required"
+        class="category-form-item"
         name="category"
         label="Category"
-        class="category-form-item">
+        rules="required">
         <template v-slot="{ on, value }">
           <base-select
             v-on="on"
             :value="value"
+            value-key="id"
+            label-key="name"
             :options="categories" />
         </template>
       </field>
@@ -118,8 +120,7 @@ export default {
         this.$toasted.global.formSubmitting();
         const { data } = await updateCourse({
           ...this.course,
-          categoryId: this.categories.find(
-            category => category.name === this.course.category).id
+          categoryId: this.course.category.id
         });
         if (data[0]) {
           this.originalName = data[1][0].name;

@@ -1,7 +1,7 @@
 'use strict';
 
-const { BAD_REQUEST, CREATED, FORBIDDEN, NOT_FOUND, OK } = require('http-status-codes');
-const { Category, Course, Enrollment, Lecture, User } = require('../shared/database');
+const { BAD_REQUEST, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR, NOT_FOUND, OK } = require('http-status-codes');
+const { Category, Course, Enrollment, Lecture, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const { Op } = require('sequelize');
 const pick = require('lodash/pick');
@@ -15,7 +15,7 @@ module.exports = {
   update
 };
 
-function create(req, res, next) {
+async function create(req, res) {
   const courseInfo = pick(req.body, [
     'name',
     'description',
@@ -27,14 +27,15 @@ function create(req, res, next) {
   if (!courseInfo.name || !courseInfo.description || isNaN(courseInfo.categoryId)) {
     throw new HttpError('The provided body is invalid', BAD_REQUEST);
   }
-
-  return Course.create(courseInfo)
-    .then(course => {
-      course.addUser(req.user);
-      return course;
-    })
-    .then(course => res.status(CREATED).json({ data: course }))
-    .catch(next);
+  await sequelize.transaction(async transaction => {
+    try {
+      const course = await Course.create(courseInfo, { transaction });
+      await course.addUser(req.user, { transaction });
+      res.status(CREATED).json({ data: course });
+    } catch (error) {
+      res.status(INTERNAL_SERVER_ERROR).json({ error });
+    }
+  });
 }
 
 function getAll(req, res) {
@@ -43,8 +44,7 @@ function getAll(req, res) {
     include: [
       {
         model: Category,
-        as: 'category',
-        attributes: ['name']
+        as: 'category'
       },
       {
         model: User,
@@ -70,8 +70,7 @@ function getCourseById(req, res, next) {
     include: [
       {
         model: Category,
-        as: 'category',
-        attributes: ['name']
+        as: 'category'
       },
       {
         model: Lecture,
@@ -118,10 +117,10 @@ function update(req, res, next) {
   }).catch(next);
 }
 
-function checkNameAvailability(req, res, next) {
-  if (!req.body.name) throw new HttpError('Invalid request body', BAD_REQUEST);
+function checkNameAvailability({ body: { name } }, res, next) {
+  if (!name) throw new HttpError('Invalid request body', BAD_REQUEST);
 
-  Course.findOne({ where: { name: req.body.name } }).then(course => {
+  return Course.findOne({ where: { name } }).then(course => {
     res.status(OK).json({ data: !course });
   }).catch(next);
 }

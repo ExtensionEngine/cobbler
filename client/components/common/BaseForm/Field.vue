@@ -26,7 +26,7 @@ export default {
   props: {
     label: { type: String, default: null },
     name: { type: String, required: true },
-    value: { type: String, default: null },
+    value: { type: [String, Object], default: null },
     rules: { type: [Object, String], default: null },
     debounce: { type: Number, default: 300 }
   },

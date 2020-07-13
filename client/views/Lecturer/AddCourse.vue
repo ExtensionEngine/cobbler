@@ -3,7 +3,7 @@
     <second-bar />
     <div class="course-container">
       <base-form
-        v-slot="{ isFormInvalid }"
+        v-slot="{ isFormValid }"
         @submit="onSubmit"
         class="course-form">
         <field
@@ -42,6 +42,8 @@
             <base-select
               v-on="on"
               :value="value"
+              value-key="id"
+              label-key="name"
               :options="categories" />
           </template>
         </field>
@@ -74,7 +76,7 @@
           </template>
         </field>
         <base-button
-          :disabled="isFormInvalid"
+          :disabled="!isFormValid"
           class="button-form-item"
           type="submit"
           contained primary>
@@ -102,7 +104,7 @@ export default {
     return ({
       name: '',
       description: '',
-      category: '',
+      category: null,
       categories: [],
       startDate: null,
       endDate: null
@@ -119,13 +121,10 @@ export default {
   },
   methods: {
     async onSubmit() {
-      const categoryId = this.categories.find(category =>
-        category.name === this.category).id;
-
       const courseToAdd = {
         name: this.name,
         description: this.description,
-        categoryId,
+        categoryId: this.category.id,
         startDate: this.startDate,
         endDate: this.endDate
       };
