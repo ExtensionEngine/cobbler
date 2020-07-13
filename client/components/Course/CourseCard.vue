@@ -62,7 +62,7 @@ export default {
 .course-card {
   box-shadow: 3px 3px 8px 0px var(--color-gray);
   min-height: 150px;
-  min-width: 300px;
+  min-width: 250px;
   position: relative;
   font-size: var(--text-sm);
 }

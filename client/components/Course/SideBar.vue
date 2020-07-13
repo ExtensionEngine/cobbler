@@ -1,7 +1,7 @@
 <template>
   <aside class="side-menu">
     <i @click="closeMenu" class="material-icons close-btn">close</i>
-    <search-group @filter="handleFilterParams" />
+    <search-group @filter="handleFilterParams" class="search" />
   </aside>
 </template>
 
@@ -55,6 +55,10 @@ export default {
 }
 .close-btn:hover {
   cursor: pointer;
+}
+
+.search {
+  width: 100%;
 }
 
 </style>

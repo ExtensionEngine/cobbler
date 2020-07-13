@@ -6,9 +6,9 @@
       type="text"
       class="search-input"
       placeholder="Search">
-    <figure class="mt-xxs mr-xxs">
+    <div class="mt-xxs mr-xxs">
       <i class="material-icons">search</i>
-    </figure>
+    </div>
   </div>
 </template>
 
@@ -55,12 +55,13 @@ export default {
     vertical-align: middle;
     height: var(--spacing-lg);
     padding: var(--spacing-sm);
+    width: 70%;
   }
   .search-input:focus {
     outline: none;
   }
 
-  figure {
+  div {
     margin: 0;
   }
 </style>

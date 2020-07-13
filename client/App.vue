@@ -21,4 +21,5 @@ export default { name: 'app' };
   flex-flow: column nowrap;
   padding-top: var(--spacing-xl);
 }
+
 </style>

@@ -52,13 +52,16 @@ export default {
 
   .side-bar-wrapper {
     display: grid;
-    max-width: 100%;
     height: calc(100vh - var(--navbar-height));
     grid: auto-flow auto / 1fr;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-xs);
+    padding: var(--spacing-sm);
     border-right: 1px solid var(--color-gray-500);
     overflow-y: scroll;
+    width: 100px;
+  }
+
+  .side-bar-wrapper > * {
+    max-width: 100%;
   }
 
 </style>

@@ -1,15 +1,14 @@
 <template>
   <div
-    class="wrapper flex-h justify-center"
-    :class="{ menu: justify-start }">
-    <search-group v-if="smallScreen" @filter="refreshCourseList" class="search-bar" />
+    class="wrapper flex-h justify-center">
+    <search-group v-show="isSmallScreen" @filter="refreshCourseList" class="search-bar" />
     <side-bar
       v-if="menu"
       @closed="handleCloseMenu" />
     <div
       class="main-content">
       <base-button
-        v-if="!smallScreen"
+        v-if="!isSmallScreen"
         @click="showMenu"
         class="material-btn filter-btn">
         Filter
@@ -24,7 +23,7 @@
             :available="course.available" />
         </div>
       </div>
-      <div v-if="smallScreen" class="page-btns">
+      <div v-if="isSmallScreen" class="page-btns">
         <button @click="paginateBack" class="arrow-btn">
           <i class="material-icons">
             keyboard_arrow_left
@@ -36,7 +35,7 @@
           </i>
         </button>
       </div>
-      <div v-if="!smallScreen" class="mobile-btn-group">
+      <div v-if="!isSmallScreen" class="mobile-btn-group">
         <base-button
           @click="paginateBack"
           class="material-btn mobile-page-btn">
@@ -141,7 +140,8 @@ export default {
 }
 .main-content {
   padding: var(--spacing-md);
-  max-width: 80%
+  max-width: 80%;
+  flex-grow: 2;
 }
 i {
   font-size: var(--text-lg);
@@ -183,6 +183,7 @@ i {
 }
 .search-bar {
   max-width: 20%;
+  flex-grow: 1;
   justify-self: flex-start;
 }
 @media (min-width: 748px) {

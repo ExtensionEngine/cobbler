@@ -1,18 +1,22 @@
 const mixin = {
   data() {
-    const tablet = window.matchMedia('screen and (min-width: 768px)');
-    const smallScreen = window.matchMedia('screen and (min-width: 1024px)');
+    const tabletQuery = window.matchMedia('screen and (min-width: 768px)');
+    const smallScreenQuery = window.matchMedia('screen and (min-width: 1024px)');
     return {
-      tablet,
-      smallScreen
+      tabletQuery,
+      smallScreenQuery,
+      isTablet: false,
+      isSmallScreen: false
     };
   },
-  mounted() {
-    this.tablet.addListener(mediaQueryList => {
-      this.tablet = mediaQueryList.matches;
+  created() {
+    this.isTablet = this.tabletQuery.matches;
+    this.isSmallScreen = this.smallScreenQuery.matches;
+    this.tabletQuery.addListener(mediaQueryList => {
+      this.isTablet = mediaQueryList.matches;
     });
-    this.smallScreen.addListener(mediaQueryList => {
-      this.smallScreen = mediaQueryList.matches;
+    this.smallScreenQuery.addListener(mediaQueryList => {
+      this.isSmallScreen = mediaQueryList.matches;
     });
   }
 };
