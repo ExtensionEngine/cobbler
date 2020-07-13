@@ -16,9 +16,15 @@ module.exports = {
 };
 
 async function create(req, res) {
-  const course = await Course.create(parseCourse(req.body));
-  const enrollment = await course.addUser(req.user);
-  return res.status(CREATED).json({ data: { course, enrollment } });
+  let course;
+  try {
+    course = parseCourse(req.body);
+  } catch (err) {
+    throw new HttpError(err.message, BAD_REQUEST);
+  }
+  const newCourse = await Course.create(course);
+  const enrollment = await newCourse.addUser(req.user);
+  return res.status(CREATED).json({ data: { course: newCourse, enrollment } });
 }
 
 function getAll(req, res, next) {
