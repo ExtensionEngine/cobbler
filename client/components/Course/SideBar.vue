@@ -1,20 +1,24 @@
 <template>
-  <aside class="side-menu">
-    <i @click="closeMenu" class="material-icons close-btn">close</i>
-    <search-group @filter="handleFilterParams" class="search" />
+  <aside class="top-menu">
+    <div class="search">
+      <search-group @filter="handleFilterParams" class="search-group" />
+      <i @click="closeMenu" class="material-icons close-btn">close</i>
+    </div>
+    <div class="menu-btns flex-h">
+      <base-button @click="sendData" class="material-btn">Apply</base-button>
+      <base-button @click="closeMenu" class="material-btn">Close</base-button>
+    </div>
   </aside>
 </template>
 
 <script>
 
+import BaseButton from '../common/BaseButton';
 import { format } from 'date-fns';
 import SearchGroup from './SearchGroup';
 
 export default {
   name: 'side-bar',
-  props: {
-    show: { type: Boolean, default: false }
-  },
   data() {
     return {
       filterParams: {
@@ -24,7 +28,9 @@ export default {
   },
   methods: {
     closeMenu() {
-      this.show = false;
+      this.$emit('closed');
+    },
+    sendData() {
       this.$emit('closed', this.filterParams);
     },
     handleFilterParams(params) {
@@ -32,23 +38,25 @@ export default {
     }
   },
   components: {
-    SearchGroup
+    SearchGroup, BaseButton
   }
 };
 </script>
 
 <style lang="css" scoped>
-.side-menu {
+.top-menu {
   margin-top: 50px;
   overflow-x: hidden;
   overflow-y: auto;
   z-index: 300;
   width: 100%;
   position: fixed;
+  padding: var(--spacing-sm);
   top: 0;
-  bottom: 0%;
+  height: 100%;
   background: var(--color-white);
-  font-size: 0.7rem;
+  font-size: var(--text-sm);
+
 }
 .close-btn {
   padding: 10px;
@@ -56,9 +64,19 @@ export default {
 .close-btn:hover {
   cursor: pointer;
 }
-
-.search {
+.search-group{
   width: 100%;
+}
+.search {
+  height: 90%;
+}
+.material-btn:last-of-type {
+  background: var(--color-error);
+  color: white;
+}
+.material-btn:first-of-type {
+  background: var(--color-success);
+  color: white;
 }
 
 </style>

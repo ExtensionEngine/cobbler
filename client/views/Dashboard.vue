@@ -1,6 +1,7 @@
 <template>
   <div
-    class="wrapper flex-h justify-center">
+    class="wrapper flex-h justify-center"
+    :class="{overlayed: menu}">
     <search-group v-show="isSmallScreen" @filter="refreshCourseList" class="search-bar" />
     <side-bar
       v-if="menu"
@@ -113,8 +114,10 @@ export default {
       this.menu = true;
     },
     handleCloseMenu(params) {
-      this.filterParams = params;
-      this.getFilteredCourses();
+      if (params) {
+        this.filterParams = params;
+        this.getFilteredCourses();
+      }
       this.menu = false;
     }
   },
@@ -136,6 +139,7 @@ export default {
 .wrapper {
   height: 100%;
   width: 100%;
+  z-index: 100;
 }
 .page-btns {
   position: absolute;
@@ -193,6 +197,16 @@ i {
   max-width: 20%;
   flex-grow: 1;
   justify-self: flex-start;
+}
+.overlayed:after {
+  content: '';
+  height: 100%;
+  position: fixed;
+  top: var(--navbar-height);
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.726);
 }
 @media (min-width: 748px) {
   .cards {
