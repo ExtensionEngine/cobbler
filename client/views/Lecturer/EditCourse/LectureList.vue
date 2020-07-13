@@ -1,5 +1,5 @@
 <template>
-  <div class="lecture-list">
+  <div class="lecture-list flex-h justify-center">
     <collapsible
       v-for="lecture in lectures"
       :key="lecture.id"
@@ -39,9 +39,7 @@ export default {
   flex-basis: 50%;
 }
 .lecture-list {
-  display: flex;
   flex-wrap: wrap;
-  justify-content: center;
 }
 @media only screen and (max-width: 480px) {
   .lecture {

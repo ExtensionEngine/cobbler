@@ -1,5 +1,5 @@
 <template>
-  <div class="course-container">
+  <div class="course-container flex-h justify-center">
     <base-form
       v-slot="{ isFormInvalid }"
       @submit="onUpdate"
@@ -159,8 +159,6 @@ export default {
 <style scoped>
 .course-container {
   padding: var(--spacing-xl) 0;
-  display: flex;
-  justify-content: center;
 }
 .course-form {
   width: 100%;
