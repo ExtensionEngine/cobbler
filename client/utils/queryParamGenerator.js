@@ -12,7 +12,7 @@ export function generateQuery(queryParams, limit, offset) {
       return;
     }
     if (isValid(new Date(value))) {
-      queryObject[key] = (value === 'startDate') ? `lt.${value}` : `gte.${value}`;
+      queryObject[key] = (key === 'startDate') ? `gte.${value}` : `lt.${value}`;
       return;
     }
     if (typeof value === 'number') {
