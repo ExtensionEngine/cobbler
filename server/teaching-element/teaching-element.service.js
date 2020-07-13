@@ -12,11 +12,13 @@ function createTe(teachingElement) {
 }
 
 function parseTe(teachingElement) {
+  // TODO: refactor to superstruct validation
   const data = parseData(teachingElement);
-  const common = pick(teachingElement, ['name', 'label', 'type', 'position', 'lectureId']);
-  if (typeof common.name === 'string' ||
-  typeof common.label === 'string' ||
-  teachingElements.includes(common.type) ||
+  const common = pick(teachingElement,
+    ['name', 'label', 'type', 'position', 'lectureId']);
+  if (!typeof common.name === 'string' ||
+  !typeof common.label === 'string' ||
+  !teachingElements.includes(common.type) ||
   isNaN(common.position) || isNaN(common.lectureId)) {
     throw Error('Invalid attributes');
   }
