@@ -1,5 +1,5 @@
 <template>
-  <nav class="nav">
+  <nav class="nav flex-h justify-end align-center">
     <span
       @click="logout"
       class="nav-item clickable">
@@ -31,9 +31,6 @@ export default {
   right: 0;
   background: var(--color-gray);
   height: var(--spacing-xl);
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
   padding: 0 var(--spacing-md);
   box-shadow: 2px 2px 4px 0px var(--color-gray);
   z-index: var(--z-nav);

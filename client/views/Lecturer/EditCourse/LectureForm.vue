@@ -17,7 +17,7 @@
           class="form-item-half"
           name="name"
           label="Name"
-          rules="required|between:2,50">
+          rules="required|lengthBetween:2,50">
           <template v-slot="{ on, value }">
             <base-input
               v-on="on"

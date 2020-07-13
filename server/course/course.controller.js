@@ -1,7 +1,7 @@
 'use strict';
 
-const { BAD_REQUEST, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR, NOT_FOUND, OK } = require('http-status-codes');
 const { Category, Course, Enrollment, Lecture, sequelize, User } = require('../shared/database');
+const { BAD_REQUEST, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR, NOT_FOUND, OK } = require('http-status-codes');
 const { HttpError } = require('../shared/error');
 const { Op } = require('sequelize');
 const pick = require('lodash/pick');
@@ -15,7 +15,7 @@ module.exports = {
   update
 };
 
-async function create(req, res) {
+async function create(req, res, next) {
   const courseInfo = pick(req.body, [
     'name',
     'description',
@@ -28,14 +28,10 @@ async function create(req, res) {
     throw new HttpError('The provided body is invalid', BAD_REQUEST);
   }
   await sequelize.transaction(async transaction => {
-    try {
-      const course = await Course.create(courseInfo, { transaction });
-      await course.addUser(req.user, { transaction });
-      res.status(CREATED).json({ data: course });
-    } catch (error) {
-      res.status(INTERNAL_SERVER_ERROR).json({ error });
-    }
-  });
+    const course = await Course.create(courseInfo, { transaction });
+    await course.addUser(req.user, { transaction });
+    res.status(CREATED).json({ data: course });
+  }).catch(next);
 }
 
 function getAll(req, res) {
@@ -118,7 +114,7 @@ function update(req, res, next) {
 }
 
 function checkNameAvailability({ body: { name } }, res, next) {
-  if (!name) throw new HttpError('Invalid request body', BAD_REQUEST);
+  if (!name) throw new HttpError('No name value in the request body', BAD_REQUEST);
 
   return Course.findOne({ where: { name } }).then(course => {
     res.status(OK).json({ data: !course });

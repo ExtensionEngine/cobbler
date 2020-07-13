@@ -43,7 +43,6 @@ export default {
 
 <style scoped>
 .course-card {
-  display: flex;
   background: var(--color-gray-500);
   border: solid 2px var(--color-black);
   padding: var(--spacing-xs);
