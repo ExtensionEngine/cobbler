@@ -11,10 +11,6 @@ const levels = {
   debug: 3
 };
 
-const selectedLoggingLevel = () => {
-  return (process.env.NODE_ENV === 'production') ? 'info' : 'debug';
-};
-
 const logFormat = combine(
   cli({
     colors: {
@@ -31,7 +27,7 @@ const logFormat = combine(
 
 const logger = createLogger({
   format: logFormat,
-  level: selectedLoggingLevel(),
+  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
   levels,
   transports: [
     new (transports.Console)()
