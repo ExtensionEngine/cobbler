@@ -16,7 +16,7 @@ async function create(req, res) {
 
 async function getAll(req, res) {
   const categories = await Category.findAll();
-  res.status(OK).json({ data: categories });
+  return res.status(OK).json({ data: categories });
 }
 
 function parseCategory(category) {

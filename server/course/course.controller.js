@@ -1,8 +1,8 @@
 'use strict';
 
 const { assert, date, number, object, optional, string } = require('superstruct');
-const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
-const { Category, Course, Enrollment, User } = require('../shared/database');
+const { BAD_REQUEST, CREATED, NOT_FOUND } = require('http-status-codes');
+const { Category, Course, Enrollment, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
 const pick = require('lodash/pick');
@@ -15,16 +15,19 @@ module.exports = {
   update
 };
 
-async function create(req, res) {
+function create(req, res) {
   let course;
   try {
     course = parseCourse(req.body);
   } catch (err) {
     throw new HttpError(err.message, BAD_REQUEST);
   }
-  const newCourse = await Course.create(course);
-  const enrollment = await newCourse.addUser(req.user);
-  return res.status(CREATED).json({ data: { course: newCourse, enrollment } });
+
+  return sequelize.transaction(async transaction => {
+    const newCourse = await Course.create(course, { transaction });
+    const enrollment = await newCourse.addUser(req.user, { transaction });
+    return res.status(CREATED).json({ data: { course: newCourse, enrollment } });
+  });
 }
 
 function getAll(req, res, next) {

@@ -15,7 +15,7 @@ async function create(req, res) {
   const user = parseUser(req.body);
   user.password = bcrypt.hashSync(user.password, 10);
   const createdUser = await User.create({ ...user });
-  res.status(OK).json({ data: createdUser });
+  return res.status(OK).json({ data: createdUser });
 }
 
 function parseUser(user) {
