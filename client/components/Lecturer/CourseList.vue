@@ -7,7 +7,7 @@
     <div
       v-for="{ name, description, category, startDate, endDate, id } in courses"
       :key="id"
-      class="course-card">
+      class="course-card flex-h">
       <div class="card-info">
         <h3 class="course-title">{{ name }}</h3>
         <p>{{ description }}</p>
@@ -56,7 +56,6 @@ export default {
   flex-grow: 1;
 }
 .course-card {
-  display: flex;
   background: var(--color-gray-500);
   border: solid 2px var(--color-black);
   padding: var(--spacing-xs);

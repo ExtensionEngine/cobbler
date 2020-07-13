@@ -3,7 +3,7 @@
     <div class="second-bar">
       <span @click="goBack" class="back-button">Go back</span>
     </div>
-    <div class="course-container">
+    <div class="course-container flex-h justify-center">
       <base-form
         v-slot="{ isFormValid }"
         @submit="onSubmit"
@@ -163,8 +163,6 @@ export default {
 <style>
 .course-container {
   padding: var(--spacing-xl) var(--spacing-md);
-  display: flex;
-  justify-content: center;
 }
 .course-form {
   width: 100%;
