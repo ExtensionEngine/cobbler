@@ -13,7 +13,7 @@ import DatePicker from './DatePicker';
 import { format } from 'date-fns';
 
 export default {
-  name: 'side-bar',
+  name: 'search-group',
   data() {
     return {
       searchParams: {
@@ -52,7 +52,7 @@ export default {
 
   .side-bar-wrapper {
     display: grid;
-    max-width: 20%;
+    max-width: 100%;
     height: calc(100vh - var(--navbar-height));
     grid: auto-flow auto / 1fr;
     gap: var(--spacing-sm);

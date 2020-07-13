@@ -1,7 +1,19 @@
 <template>
-  <div class="wrapper flex-h">
-    <search-group @filter="refreshCourseList" />
-    <div class="main-content">
+  <div
+    class="wrapper flex-h justify-center"
+    :class="{ menu: justify-start }">
+    <search-group v-if="smallScreen" @filter="refreshCourseList" class="search-bar" />
+    <side-bar
+      v-if="menu"
+      @closed="handleCloseMenu" />
+    <div
+      class="main-content">
+      <base-button
+        v-if="!smallScreen"
+        @click="showMenu"
+        class="material-btn filter-btn">
+        Filter
+      </base-button>
       <div class="card-container">
         <div class="cards">
           <course-card
@@ -12,7 +24,7 @@
             :available="course.available" />
         </div>
       </div>
-      <div class="page-btns">
+      <div v-if="smallScreen" class="page-btns">
         <button @click="paginateBack" class="arrow-btn">
           <i class="material-icons">
             keyboard_arrow_left
@@ -24,23 +36,40 @@
           </i>
         </button>
       </div>
+      <div v-if="!smallScreen" class="mobile-btn-group">
+        <base-button
+          @click="paginateBack"
+          class="material-btn mobile-page-btn">
+          Previous
+        </base-button>
+        <base-button
+          @click="paginateForward"
+          class="material-btn mobile-page-btn">
+          Next
+        </base-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import BaseButton from '../components/common/BaseButton';
+import breakPointsMixin from '../components/common/mixins/breakPointsMixin';
 import CourseCard from '../components/Course/CourseCard';
 import { format } from 'date-fns';
 import { generateQuery } from '../utils/queryParamGenerator';
 import { get } from '../api/courses';
 import SearchGroup from '../components/Course/SearchGroup';
+import SideBar from '../components/Course/SideBar';
 
 export default {
+  mixins: [breakPointsMixin],
   props: {
     loading: { type: Boolean, default: false }
   },
   data() {
     return {
+      menu: false,
       limit: 6,
       offset: 0,
       courses: [],
@@ -72,6 +101,14 @@ export default {
       get(this.queryString).then(({ data }) => {
         this.courses = data.data;
       });
+    },
+    showMenu() {
+      this.menu = true;
+    },
+    handleCloseMenu(params) {
+      this.filterParams = params;
+      this.getFilteredCourses();
+      this.menu = false;
     }
   },
   watch: {
@@ -83,7 +120,7 @@ export default {
     this.getFilteredCourses();
   },
   components: {
-    CourseCard, SearchGroup
+    BaseButton, CourseCard, SearchGroup, SideBar
   }
 };
 </script>
@@ -97,10 +134,13 @@ export default {
   position: absolute;
   bottom: 1%;
 }
-
+.mobile-page-btn {
+  background: var(--color-info);
+  color: var(--color-white);
+  padding: var(--spacing-sm) 0;
+}
 .main-content {
   padding: var(--spacing-md);
-  max-height: calc(100vh - var(--navbar-height));
   max-width: 80%
 }
 i {
@@ -119,12 +159,31 @@ i {
 .arrow-btn:focus {
   outline: none;
 }
+.filter-btn {
+  background-color: var(--color-accent);
+  color: var(--color-green);
+  padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
 .cards {
   max-width: 1200px;
   margin: var(--spacing-sm) auto;
   display: grid;
   grid: auto-flow auto / 1fr;
   grid-gap: var(--spacing-lg);
+}
+.mobile-btn-group {
+  width: 100%;
+  margin-top: var(--spacing-lg);
+  display: flex;
+  justify-content: space-around;
+}
+.mobile-btn-group .material-btn {
+  margin: 0 10px;
+}
+.search-bar {
+  max-width: 20%;
+  justify-self: flex-start;
 }
 @media (min-width: 748px) {
   .cards {

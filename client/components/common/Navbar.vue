@@ -1,11 +1,11 @@
 <template>
   <nav class="nav flex-h align-center justify-space-between">
-    <i v-if="!tablet" class="material-icons">menu</i>
+    <button v-if="!tablet" @click="toggleMenu" class="menu-btn"><i class="material-icons">menu</i></button>
     <div class="nav-title flex-h justify-space-between">
       <i class="material-icons">analytics</i>
       <span class="mt-xxs ml-sm">Cobbler LMS</span>
     </div>
-    <div class="flex-h justify-end">
+    <div v-if="smallScreen" class="flex-h justify-end">
       <base-button
         @click="logout"
         class="nav-item clickable material-btn auth-btn">
@@ -21,25 +21,16 @@
 
 <script>
 import BaseButton from '../common/BaseButton';
+import breakPointsMixin from './mixins/breakPointsMixin';
 
 export default {
-
   name: 'navbar',
-  data() {
-    const tabletViewQuery = window.matchMedia('screen and (min-width: 765px)');
-    return {
-      tablet: tabletViewQuery
-    };
-  },
+  mixins: [breakPointsMixin],
+
   methods: {
     logout() {
       this.$store.dispatch('logout');
     }
-  },
-  mounted() {
-    this.tablet.addListener(mediaQueryList => {
-      this.tablet = mediaQueryList.matches;
-    });
   },
   components: {
     BaseButton
@@ -48,6 +39,12 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
+.menu-btn {
+  background: none;
+  border: none;
+  padding: 0;
+}
 .nav {
   position: fixed;
   top: 0;
