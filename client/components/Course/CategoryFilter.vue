@@ -8,10 +8,11 @@
       <input
         v-model="checkedCategories"
         @change="propagateChoice"
+        :id="category.id"
         :value="category.id"
         type="checkbox"
         class="mr-xxs">
-      <span class="ml-xs">{{ category.name }}</span>
+      <label :for="category.id" class="ml-xs">{{ category.name }}</label>
     </div>
     <div>
     </div>

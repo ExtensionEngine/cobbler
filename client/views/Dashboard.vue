@@ -15,8 +15,14 @@
       </base-button>
       <div class="card-container">
         <div class="cards">
+          <template v-if="loading">
+            <course-card
+              v-for="n in 6"
+              :key="n" />
+          </template>
           <course-card
             v-for="course in courses"
+            v-else
             :key="course.id"
             :course="course"
             :enrolled="course.isEnrolled"
@@ -63,12 +69,11 @@ import SideBar from '../components/Course/SideBar';
 
 export default {
   mixins: [breakPointsMixin],
-  props: {
-    loading: { type: Boolean, default: false }
-  },
+
   data() {
     return {
       menu: false,
+      loading: true,
       limit: 6,
       offset: 0,
       courses: [],
@@ -97,9 +102,12 @@ export default {
       this.getFilteredCourses();
     },
     getFilteredCourses() {
-      get(this.queryString).then(({ data }) => {
-        this.courses = data.data;
-      });
+      get(this.queryString)
+        .then(({ data }) => {
+          this.courses = data.data;
+        }).finally(() => {
+          this.loading = false;
+        });
     },
     showMenu() {
       this.menu = true;

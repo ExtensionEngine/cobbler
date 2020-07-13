@@ -3,16 +3,18 @@
     @click="showCourse"
     :class="{ enrolled, unavailable: !available }"
     class="course-card">
-    <div class="course-card-title">
-      <p class="category-name">{{ course.Category.name }}</p>
-      <h3>{{ course.name }}</h3>
-    </div>
-    <div class="course-card-description">
-      <p>{{ course.description }}</p>
-      <p class="date">
-        {{ course | getDateRange }}
-      </p>
-    </div>
+    <template v-if="course">
+      <div class="course-card-title">
+        <p class="category-name">{{ course.Category.name }}</p>
+        <h3>{{ course.name }}</h3>
+      </div>
+      <div class="course-card-description">
+        <p>{{ course.description }}</p>
+        <p class="date">
+          {{ course | getDateRange }}
+        </p>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -24,17 +26,8 @@ export default {
   props: {
     course: {
       type: Object,
-      required: true,
-      default() {
-        return {
-          id: '',
-          name: '',
-          category: {},
-          description: '',
-          start: '',
-          end: ''
-        };
-      }
+      default: null
+
     },
     enrolled: { type: Boolean, default: false },
     available: { type: Boolean, default: true }
@@ -145,5 +138,6 @@ export default {
 
 .unavailable:hover {
   transform: none;
+  cursor: not-allowed;
 }
 </style>
