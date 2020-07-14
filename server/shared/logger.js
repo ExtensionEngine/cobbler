@@ -2,7 +2,6 @@
 
 const { createLogger, format, transports } = require('winston');
 const { cli, colorize, combine, printf, splat } = format;
-require('dotenv').config();
 
 const levels = {
   error: 0,
