@@ -3,12 +3,14 @@
     class="wrapper flex-h justify-center"
     :class="{ overlayed: menu }">
     <search-group
-      v-show="isSmallScreen"
+      v-if="isSmallScreen"
       @filter="refreshCourseList"
       class="search-bar" />
-    <drawer
-      v-if="menu"
-      @closed="handleCloseMenu" />
+    <transition name="slide">
+      <drawer
+        v-if="menu"
+        @closed="handleCloseMenu" />
+    </transition>
     <div
       class="main-content">
       <base-button
@@ -137,6 +139,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
 .wrapper {
   height: 100%;
   width: 100%;
@@ -153,7 +156,6 @@ export default {
 }
 .main-content {
   padding: var(--spacing-md);
-  max-width: 80%;
   flex-grow: 2;
 }
 i {
@@ -190,7 +192,6 @@ i {
   max-width: 20%;
   flex-grow: 1;
   border-right: 1px solid var(--color-gray-500);
-
 }
 .overlayed:after {
   content: '';
@@ -202,14 +203,44 @@ i {
   z-index: 100;
   background-color: rgba(0, 0, 0, 0.726);
 }
+.slide-enter-active {
+  animation: slide-in 0.5s ease-out forwards;
+}
+.slide-leave-active {
+  animation: slide-out 0.2s ease-out forwards;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(var(--spacing-lg));
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateY(0)
+  }
+  to {
+    transform: translateY(var(--spacing-md))
+  }
+}
+
 @media (min-width: 748px) {
   .cards {
     grid: auto-flow auto / repeat(2, 1fr);
+  }
+  .main-content {
+    max-width: 80%;
+    width: 100%;
   }
 }
 @media (min-width: 1140px) {
   .cards {
     grid: auto-flow auto / repeat(3, 1fr);
   }
+
 }
 </style>
