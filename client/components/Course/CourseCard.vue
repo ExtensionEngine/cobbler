@@ -1,8 +1,8 @@
 <template>
   <div
     @click="showCourse"
-    :class="{ enrolled, unavailable: !available }"
-    class="course-card">
+    class="course-card"
+    :class="{ enrolled: course && course.isEnrolled, unavailable: course && !course.available }">
     <template v-if="course">
       <div class="course-card-title">
         <p class="category-name">{{ course.Category.name }}</p>
@@ -27,14 +27,11 @@ export default {
     course: {
       type: Object,
       default: null
-
-    },
-    enrolled: { type: Boolean, default: false },
-    available: { type: Boolean, default: true }
+    }
   },
   methods: {
     showCourse() {
-      if (this.available) this.$router.push(`courses/${this.course.id}`);
+      if (this.course.available) this.$router.push(`courses/${this.course.id}`);
     },
     formatDate(dateString) {
       return format(new Date(dateString), 'yyyy-MM-dd');

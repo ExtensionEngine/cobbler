@@ -22,14 +22,10 @@
 
 <script>
 import BaseInput from '../common/BaseInput';
-import debounce from 'lodash/debounce';
 import Field from '../common/BaseForm/Field';
 
 export default {
   name: 'date-picker',
-  props: {
-    debounce: { type: Boolean, default: false }
-  },
   data() {
     return {
       start: '',
@@ -37,9 +33,9 @@ export default {
     };
   },
   methods: {
-    propagateDate: debounce(function () {
+    propagateDate: function () {
       return this.$emit('dateChanged', { startDate: this.start, endDate: this.end });
-    }, debounce ? 400 : 0)
+    }
   },
   components: {
     BaseInput, Field

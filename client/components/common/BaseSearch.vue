@@ -1,5 +1,5 @@
 <template>
-  <div class="search-wrapper">
+  <div class="search-wrapper flex-h justify-space-between">
     <input
       v-model="search"
       @input="doSearch"
@@ -41,9 +41,7 @@ export default {
     border-radius: var(--spacing-xxs);
     padding: var(--spacing-xxs);
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    background-color: white;
+    background-color: var(--color-white);
   }
 
   .search-wrapper:focus-within {
@@ -59,9 +57,5 @@ export default {
   }
   .search-input:focus {
     outline: none;
-  }
-
-  div {
-    margin: 0;
   }
 </style>

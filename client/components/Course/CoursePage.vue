@@ -14,7 +14,7 @@
         <div class="btn-container">
           <base-button
             @click="sendEnrollRequest"
-            :disabled="enrolled || !course.available"
+            :disabled="course.isEnrolled || !course.available"
             class="enroll-btn mt-xxs"
             contained>
             Enroll
@@ -33,11 +33,11 @@ import BaseButton from '../common/BaseButton';
 import { enroll } from '../../api/enroll';
 import format from 'date-fns/format';
 import LectureContainer from '../Lectures/LectureContainer';
+
 export default {
   name: 'course-page',
   props: {
-    course: { type: Object, required: true },
-    enrolled: { type: Boolean, default: false }
+    course: { type: Object, required: true }
   },
   computed: {
     lecturers() {
@@ -50,11 +50,9 @@ export default {
     }
   },
   methods: {
-    sendEnrollRequest() {
-      enroll(this.course.id)
-          .then(success => {
-            this.$router.push('/');
-          });
+    async sendEnrollRequest() {
+      const enrollment = await enroll(this.course.id);
+      if (enrollment) this.$router.push('/');
     },
     formatDate(dateString) {
       return dateString ? format(new Date(dateString), 'yyyy-MM-dd') : '';

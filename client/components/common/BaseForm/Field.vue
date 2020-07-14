@@ -20,6 +20,7 @@
 <script>
 import BaseError from '../BaseError';
 import { ValidationProvider } from 'vee-validate';
+
 export default {
   name: 'form-field',
   props: {

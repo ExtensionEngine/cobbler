@@ -1,7 +1,7 @@
 <template>
   <div class="side-bar-wrapper align-start">
     <base-search @search="searchHandler" class="mt-md" debounce />
-    <date-picker @dateChanged="dateHandler" debounce />
+    <date-picker @dateChanged="dateHandler" />
     <category-filter @checked="categoryHandler" />
   </div>
 </template>
@@ -27,18 +27,23 @@ export default {
   methods: {
     searchHandler(searchTerm) {
       this.searchParams.name = searchTerm;
-      this.$emit('filter', this.searchParams);
     },
     categoryHandler(categories) {
       this.searchParams.categoryId = categories;
-      this.$emit('filter', this.searchParams);
     },
     dateHandler({ startDate, endDate }) {
       this.searchParams.startDate = startDate;
       this.searchParams.endDate = endDate;
-      this.$emit('filter', this.searchParams);
     }
 
+  },
+  watch: {
+    searchParams: {
+      handler() {
+        this.$emit('filter', this.searchParams);
+      },
+      deep: true
+    }
   },
   components: {
     BaseSearch,
@@ -55,7 +60,6 @@ export default {
     height: calc(100vh - var(--navbar-height));
     grid: auto-flow auto / 1fr;
     padding: var(--spacing-sm);
-    border-right: 1px solid var(--color-gray-500);
     overflow-y: scroll;
     width: 100px;
   }

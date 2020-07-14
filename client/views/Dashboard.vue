@@ -1,9 +1,12 @@
 <template>
   <div
     class="wrapper flex-h justify-center"
-    :class="{overlayed: menu}">
-    <search-group v-show="isSmallScreen" @filter="refreshCourseList" class="search-bar" />
-    <side-bar
+    :class="{ overlayed: menu }">
+    <search-group
+      v-show="isSmallScreen"
+      @filter="refreshCourseList"
+      class="search-bar" />
+    <drawer
       v-if="menu"
       @closed="handleCloseMenu" />
     <div
@@ -25,12 +28,10 @@
             v-for="course in courses"
             v-else
             :key="course.id"
-            :course="course"
-            :enrolled="course.isEnrolled"
-            :available="course.available" />
+            :course="course" />
         </div>
       </div>
-      <div v-if="isSmallScreen" class="page-btns">
+      <div v-if="isSmallScreen" class="desktop-page-btns">
         <button @click="paginateBack" class="arrow-btn">
           <i class="material-icons">
             keyboard_arrow_left
@@ -42,7 +43,7 @@
           </i>
         </button>
       </div>
-      <div v-if="!isSmallScreen" class="mobile-btn-group">
+      <div v-if="!isSmallScreen" class="mobile-page-btns flex-h justify-space-around">
         <base-button
           @click="paginateBack"
           class="material-btn mobile-page-btn">
@@ -62,11 +63,11 @@
 import BaseButton from '../components/common/BaseButton';
 import breakPointsMixin from '../components/common/mixins/breakPointsMixin';
 import CourseCard from '../components/Course/CourseCard';
+import Drawer from '../components/Course/Drawer';
 import { format } from 'date-fns';
 import { generateQuery } from '../utils/queryParamGenerator';
 import { get } from '../api/courses';
 import SearchGroup from '../components/Course/SearchGroup';
-import SideBar from '../components/Course/SideBar';
 
 export default {
   mixins: [breakPointsMixin],
@@ -130,7 +131,7 @@ export default {
     this.getFilteredCourses();
   },
   components: {
-    BaseButton, CourseCard, SearchGroup, SideBar
+    BaseButton, CourseCard, SearchGroup, Drawer
   }
 };
 </script>
@@ -141,7 +142,7 @@ export default {
   width: 100%;
   z-index: 100;
 }
-.page-btns {
+.desktop-page-btns {
   position: absolute;
   bottom: 1%;
 }
@@ -165,12 +166,6 @@ i {
   background: none;
   border: none;
 }
-.arrow-btn:hover {
-  cursor: pointer;
-}
-.arrow-btn:focus {
-  outline: none;
-}
 .filter-btn {
   background-color: var(--color-accent);
   color: var(--color-green);
@@ -184,19 +179,18 @@ i {
   grid: auto-flow auto / 1fr;
   grid-gap: var(--spacing-lg);
 }
-.mobile-btn-group {
+.mobile-page-btns {
   width: 100%;
   margin-top: var(--spacing-lg);
-  display: flex;
-  justify-content: space-around;
 }
-.mobile-btn-group .material-btn {
+.mobile-page-btns .material-btn {
   margin: 0 10px;
 }
 .search-bar {
   max-width: 20%;
   flex-grow: 1;
-  justify-self: flex-start;
+  border-right: 1px solid var(--color-gray-500);
+
 }
 .overlayed:after {
   content: '';

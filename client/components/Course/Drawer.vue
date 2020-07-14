@@ -2,9 +2,8 @@
   <aside class="top-menu">
     <div class="search">
       <search-group @filter="handleFilterParams" class="search-group" />
-      <i @click="closeMenu" class="material-icons close-btn">close</i>
     </div>
-    <div class="menu-btns flex-h">
+    <div class="menu-btns flex-h justify-space-between">
       <base-button @click="sendData" class="material-btn">Apply</base-button>
       <base-button @click="closeMenu" class="material-btn">Close</base-button>
     </div>
@@ -18,7 +17,7 @@ import { format } from 'date-fns';
 import SearchGroup from './SearchGroup';
 
 export default {
-  name: 'side-bar',
+  name: 'drawer',
   data() {
     return {
       filterParams: {
@@ -45,7 +44,6 @@ export default {
 
 <style lang="css" scoped>
 .top-menu {
-  margin-top: 50px;
   overflow-x: hidden;
   overflow-y: auto;
   z-index: 300;
@@ -59,7 +57,7 @@ export default {
 
 }
 .close-btn {
-  padding: 10px;
+  padding: var(--spacing-sm);
 }
 .close-btn:hover {
   cursor: pointer;
@@ -70,13 +68,16 @@ export default {
 .search {
   height: 90%;
 }
+.material-btn {
+  padding: var(--spacing-sm) 0;
+}
 .material-btn:last-of-type {
   background: var(--color-error);
-  color: white;
+  color: var(--color-white);
 }
 .material-btn:first-of-type {
   background: var(--color-success);
-  color: white;
+  color: var(--color-white);
 }
 
 </style>

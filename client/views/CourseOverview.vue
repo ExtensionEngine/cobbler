@@ -1,8 +1,7 @@
 <template>
   <container>
     <course-page
-      :course="course"
-      :enrolled="enrolled" />
+      :course="course" />
   </container>
 </template>
 
@@ -15,8 +14,7 @@ export default {
   name: 'course-overview',
   data() {
     return {
-      course: { Category: {} },
-      enrolled: false
+      course: { Category: {} }
     };
   },
   computed: {
