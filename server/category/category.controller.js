@@ -1,9 +1,8 @@
 'use strict';
 
-const { assert, object, string } = require('superstruct');
+const { assert, coerce, masked, object, string } = require('superstruct');
 const Category = require('./category.model');
 const { OK } = require('http-status-codes');
-const pick = require('lodash/pick');
 
 module.exports = {
   create, getAll
@@ -20,10 +19,10 @@ async function getAll(req, res) {
 }
 
 function parseCategory(category) {
-  const categoryStruct = object({
+  const categoryStruct = masked(object({
     name: string()
-  });
-  const parsedCategory = pick(category, ['name']);
+  }));
+  const parsedCategory = coerce(category, categoryStruct);
   assert(parsedCategory, categoryStruct);
   return parsedCategory;
 }

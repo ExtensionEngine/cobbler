@@ -1,11 +1,10 @@
 'use strict';
 
-const { assert, date, number, object, optional, string } = require('superstruct');
+const { assert, coerce, coercion, date, masked, number, object, optional, string } = require('superstruct');
 const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
 const { Category, Course, Enrollment, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
-const pick = require('lodash/pick');
 const { validateFilters } = require('../shared/util/apiQueryParser');
 
 module.exports = {
@@ -87,17 +86,15 @@ async function update(req, res) {
 }
 
 function parseCourse(course) {
+  const coerceDate = coercion(optional(date()), value => value && new Date(value));
   const courseStruct = object({
     name: string(),
     description: string(),
-    startDate: optional(date()),
-    endDate: optional(date()),
     categoryId: number()
   });
-  const parsedCourse = pick(course,
-    ['name', 'description', 'categoryId']);
-  parsedCourse.startDate = course.startDate && new Date(course.startDate);
-  parsedCourse.endDate = course.endDate && new Date(course.endDate);
+  const parsedCourse = coerce(course, masked(courseStruct));
   assert(parsedCourse, courseStruct);
+  parsedCourse.startDate = coerce(course.startDate, coerceDate);
+  parsedCourse.endDate = coerce(course.endDate, coerceDate);
   return parsedCourse;
 }

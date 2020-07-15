@@ -1,9 +1,8 @@
 'use strict';
 
-const { assert, enums, object, string } = require('superstruct');
+const { assert, coerce, enums, masked, object, string } = require('superstruct');
 const bcrypt = require('bcrypt');
 const { OK } = require('http-status-codes');
-const pick = require('lodash/pick');
 const { roles } = require('../../config/server');
 const { User } = require('../shared/database');
 
@@ -19,15 +18,14 @@ async function create(req, res) {
 }
 
 function parseUser(user) {
-  const userStruct = object({
+  const userStruct = masked(object({
     firstName: string(),
     lastName: string(),
     email: string(),
     password: string(),
     role: enums(roles)
-  });
-  const parsedUser = pick(user,
-    ['firstName', 'lastName', 'email', 'password', 'role']);
+  }));
+  const parsedUser = coerce(user, userStruct);
   assert(parsedUser, userStruct);
   return parsedUser;
 }
