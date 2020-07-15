@@ -77,7 +77,7 @@ async function update(req, res) {
     'endDate',
     'categoryId'
   ]);
-  const course = await Course.update(
+  const [isUpdated, updatedCourses] = await Course.update(
     courseInfo,
     {
       where: {
@@ -86,8 +86,8 @@ async function update(req, res) {
       returning: true
     }
   );
-  if (!course[1].length) {
+  if (!isUpdated) {
     return res.status(NOT_FOUND).json('Course does not exist');
   }
-  return res.status(CREATED).json({ data: course });
+  return res.status(CREATED).json({ data: updatedCourses });
 }
