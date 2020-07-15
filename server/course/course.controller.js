@@ -86,8 +86,6 @@ async function update(req, res) {
       returning: true
     }
   );
-  if (!isUpdated) {
-    return res.status(NOT_FOUND).json('Course does not exist');
-  }
+  if (!isUpdated) return res.status(NOT_FOUND).json('Course does not exist');
   return res.status(CREATED).json({ data: updatedCourses });
 }
