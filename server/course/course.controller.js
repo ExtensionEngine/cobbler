@@ -14,7 +14,7 @@ module.exports = {
   update
 };
 
-async function create(req, res) {
+function create(req, res) {
   const courseInfo = pick(req.body, [
     'name',
     'description',
@@ -22,7 +22,7 @@ async function create(req, res) {
     'startDate',
     'endDate'
   ]);
-  return await sequelize.transaction(async transaction => {
+  return sequelize.transaction(async transaction => {
     const course = await Course.create(courseInfo, { transaction });
     await course.addUser(req.user, { transaction });
     return res.status(CREATED).json({ data: course });
