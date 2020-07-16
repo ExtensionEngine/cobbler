@@ -10,7 +10,7 @@
         class="course-form">
         <field
           v-model="name"
-          class="name-form-item"
+          class="full-bleed-form-item"
           name="name"
           label="Name"
           :rules="nameRules">
@@ -23,7 +23,7 @@
         </field>
         <field
           v-model="description"
-          class="description-form-item"
+          class="full-bleed-form-item"
           name="description"
           label="Description"
           rules="required|lengthBetween:2,50">
@@ -36,7 +36,7 @@
         </field>
         <field
           v-model="category"
-          class="category-form-item"
+          class="full-bleed-form-item"
           name="category"
           label="Category"
           rules="required">
@@ -79,7 +79,7 @@
         </field>
         <base-button
           :disabled="!isFormValid"
-          class="button-form-item"
+          class="button-form-item full-bleed-form-item"
           type="submit"
           contained primary>
           Submit
@@ -169,14 +169,11 @@ export default {
   max-width: var(--measure-md);
   display: grid;
   grid-template-columns: [start] 1fr [middle] 1fr [end];
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: repeat(5, 1fr);
   grid-column-gap: var(--spacing-xs);
   grid-row-gap: var(--spacing-xs);
 }
-.name-form-item,
-.description-form-item,
-.category-form-item,
-.button-form-item {
+.full-bleed-form-item {
   grid-column: start / end;
 }
 .button-form-item {
