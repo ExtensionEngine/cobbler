@@ -46,7 +46,8 @@ function getLectureById(req, res, next) {
     include: [{
       model: TeachingElement,
       as: 'teachingElements'
-    }]
+    }],
+    order: [[{ model: TeachingElement, as: 'teachingElements' }, 'position', 'asc']]
   })
     .then(lecture => {
       if (!lecture) return res.status(NOT_FOUND).send('Lecture not found');

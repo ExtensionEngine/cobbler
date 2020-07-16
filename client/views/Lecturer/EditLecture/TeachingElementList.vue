@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <draggable @change="onChange" :value="teachingElements">
     <div
       v-for="element in teachingElements"
       :key="element.id"
@@ -8,14 +8,25 @@
       <p>type: {{ element.type }}</p>
       <p>label: {{ element.label }}</p>
     </div>
-  </div>
+  </draggable>
 </template>
 
 <script>
+import draggable from 'vuedraggable';
+
 export default {
   name: 'teaching-element-list',
   props: {
     teachingElements: { type: Array, required: true }
+  },
+  methods: {
+    onChange({ moved: { newIndex, oldIndex, element } }) {
+      this.$emit('drop', oldIndex, newIndex, element);
+      return false;
+    }
+  },
+  components: {
+    draggable
   }
 };
 </script>

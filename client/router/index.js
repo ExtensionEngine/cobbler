@@ -2,6 +2,7 @@ import AddCourse from '../views/Lecturer/AddCourse';
 import AdminDashboard from '../views/Admin/Dashboard';
 import curry from 'lodash/curry';
 import EditCourse from '../views/Lecturer/EditCourse';
+import EditLecture from '../views/Lecturer/EditLecture';
 import every from 'lodash/every';
 import Forbidden from '../views/Forbidden';
 import Layout from '../components/common/Layout';
