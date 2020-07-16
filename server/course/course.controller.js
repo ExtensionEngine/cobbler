@@ -1,6 +1,5 @@
 'use strict';
 
-const { assert, coerce, coercion, date, masked, number, object, optional, string } = require('superstruct');
 const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
 const { Category, Course, Enrollment, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
@@ -15,15 +14,8 @@ module.exports = {
 };
 
 async function create(req, res) {
-  let course;
-  try {
-    course = parseCourse(req.body);
-  } catch (err) {
-    throw new HttpError(err.message, BAD_REQUEST);
-  }
-
   return await sequelize.transaction(async transaction => {
-    const newCourse = await Course.create(course, { transaction });
+    const newCourse = await Course.create(req.course, { transaction });
     const enrollment = await newCourse.addUser(req.user, { transaction });
     return res.status(CREATED).json({ data: { course: newCourse, enrollment } });
   });
@@ -71,7 +63,7 @@ async function getCourseById(req, res) {
 
 async function update(req, res) {
   const [isUpdated, updatedCourses] = await Course.update(
-    parseCourse(req.body),
+    req.course,
     {
       where: {
         id: req.params.id
@@ -83,18 +75,4 @@ async function update(req, res) {
     return res.status(NOT_FOUND).json('Course does not exist');
   }
   return res.status(CREATED).json({ data: updatedCourses });
-}
-
-function parseCourse(course) {
-  const coerceDate = coercion(optional(date()), value => value && new Date(value));
-  const courseStruct = object({
-    name: string(),
-    description: string(),
-    categoryId: number()
-  });
-  const parsedCourse = coerce(course, masked(courseStruct));
-  assert(parsedCourse, courseStruct);
-  parsedCourse.startDate = coerce(course.startDate, coerceDate);
-  parsedCourse.endDate = coerce(course.endDate, coerceDate);
-  return parsedCourse;
 }
