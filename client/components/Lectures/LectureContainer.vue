@@ -2,7 +2,7 @@
   <div>
     <h2 class="mb-md">Lectures:</h2>
     <ul class="list">
-      <li v-for="lecture in dummyLectures" :key="lecture.id" class="lecture">
+      <li v-for="lecture in testLectures" :key="lecture.id" class="lecture">
         <lecture-box
           :title="lecture.name"
           :description="lecture.description" />
@@ -18,7 +18,7 @@ export default {
   name: 'lecture-container',
   data() {
     return {
-      dummyLectures: [
+      testLectures: [
         { id: 1, name: 'Introduction', description: 'text that is a good description of number 1' },
         { id: 2, name: 'C# Basics', description: 'text that is a good description of number 2' },
         { id: 3, name: 'Events and Delegates', description: 'text that is a good description of number 3' },

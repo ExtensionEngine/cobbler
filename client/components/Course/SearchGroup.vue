@@ -1,8 +1,10 @@
 <template>
   <div class="side-bar-wrapper align-start">
-    <base-search @search="searchHandler" class="mt-md" debounce />
-    <date-picker @dateChanged="dateHandler" />
-    <category-filter @checked="categoryHandler" />
+    <base-search @search="inputHandler($event, 'name')" class="mt-md" debounced />
+    <h4 class="mb-sm">Scheduled date</h4>
+    <date-picker @date-changed="inputHandler($event, 'startDate')" />
+    <date-picker @date-changed="inputHandler($event, 'endDate')" />
+    <category-filter @checked="inputHandler($event, 'categoryId')" />
   </div>
 </template>
 
@@ -25,17 +27,9 @@ export default {
     };
   },
   methods: {
-    searchHandler(searchTerm) {
-      this.searchParams.name = searchTerm;
-    },
-    categoryHandler(categories) {
-      this.searchParams.categoryId = categories;
-    },
-    dateHandler({ startDate, endDate }) {
-      this.searchParams.startDate = startDate;
-      this.searchParams.endDate = endDate;
+    inputHandler(event, key) {
+      this.searchParams[key] = event;
     }
-
   },
   watch: {
     searchParams: {
@@ -54,18 +48,12 @@ export default {
 </script>
 
 <style lang="css" scoped>
-
-  .side-bar-wrapper {
-    display: grid;
-    height: calc(100vh - var(--navbar-height));
-    grid: auto-flow auto / 1fr;
-    padding: var(--spacing-sm);
-    overflow-y: scroll;
-    width: 100px;
-  }
-
-  .side-bar-wrapper > * {
-    max-width: 100%;
-  }
-
+.side-bar-wrapper {
+  display: grid;
+  height: calc(100vh - var(--navbar-height));
+  grid: auto-flow auto / 1fr;
+  padding: var(--spacing-sm);
+  overflow-y: scroll;
+  width: 100px;
+}
 </style>

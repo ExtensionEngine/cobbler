@@ -56,13 +56,11 @@ export default {
   position: relative;
   font-size: var(--text-sm);
 }
-
 .course-card:empty {
   border: none;
   background-repeat: no-repeat;
   opacity: 0.6;
 }
-
 .course-card:empty:before {
   content: "";
   height: 20%;
@@ -75,7 +73,6 @@ export default {
   background-position: 15px 140px;
   animation: loadingGradient 1s infinite;
 }
-
 .course-card:empty:after {
   content: "";
   height: 80px;
@@ -87,7 +84,6 @@ export default {
   background-size: 300% 300%;
   animation: loadingGradient 1s infinite;
 }
-
 @keyframes loadingGradient {
   0% {
     background-position: 0% 50%;
@@ -96,14 +92,12 @@ export default {
     background-position: -300% 0%;
   }
 }
-
 .course-card:hover {
   z-index: 1;
   cursor: pointer;
   transform: scale(1.1);
   transition-duration: 0.3s;
 }
-
 .course-card-title {
   background-color: var(--color-primary);
   color: var(--color-white);
@@ -118,21 +112,17 @@ export default {
   padding: 0 var(--spacing-md);
   font-size: var(--text-sm);
 }
-
 .date {
   text-align: right;
 }
-
 .enrolled {
   border: var(--spacing-xxxs) solid var(--color-success);
 }
-
 .unavailable .course-card-title {
   background-color: var(--color-gray);
   color: var(--color-white);
   text-decoration: line-through;
 }
-
 .unavailable:hover {
   transform: none;
   cursor: not-allowed;

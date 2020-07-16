@@ -1,21 +1,17 @@
 <template>
   <div>
-    <h4 class="mb-sm">Scheduled date</h4>
-    <field name="start">
-      <base-input
-        v-model="start"
-        @input="propagateDate"
-        type="date"
-        class="date-picker"
-        outlined />
-    </field>
-    <field name="end">
-      <base-input
-        v-model="end"
-        @input="propagateDate"
-        type="date"
-        class="date-picker"
-        outlined />
+    <field
+      v-model="date"
+      name="start">
+      <template v-slot="{ on, value }">
+        <base-input
+          v-on="on"
+          @input="propagateDate"
+          :value="value"
+          type="date"
+          class="date-picker"
+          outlined />
+      </template>
     </field>
   </div>
 </template>
@@ -28,13 +24,12 @@ export default {
   name: 'date-picker',
   data() {
     return {
-      start: '',
-      end: ''
+      date: ''
     };
   },
   methods: {
     propagateDate: function () {
-      return this.$emit('dateChanged', { startDate: this.start, endDate: this.end });
+      return this.$emit('date-changed', this.date);
     }
   },
   components: {

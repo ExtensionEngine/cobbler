@@ -63,7 +63,7 @@ export default {
   padding: var(--spacing-xxs) var(--spacing-xs);
   box-shadow: 2px 2px 2px 0px var(--color-gray-500);
 }
-.nav-title i{
+.nav-title i {
   color: var(--color-accent);
 }
 .nav-title span {
@@ -77,5 +77,4 @@ export default {
 .clickable {
   cursor: pointer;
 }
-
 </style>

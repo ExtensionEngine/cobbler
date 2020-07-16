@@ -75,29 +75,28 @@ export default {
 </script>
 
 <style lang="css" scoped>
-
-  .category-label {
-    background: var(--color-info);
-    color: var(--color-white);
-  }
-  .date-label {
-    background: var(--color-gray);
-    color: var(--color-white);
-  }
-  .enroll-btn {
-    color: var(--color-white);
-    background-color: var(--color-success);
-    box-shadow: 0 2px 3px var(--color-gray), 0 2px 3px var(--color-gray);
-    padding: var(--spacing-xs) var(--spacing-sd);
-    font-size: var(--spacing-sm);
-    text-transform: uppercase;
-    letter-spacing: var(--spacing-xxxs);
-  }
-  .small-label{
-    font-size: var(--text-sm);
-    border-radius: var(--spacing-xxs);
-  }
-  .lectures {
-    width: 100%;
-  }
+.category-label {
+  background: var(--color-info);
+  color: var(--color-white);
+}
+.date-label {
+  background: var(--color-gray);
+  color: var(--color-white);
+}
+.enroll-btn {
+  color: var(--color-white);
+  background-color: var(--color-success);
+  box-shadow: 0 2px 3px var(--color-gray), 0 2px 3px var(--color-gray);
+  padding: var(--spacing-xs) var(--spacing-sd);
+  font-size: var(--spacing-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--spacing-xxxs);
+}
+.small-label{
+  font-size: var(--text-sm);
+  border-radius: var(--spacing-xxs);
+}
+.lectures {
+  width: 100%;
+}
 </style>

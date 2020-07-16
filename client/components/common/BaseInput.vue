@@ -48,17 +48,17 @@ export default {
   border: solid 1px var(--color-black);
 }
 .input-filled {
-  color:var(--color-black);
+  color: var(--color-black);
 }
 input[type="date"]::-webkit-calendar-picker-indicator {
-    background: transparent;
-    bottom: 0;
-    right: 0;
-    top: 0;
-    color: transparent;
-    cursor: pointer;
-    height: auto;
-    width: 100%;
-    position: absolute;
+  background: transparent;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  width: 100%;
+  position: absolute;
 }
 </style>

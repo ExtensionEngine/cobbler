@@ -54,7 +54,6 @@ export default {
   height: 100%;
   background: var(--color-white);
   font-size: var(--text-sm);
-
 }
 .close-btn {
   padding: var(--spacing-sm);
@@ -79,5 +78,4 @@ export default {
   background: var(--color-success);
   color: var(--color-white);
 }
-
 </style>
