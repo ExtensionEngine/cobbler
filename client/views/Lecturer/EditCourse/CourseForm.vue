@@ -1,5 +1,5 @@
 <template>
-  <div class="course-container">
+  <div class="course-container flex-h justify-center">
     <base-form
       v-slot="{ isFormInvalid }"
       @submit="onUpdate"
@@ -20,7 +20,7 @@
       </field>
       <field
         v-model="course.description"
-        rules="required|between:2,50"
+        rules="required|lengthBetween:2,50"
         name="description"
         label="Description"
         class="description-form-item">
@@ -109,7 +109,7 @@ export default {
     nameRules() {
       return {
         required: true,
-        between: { min: 2, max: 50 },
+        lengthBetween: { min: 2, max: 50 },
         uniqueCourse: { checkName: this.checkName, exception: this.originalName }
       };
     }
@@ -159,8 +159,6 @@ export default {
 <style scoped>
 .course-container {
   padding: var(--spacing-xl) 0;
-  display: flex;
-  justify-content: center;
 }
 .course-form {
   width: 100%;

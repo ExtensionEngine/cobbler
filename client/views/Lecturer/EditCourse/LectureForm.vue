@@ -3,7 +3,7 @@
     <base-button
       @click="toggleAddLecture"
       :class="{'add-lecture-btn-active': isActive}"
-      class="add-lecture-btn"
+      class="add-lecture-btn flex-h justify-center align-center"
       outlined>
       <span :class="{ rotate: isActive }">+</span>
     </base-button>
@@ -17,7 +17,7 @@
           class="form-item-half"
           name="name"
           label="Name"
-          rules="required|between:2,50">
+          rules="required|lengthBetween:2,50">
           <template v-slot="{ on, value }">
             <base-input
               v-on="on"
@@ -117,9 +117,6 @@ export default {
   background: var(--color-success);
   color: var(--color-white);
   border: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   transition: all .5s ease;
 }
 .add-lecture-btn-active {

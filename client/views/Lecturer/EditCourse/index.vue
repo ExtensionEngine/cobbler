@@ -2,7 +2,7 @@
   <div v-if="course">
     <second-bar />
     <course-form :course="course" />
-    <div class="lectures-wrapper">
+    <div class="lectures-wrapper flex-h justify-center">
       <div class="lectures-container">
         <span class="lectures-title">Lectures</span>
         <lecture-form @add="handleLectureAdd" />
@@ -61,12 +61,6 @@ export default {
 </script>
 
 <style scoped>
-.course-wrapper,
-.lectures-wrapper {
-  padding: var(--spacing-md) 0;
-  display: flex;
-  justify-content: center;
-}
 .lectures-wrapper {
   padding: 0;
 }

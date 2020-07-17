@@ -1,7 +1,7 @@
 <template>
-  <div class="forbidden-wrapper">
+  <div class="flex-h justify-center">
     <div class="forbidden-container">
-      <h1>Forbidden route for {{ $store.getters.role | lowercase }} role</h1>
+      <h1>Access to this page is forbidden</h1>
       <base-button @click="handleClick" primary contained>Go to home</base-button>
     </div>
   </div>
@@ -18,9 +18,6 @@ export default {
       this.$router.push(getBasePath());
     }
   },
-  filters: {
-    lowercase: role => role ? role.toLowerCase() : 'guest'
-  },
   components: {
     BaseButton
   }
@@ -28,10 +25,6 @@ export default {
 </script>
 
 <style scoped>
-.forbidden-wrapper {
-    display: flex;
-    justify-content: center;
-}
 .forbidden-container {
     max-width: var(--measure-sm);
     width: 100%;

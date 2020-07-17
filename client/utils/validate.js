@@ -12,7 +12,7 @@ extend('min', {
   params: ['min']
 });
 
-extend('between', {
+extend('lengthBetween', {
   validate(value, { min, max }) {
     if (value.length <= min) {
       return 'The {_field_} field has to contain more than {min} characters';

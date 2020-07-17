@@ -1,7 +1,7 @@
 <template>
   <div>
     <second-bar />
-    <div class="course-container">
+    <div class="course-container flex-h justify-center">
       <base-form
         v-slot="{ isFormValid }"
         @submit="onSubmit"
@@ -24,7 +24,7 @@
           class="description-form-item"
           name="description"
           label="Description"
-          rules="required|between:2,50">
+          rules="required|lengthBetween:2,50">
           <template v-slot="{ on, value }">
             <base-input
               v-on="on"
@@ -114,7 +114,7 @@ export default {
     nameRules() {
       return {
         required: true,
-        between: { min: 2, max: 50 },
+        lengthBetween: { min: 2, max: 50 },
         uniqueCourse: { checkName: this.checkName }
       };
     }
@@ -160,47 +160,29 @@ export default {
 <style scoped>
 .course-container {
   padding: var(--spacing-xl) var(--spacing-md);
-  display: flex;
-  justify-content: center;
 }
 .course-form {
   width: 100%;
   max-width: var(--measure-md);
   display: grid;
   grid-template-columns: [start] 1fr [middle] 1fr [end];
-  grid-template-rows: [first] 1fr [second] 1fr [third] 1fr [fourth] 1fr [fifth] 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
   grid-column-gap: var(--spacing-xs);
   grid-row-gap: var(--spacing-xs);
 }
-.name-form-item {
-  grid-column: start / end;
-  grid-row: first;
-}
-.description-form-item {
-  grid-column: start / end;
-  grid-row: second;
-}
-.category-form-item {
-  grid-column: start / end;
-  grid-row: third;
-}
-.start-date-form-item {
-  grid-column: start / middle;
-  grid-row: fourth;
-}
-.end-date-form-item {
-  grid-column: middle / end;
-  grid-row: fourth;
-}
+.name-form-item,
+.description-form-item,
+.category-form-item,
 .button-form-item {
   grid-column: start / end;
-  grid-row: fifth;
+}
+.button-form-item {
   max-height: 30px;
 }
 @media only screen and (max-width: 480px) {
-  .course-form {
-    grid-template-rows:
-      [first] 1fr [second] 1fr [third] 1fr [fourth] 1fr [fifth] 1fr [sixth] 1fr;
+  .start-date-form-item,
+  .end-date-form-item {
+    grid-column: start / end;
   }
   .start-date-form-item {
     grid-column: start / end;
