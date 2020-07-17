@@ -4,10 +4,12 @@
       v-for="element in teachingElements"
       :key="element.id"
       @click="onClick(element)"
-      class="teaching-element flex-v align-center">
+      class="teaching-element">
       <h3>{{ element.name }}</h3>
-      <p>type: {{ element.type }}</p>
-      <p>label: {{ element.label }}</p>
+      <ul>
+        <li>type: {{ element.type }}</li>
+        <li>label: {{ element.label }}</li>
+      </ul>
     </div>
   </draggable>
 </template>
@@ -38,7 +40,17 @@ export default {
 <style scoped>
 .teaching-element {
   border: 1px solid var(--color-black);
-  padding: var(--spacing-xs);
+  border-radius: 3px;
+  padding: var(--spacing-sm);
   cursor: pointer;
+  background: var(--color-primary);
+  box-shadow: 2px 2px 4px 0px var(--color-gray);
+  margin: var(--spacing-xxs) 0;
+}
+.teaching-element h3,
+.teaching-element ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 </style>
