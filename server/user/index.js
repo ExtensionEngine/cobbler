@@ -11,9 +11,9 @@ const email = struct('email', isValidEmail);
 const createStruct = object({
   firstName: length(string(), 2, 50),
   lastName: length(string(), 2, 50),
-  email: email,
   password: string(),
-  role: enums(roles)
+  role: enums(roles),
+  email
 });
 
 router

@@ -17,7 +17,7 @@ function create(req, res) {
   return sequelize.transaction(async transaction => {
     const course = await Course.create(req.validatedBody, { transaction });
     const enrollment = await course.addUser(req.user, { transaction });
-    return res.status(CREATED).json({ data: { course: course, enrollment } });
+    return res.status(CREATED).json({ data: { course, enrollment } });
   });
 }
 

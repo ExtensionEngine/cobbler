@@ -13,10 +13,10 @@ function reqBodyValidatorFactory(struct) {
       const data = coerce(req.body, masked(struct));
       assert(data, struct);
       req.validatedBody = data;
+      return next();
     } catch (err) {
       return res.status(BAD_REQUEST).json({ error: err.message });
     }
-    return next();
   };
 }
 

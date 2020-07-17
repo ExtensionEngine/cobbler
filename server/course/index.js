@@ -14,13 +14,13 @@ const router = require('express').Router();
 const bodyValidatorFactory = require('../shared/util/bodyValidatorFactory');
 const ctrl = require('./course.controller');
 
-const refineToDate = refinement(string(), 'Date', value => is(new Date(value), date()));
+const refinedDate = refinement(string(), 'Date', value => is(new Date(value), date()));
 const createStruct = object({
   name: string(),
   description: length(string(), 2, 50),
   categoryId: number(),
-  startDate: optional(refineToDate),
-  endDate: optional(refineToDate)
+  startDate: optional(refinedDate),
+  endDate: optional(refinedDate)
 });
 
 router
