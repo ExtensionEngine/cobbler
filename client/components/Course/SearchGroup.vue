@@ -12,7 +12,9 @@
 import BaseSearch from '../common/BaseSearch';
 import CategoryFilter from './CategoryFilter';
 import DatePicker from './DatePicker';
+import debounce from 'lodash/debounce';
 import { format } from 'date-fns';
+import pick from 'lodash/pick';
 
 export default {
   name: 'search-group',
@@ -24,18 +26,23 @@ export default {
       endDate: ''
     };
   },
-  methods: {
-    inputHandler(event, key) {
-      this.searchParams[key] = event;
+  computed: {
+    immediateFilters() {
+      const filters = ['categoryId', 'startDate', 'endDate'];
+      return pick(this.$data, filters);
     }
   },
+  methods: {
+    filter() {
+      this.$emit('filter', this.$data);
+    },
+    debouncedFilter: debounce(function () {
+      this.filter();
+    }, 400)
+  },
   watch: {
-    $data: {
-      handler() {
-        this.$emit('filter', this.$data);
-      },
-      deep: true
-    }
+    name: 'debouncedFilter',
+    immediateFilters: 'filter'
   },
   components: {
     BaseSearch,

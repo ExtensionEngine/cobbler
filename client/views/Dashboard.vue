@@ -127,8 +127,8 @@ export default {
   },
   watch: {
     offset: {
-      immediate: true,
-      handler: 'getFilteredCourses'
+      handler: 'getFilteredCourses',
+      immediate: true
     }
   },
   components: {
@@ -138,7 +138,6 @@ export default {
 </script>
 
 <style lang="css" scoped>
-
 .wrapper {
   height: 100%;
   width: 100%;
@@ -240,6 +239,5 @@ i {
   .cards {
     grid: auto-flow auto / repeat(3, 1fr);
   }
-
 }
 </style>

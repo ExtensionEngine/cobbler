@@ -7,7 +7,6 @@
       filled,
       outlined,
       'input-filled': value
-
     }"
     class="input">
 </template>

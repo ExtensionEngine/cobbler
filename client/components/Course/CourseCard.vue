@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { dateFormat } from '../../utils/constants';
 import format from 'date-fns/format';
 
 export default {
@@ -34,15 +35,15 @@ export default {
       if (this.course.available) this.$router.push(`courses/${this.course.id}`);
     },
     formatDate(dateString) {
-      return format(new Date(dateString), 'yyyy-MM-dd');
+      return format(new Date(dateString), dateFormat);
     }
   },
   filters: {
     getDateRange(course) {
       const { startDate, endDate } = course;
       if (!(startDate || endDate)) { return 'No Date specified'; }
-      return `${format(new Date(startDate), 'yyyy-MM-dd')} - 
-              ${format(new Date(endDate), 'yyyy-MM-dd')}`;
+      return `${format(new Date(startDate), dateFormat)} - 
+              ${format(new Date(endDate), dateFormat)}`;
     }
   }
 };
