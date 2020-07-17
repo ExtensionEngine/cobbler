@@ -17,7 +17,7 @@ import { format } from 'date-fns';
 import SearchGroup from './SearchGroup';
 
 export default {
-  name: 'drawer',
+  name: 'top-drawer',
   data() {
     return {
       filterParams: {
@@ -46,7 +46,7 @@ export default {
 .top-menu {
   overflow-x: hidden;
   overflow-y: auto;
-  z-index: 300;
+  z-index: var(--z-top-drawer);
   width: 100%;
   position: fixed;
   padding: var(--spacing-sm);

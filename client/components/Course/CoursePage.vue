@@ -13,11 +13,19 @@
         <h1 class="mr-md">{{ course.name }}</h1>
         <div class="btn-container">
           <base-button
+            v-if="!course.isEnrolled"
             @click="sendEnrollRequest"
-            :disabled="course.isEnrolled || !course.available"
+            :disabled="!course.available"
             class="enroll-btn mt-xxs"
             contained>
-            Enroll
+            {{ course.isEnrolled? 'Continue': 'Enroll' }}
+          </base-button>
+          <base-button
+            v-else
+            :disabled="!course.available"
+            class="material-btn continue mt-xxs"
+            contained>
+            {{ course.isEnrolled? 'Continue': 'Enroll' }}
           </base-button>
         </div>
       </div>
@@ -30,6 +38,7 @@
 
 <script>
 import BaseButton from '../common/BaseButton';
+import { dateFormat } from '../../utils/constants';
 import { enroll } from '../../api/enroll';
 import format from 'date-fns/format';
 import LectureContainer from '../Lectures/LectureContainer';
@@ -55,7 +64,7 @@ export default {
       if (enrollment) this.$router.push('/');
     },
     formatDate(dateString) {
-      return dateString ? format(new Date(dateString), 'yyyy-MM-dd') : '';
+      return dateString ? format(new Date(dateString), dateFormat) : '';
     }
   },
   filters: {
@@ -64,8 +73,8 @@ export default {
       if (!(startDate || endDate)) {
         return 'No Date specified';
       }
-      return `${format(new Date(startDate), 'yyyy-MM-dd')} - 
-              ${format(new Date(endDate), 'yyyy-MM-dd')}`;
+      return `${format(new Date(startDate), dateFormat)} - 
+              ${format(new Date(endDate), dateFormat)}`;
     }
   },
   components: {
@@ -98,5 +107,9 @@ export default {
 }
 .lectures {
   width: 100%;
+}
+.continue {
+  background-color: var(--color-info);
+  padding: var(--spacing-xs);
 }
 </style>

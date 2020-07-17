@@ -7,7 +7,7 @@
       @filter="refreshCourseList"
       class="search-bar" />
     <transition name="slide">
-      <drawer
+      <top-drawer
         v-if="menu"
         @closed="handleCloseMenu" />
     </transition>
@@ -65,11 +65,11 @@
 import BaseButton from '../components/common/BaseButton';
 import breakPointsMixin from '../components/common/mixins/breakPointsMixin';
 import CourseCard from '../components/Course/CourseCard';
-import Drawer from '../components/Course/Drawer';
 import { format } from 'date-fns';
 import { generateQuery } from '../utils/queryParamGenerator';
 import { get } from '../api/courses';
 import SearchGroup from '../components/Course/SearchGroup';
+import TopDrawer from '../components/Course/TopDrawer';
 
 export default {
   mixins: [breakPointsMixin],
@@ -102,6 +102,7 @@ export default {
         : 0;
     },
     refreshCourseList(filterParams) {
+      console.log(filterParams);
       this.filterParams = filterParams;
       this.getFilteredCourses();
     },
@@ -125,15 +126,13 @@ export default {
     }
   },
   watch: {
-    offset() {
-      this.getFilteredCourses();
+    offset: {
+      immediate: true,
+      handler: 'getFilteredCourses'
     }
   },
-  created() {
-    this.getFilteredCourses();
-  },
   components: {
-    BaseButton, CourseCard, SearchGroup, Drawer
+    BaseButton, CourseCard, SearchGroup, TopDrawer
   }
 };
 </script>
@@ -143,7 +142,7 @@ export default {
 .wrapper {
   height: 100%;
   width: 100%;
-  z-index: 100;
+  z-index: var(--z-dashboard);
 }
 .desktop-page-btns {
   position: absolute;

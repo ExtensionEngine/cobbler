@@ -12,6 +12,10 @@
   --spacing-xxxl: 5.5rem;
 
   --navbar-height: var(--spacing-xl);
+
+  --z-dashboard: 100;
+  --z-top-drawer: 300;
+
 }
 
 .flex-h {

@@ -26,7 +26,7 @@ export default {
   methods: {
     doSearch() {
       return debounce(() => {
-        this.$emit('search', this.search);
+        this.$emit('input', this.search);
       }, this.debounced ? 400 : 0)();
     }
   },

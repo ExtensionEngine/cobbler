@@ -1,10 +1,10 @@
 <template>
   <div class="side-bar-wrapper align-start">
-    <base-search @search="inputHandler($event, 'name')" class="mt-md" debounced />
+    <base-search v-model="name" class="mt-md" debounced />
     <h4 class="mb-sm">Scheduled date</h4>
-    <date-picker @date-changed="inputHandler($event, 'startDate')" />
-    <date-picker @date-changed="inputHandler($event, 'endDate')" />
-    <category-filter @checked="inputHandler($event, 'categoryId')" />
+    <date-picker v-model="startDate" />
+    <date-picker v-model="endDate" />
+    <category-filter v-model="categoryId" />
   </div>
 </template>
 
@@ -18,12 +18,10 @@ export default {
   name: 'search-group',
   data() {
     return {
-      searchParams: {
-        name: '',
-        categoryId: [],
-        startDate: format(new Date(), 'yyyy-MM-dd'),
-        endDate: ''
-      }
+      name: '',
+      categoryId: [],
+      startDate: format(new Date(), 'yyyy-MM-dd'),
+      endDate: ''
     };
   },
   methods: {
@@ -32,9 +30,9 @@ export default {
     }
   },
   watch: {
-    searchParams: {
+    $data: {
       handler() {
-        this.$emit('filter', this.searchParams);
+        this.$emit('filter', this.$data);
       },
       deep: true
     }

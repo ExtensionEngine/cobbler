@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     propagateChoice() {
-      this.$emit('checked', this.checkedCategories);
+      this.$emit('input', this.checkedCategories);
     }
   },
   mounted() {

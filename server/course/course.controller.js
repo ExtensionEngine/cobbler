@@ -47,9 +47,7 @@ function getAll(req, res, next) {
     order: [[literal('"isEnrolled"'), 'DESC'], ['updatedAt', 'DESC']]
   };
   return Course.scope({ method: ['enrolledByUserId', id] }).findAll(query)
-    .then(courses => {
-      return res.json({ data: courses });
-    })
+    .then(data => res.json({ data }))
     .catch(next);
 }
 

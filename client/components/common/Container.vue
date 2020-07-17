@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container flex-v">
     <slot></slot>
   </div>
 </template>
@@ -12,8 +12,6 @@ export default {
 
 <style lang="css" scoped>
   .container {
-    display: flex;
-    flex-flow: column nowrap;
     position: relative;
     min-height: calc(100% - var(--navbar-height));
     width: 100%;
