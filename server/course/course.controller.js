@@ -4,7 +4,6 @@ const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
 const { Category, Course, Enrollment, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
-const pick = require('lodash/pick');
 const { validateFilters } = require('../shared/util/apiQueryParser');
 
 module.exports = {
@@ -15,17 +14,10 @@ module.exports = {
 };
 
 function create(req, res) {
-  const courseInfo = pick(req.body, [
-    'name',
-    'description',
-    'categoryId',
-    'startDate',
-    'endDate'
-  ]);
   return sequelize.transaction(async transaction => {
-    const course = await Course.create(courseInfo, { transaction });
-    await course.addUser(req.user, { transaction });
-    return res.status(CREATED).json({ data: course });
+    const course = await Course.create(req.validatedBody, { transaction });
+    const enrollment = await course.addUser(req.user, { transaction });
+    return res.status(CREATED).json({ data: { course, enrollment } });
   });
 }
 
@@ -70,15 +62,8 @@ async function getCourseById(req, res) {
 }
 
 async function update(req, res) {
-  const courseInfo = pick(req.body, [
-    'name',
-    'description',
-    'startDate',
-    'endDate',
-    'categoryId'
-  ]);
   const [isUpdated, updatedCourses] = await Course.update(
-    courseInfo,
+    req.validatedBody,
     {
       where: {
         id: req.params.id
