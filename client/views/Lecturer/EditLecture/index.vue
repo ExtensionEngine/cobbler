@@ -4,9 +4,14 @@
     <template v-if="lecture">
       <h1>{{ lecture.name }}</h1>
       <p>{{ lecture.description }}</p>
-      <teaching-element-list
-        @drop="onDrop"
-        :teaching-elements="lecture.teachingElements" />
+      <div class="lecture-editor">
+        <teaching-element-list
+          @drop="onDrop"
+          @select="onSelect"
+          :teaching-elements="lecture.teachingElements"
+          class="teching-elements" />
+        <te-form :teaching-element="selectedTe" class="teaching-element-form" />
+      </div>
     </template>
   </div>
 </template>
@@ -15,12 +20,14 @@
 import { getLecture } from '../../../api/lectures';
 import SecondBar from '../../../components/Lecturer/SecondBar';
 import TeachingElementList from './TeachingElementList';
+import TeForm from './TeForm';
 
 export default {
   name: 'edit-lecture',
   data() {
     return ({
-      lecture: null
+      lecture: null,
+      selectedTe: null
     });
   },
   methods: {
@@ -29,6 +36,9 @@ export default {
       teachingElements.splice(oldIndex, 1);
       teachingElements.splice(newIndex, 0, element);
       teachingElements.forEach((element, index) => { element.position = index; });
+    },
+    onSelect(lecture) {
+      this.selectedTe = lecture;
     }
   },
   async created() {
@@ -41,7 +51,20 @@ export default {
   },
   components: {
     SecondBar,
-    TeachingElementList
+    TeachingElementList,
+    TeForm
   }
 };
 </script>
+
+<style scoped>
+.lecture-editor {
+  display: flex;
+}
+.teaching-element-form {
+  flex-grow: 1
+}
+.teaching-elements {
+  max-width: var(--measure-sm)
+}
+</style>

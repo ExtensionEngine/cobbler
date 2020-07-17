@@ -3,6 +3,7 @@
     <div
       v-for="element in teachingElements"
       :key="element.id"
+      @click="onClick(element)"
       class="teaching-element flex-v align-center">
       <h3>{{ element.name }}</h3>
       <p>type: {{ element.type }}</p>
@@ -23,6 +24,9 @@ export default {
     onChange({ moved: { newIndex, oldIndex, element } }) {
       this.$emit('drop', oldIndex, newIndex, element);
       return false;
+    },
+    onClick(lecture) {
+      this.$emit('select', lecture);
     }
   },
   components: {
@@ -32,8 +36,9 @@ export default {
 </script>
 
 <style scoped>
-    .teaching-element {
-        border: 1px solid var(--color-black);
-        padding: var(--spacing-xs)
-    }
+.teaching-element {
+  border: 1px solid var(--color-black);
+  padding: var(--spacing-xs);
+  cursor: pointer;
+}
 </style>
