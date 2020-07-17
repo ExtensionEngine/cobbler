@@ -1,18 +1,19 @@
 'use strict';
 
 const Category = require('./category.model');
+const { OK } = require('http-status-codes');
 const pick = require('lodash/pick');
 
 module.exports = {
   create, getAll
 };
 
-function create(req, res) {
-  return Category.create(pick(req.body, ['name']))
-    .then(category => res.json({ data: category }));
+async function create(req, res) {
+  const category = await Category.create(pick(req.body, ['name']));
+  return res.status(OK).json({ data: category });
 }
 
-function getAll(req, res) {
-  return Category.findAll()
-    .then(categories => res.json({ data: categories }));
+async function getAll(req, res) {
+  const categories = await Category.findAll();
+  return res.status(OK).json({ data: categories });
 }
