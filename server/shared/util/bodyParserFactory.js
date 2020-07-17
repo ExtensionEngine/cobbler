@@ -15,12 +15,12 @@ const {
 const { BAD_REQUEST } = require('http-status-codes');
 const { roles } = require('../../../config/server');
 
-function reqBodyValidatorFactory(modelName) {
-  const modelValidator = validatorMapper[modelName];
+function reqBodyParserFactory(bodyName) {
+  const bodyParser = parserMapper[bodyName];
   return function (req, res, next) {
-    if (req.method === 'GET' || !modelValidator) return next();
+    if (req.method === 'GET' || !bodyParser) return next();
     try {
-      req[modelName] = modelValidator(req.body);
+      req[bodyName] = bodyParser(req.body);
     } catch (err) {
       return res.status(BAD_REQUEST).json({ error: err.message });
     }
@@ -28,15 +28,15 @@ function reqBodyValidatorFactory(modelName) {
   };
 }
 
-module.exports = reqBodyValidatorFactory;
+module.exports = reqBodyParserFactory;
 
-const validatorMapper = {
-  category: validateCategory,
-  course: validateCourse,
-  user: validateUser
+const parserMapper = {
+  category: parseCategory,
+  course: parseCourse,
+  user: parseUser
 };
 
-function validateCategory(category) {
+function parseCategory(category) {
   const categoryStruct = masked(object({
     name: string()
   }));
@@ -45,7 +45,7 @@ function validateCategory(category) {
   return parsedCategory;
 }
 
-function validateCourse(course) {
+function parseCourse(course) {
   const coerceDate = coercion(optional(date()), value => value && new Date(value));
   const courseStruct = object({
     name: string(),
@@ -59,7 +59,7 @@ function validateCourse(course) {
   return parsedCourse;
 }
 
-function validateUser(user) {
+function parseUser(user) {
   const userStruct = masked(object({
     firstName: string(),
     lastName: string(),
