@@ -15,8 +15,7 @@
     "db:seed:undo": "sequelize-cli db:seed:undo:all",
     "db:reset": "sequelize-cli db:drop && npm run db:create",
     "db:migrate": "sequelize-cli db:migrate",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000 && cross-env NODE_ENV=test npm run db:drop",
-    "pretest": "cross-env NODE_ENV=test npm run db:create"
+    "test": "jest"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
