@@ -13,8 +13,8 @@ module.exports = {
   update
 };
 
-async function create(req, res) {
-  return await sequelize.transaction(async transaction => {
+function create(req, res) {
+  return sequelize.transaction(async transaction => {
     const newCourse = await Course.create(req.course, { transaction });
     const enrollment = await newCourse.addUser(req.user, { transaction });
     return res.status(CREATED).json({ data: { course: newCourse, enrollment } });
@@ -71,8 +71,6 @@ async function update(req, res) {
       returning: true
     }
   );
-  if (!isUpdated) {
-    return res.status(NOT_FOUND).json('Course does not exist');
-  }
+  if (!isUpdated) return res.status(NOT_FOUND).json('Course does not exist');
   return res.status(CREATED).json({ data: updatedCourses });
 }
