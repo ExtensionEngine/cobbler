@@ -9,7 +9,7 @@ module.exports = {
 };
 
 async function create(req, res) {
-  req.user.password = bcrypt.hashSync(req.user.password, 10);
-  const createdUser = await User.create({ ...req.user });
+  req.validatedBody.password = bcrypt.hashSync(req.validatedBody.password, 10);
+  const createdUser = await User.create(req.validatedBody);
   return res.status(OK).json({ data: createdUser });
 }

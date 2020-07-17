@@ -8,7 +8,7 @@ module.exports = {
 };
 
 async function create(req, res) {
-  const category = await Category.create(req.category);
+  const category = await Category.create(req.validatedBody);
   res.status(OK).json({ data: category });
 }
 

@@ -15,7 +15,7 @@ module.exports = {
 
 function create(req, res) {
   return sequelize.transaction(async transaction => {
-    const newCourse = await Course.create(req.data, { transaction });
+    const newCourse = await Course.create(req.validatedBody, { transaction });
     const enrollment = await newCourse.addUser(req.user, { transaction });
     return res.status(CREATED).json({ data: { course: newCourse, enrollment } });
   });
@@ -63,7 +63,7 @@ async function getCourseById(req, res) {
 
 async function update(req, res) {
   const [isUpdated, updatedCourses] = await Course.update(
-    req.course,
+    req.validatedBody,
     {
       where: {
         id: req.params.id

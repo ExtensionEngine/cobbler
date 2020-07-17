@@ -11,10 +11,10 @@ const {
   string
 } = require('superstruct');
 const router = require('express').Router();
-const bodyParserFactory = require('../shared/util/bodyParserFactory');
+const bodyValidatorFactory = require('../shared/util/bodyValidatorFactory');
 const ctrl = require('./course.controller');
 
-const CreateStruct = object({
+const createStruct = object({
   name: string(),
   description: length(string(), 2, 50),
   categoryId: number(),
@@ -23,10 +23,10 @@ const CreateStruct = object({
 });
 
 router
-  .post('/', bodyParserFactory(CreateStruct), ctrl.create)
+  .post('/', bodyValidatorFactory(createStruct), ctrl.create)
   .get('/', ctrl.getAll)
   .get('/:id', ctrl.getCourseById)
-  .patch('/:id', ctrl.update);
+  .patch('/:id', bodyValidatorFactory(createStruct), ctrl.update);
 
 module.exports = {
   path: '/courses',
