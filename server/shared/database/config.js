@@ -9,7 +9,9 @@ const {
   DATABASE_USER,
   DATABASE_PASSWORD,
   DATABASE_PORT,
-  DATABASE_NAME
+  DATABASE_NAME,
+  NODE_ENV,
+  TEST_DATABASE_URI
 } = process.env;
 
 module.exports = {
@@ -19,6 +21,10 @@ module.exports = {
 };
 
 function readConfig() {
+  if (NODE_ENV === 'test' && TEST_DATABASE_URI) {
+    return { url: TEST_DATABASE_URI };
+  }
+
   if (DATABASE_URI) return { url: DATABASE_URI };
 
   if (!DATABASE_NAME && !DATABASE_URI) {

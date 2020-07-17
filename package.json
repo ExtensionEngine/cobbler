@@ -11,9 +11,12 @@
     "debug:server": "nodemon --inspect server",
     "db:create": "sequelize-cli db:create && sequelize-cli db:migrate",
     "db:seed": "sequelize-cli db:seed:all",
+    "db:drop": "sequelize-cli db:drop",
     "db:seed:undo": "sequelize-cli db:seed:undo:all",
     "db:reset": "sequelize-cli db:drop && npm run db:create",
-    "db:migrate": "sequelize-cli db:migrate"
+    "db:migrate": "sequelize-cli db:migrate",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000 && cross-env NODE_ENV=test npm run db:drop",
+    "pretest": "cross-env NODE_ENV=test npm run db:create"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
@@ -53,6 +56,7 @@
     "@vue/cli-service": "~4.4.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-config-semistandard": "^15.0.0",
     "eslint-config-standard": "^14.1.1",
@@ -62,9 +66,11 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.2.2",
+    "jest": "^26.1.0",
     "nodemon": "^2.0.4",
     "prettier": "^1.19.1",
     "sequelize-cli": "^5.5.1",
+    "supertest": "^4.0.2",
     "vue-template-compiler": "^2.6.11"
   },
   "repository": {
