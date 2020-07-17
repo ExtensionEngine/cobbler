@@ -15,7 +15,7 @@ module.exports = {
 
 function create(req, res) {
   return sequelize.transaction(async transaction => {
-    const newCourse = await Course.create(req.course, { transaction });
+    const newCourse = await Course.create(req.data, { transaction });
     const enrollment = await newCourse.addUser(req.user, { transaction });
     return res.status(CREATED).json({ data: { course: newCourse, enrollment } });
   });
