@@ -5,7 +5,7 @@
         {{ course.Category.name }}
       </span>
       <span class="small-label date-label mr-xs pt-xxs pb-xxs pl-sm pr-sm">
-        {{ course | getDateRange }}
+        {{ course.startDate | formatDate }} - {{ course.endDate | formatDate }}
       </span>
     </div>
     <div>
@@ -13,19 +13,19 @@
         <h1 class="mr-md">{{ course.name }}</h1>
         <div class="btn-container">
           <base-button
-            v-if="!course.isEnrolled"
+            v-if="course.isEnrolled"
+            :disabled="!course.available"
+            class="material-btn continue mt-xxs"
+            contained>
+            Continue
+          </base-button>
+          <base-button
+            v-else
             @click="sendEnrollRequest"
             :disabled="!course.available"
             class="enroll-btn mt-xxs"
             contained>
-            {{ course.isEnrolled? 'Continue': 'Enroll' }}
-          </base-button>
-          <base-button
-            v-else
-            :disabled="!course.available"
-            class="material-btn continue mt-xxs"
-            contained>
-            {{ course.isEnrolled? 'Continue': 'Enroll' }}
+            Enroll
           </base-button>
         </div>
       </div>
@@ -62,19 +62,11 @@ export default {
     async sendEnrollRequest() {
       const enrollment = await enroll(this.course.id);
       if (enrollment) this.$router.push('/');
-    },
-    formatDate(dateString) {
-      return dateString ? format(new Date(dateString), dateFormat) : '';
     }
   },
   filters: {
-    getDateRange(course) {
-      const { startDate, endDate } = course;
-      if (!(startDate || endDate)) {
-        return 'No Date specified';
-      }
-      return `${format(new Date(startDate), dateFormat)} - 
-              ${format(new Date(endDate), dateFormat)}`;
+    formatDate(date) {
+      return date ? format(new Date(date), dateFormat) : '';
     }
   },
   components: {

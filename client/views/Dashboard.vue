@@ -102,7 +102,6 @@ export default {
         : 0;
     },
     refreshCourseList(filterParams) {
-      console.log(filterParams);
       this.filterParams = filterParams;
       this.getFilteredCourses();
     },

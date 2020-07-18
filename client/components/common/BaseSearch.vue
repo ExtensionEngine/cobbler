@@ -17,9 +17,6 @@ import BaseInput from '../common/BaseInput';
 
 export default {
   name: 'base-search',
-  props: {
-    debounced: { type: Boolean, default: false }
-  },
   components: { BaseInput }
 };
 </script>

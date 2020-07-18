@@ -46,7 +46,7 @@ export default {
 .top-menu {
   overflow-x: hidden;
   overflow-y: auto;
-  z-index: var(--z-top-drawer);
+  z-index: var(--z-drawer);
   width: 100%;
   position: fixed;
   padding: var(--spacing-sm);

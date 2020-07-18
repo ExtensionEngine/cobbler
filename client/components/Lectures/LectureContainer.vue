@@ -2,10 +2,10 @@
   <div>
     <h2 class="mb-md">Lectures:</h2>
     <ul class="list">
-      <li v-for="lecture in lectures" :key="lecture.id" class="lecture">
+      <li v-for="{ name, description, id } in lectures" :key="id" class="lecture">
         <lecture-box
-          :title="lecture.name"
-          :description="lecture.description" />
+          :title="name"
+          :description="description" />
       </li>
     </ul>
   </div>
