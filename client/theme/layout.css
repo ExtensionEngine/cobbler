@@ -12,6 +12,10 @@
   --spacing-xxxl: 5.5rem;
 
   --navbar-height: var(--spacing-xl);
+
+  --z-dashboard: 100;
+  --z-drawer: 300;
+
 }
 
 .flex-h {
@@ -30,11 +34,23 @@
 .justify-space-between {
   justify-content: space-between;
 }
+.justify-space-around {
+  justify-content: space-around;
+}
 .justify-end {
   justify-content: flex-end;
 }
+.justify-start {
+  justify-content: flex-start;
+}
+.align-start {
+  align-items: start;
+}
 .align-center {
   align-items: center;
+}
+.align-end {
+  align-items: end;
 }
 .place-center {
   justify-content: center;
@@ -258,8 +274,6 @@
 .pl-xxxl { 
   padding-left: var(--spacing-xxxl);
 }
-
-
 
 * {
   box-sizing: border-box;

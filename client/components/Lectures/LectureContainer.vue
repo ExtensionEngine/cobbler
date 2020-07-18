@@ -1,10 +1,11 @@
 <template>
-  <div class="lecture-container">
-    <ul class="lecture-list">
-      <li v-for="lecture in dummyLectures" :key="lecture.id">
+  <div>
+    <h2 class="mb-md">Lectures:</h2>
+    <ul class="list">
+      <li v-for="{ name, description, id } in lectures" :key="id" class="lecture">
         <lecture-box
-          :title="lecture.name"
-          :description="lecture.description" />
+          :title="name"
+          :description="description" />
       </li>
     </ul>
   </div>
@@ -17,7 +18,7 @@ export default {
   name: 'lecture-container',
   data() {
     return {
-      dummyLectures: [
+      lectures: [
         { id: 1, name: 'Introduction', description: 'text that is a good description of number 1' },
         { id: 2, name: 'C# Basics', description: 'text that is a good description of number 2' },
         { id: 3, name: 'Events and Delegates', description: 'text that is a good description of number 3' },
@@ -36,14 +37,15 @@ export default {
 </script>
 
 <style lang="css" scoped>
-  .lecture-container {
-    background: rgb(247, 247, 247);
-  }
-  .lecture-list {
+  .list {
     list-style-type: none;
     padding: 0;
-    height : 300px;
     overflow: scroll;
   }
-
+  .lecture {
+    border-top: 1px solid var(--color-gray-500);
+  }
+  .lecture:first-of-type {
+    border-top: none;
+  }
 </style>

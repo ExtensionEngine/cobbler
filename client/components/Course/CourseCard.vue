@@ -1,23 +1,25 @@
 <template>
   <div
     @click="showCourse"
-    :class="{ enrolled }"
-    class="course-card">
-    <div class="course-card-title">
-      <p class="category-name">{{ course.Category.name }}</p>
-      <h1>{{ course.name }}</h1>
-    </div>
-    <div class="course-card-description">
-      <p>{{ course.description }}</p>
-      <p>By: {{ lecturer }}</p>
-      <p class="date">
-        {{ course | getDateRange }}
-      </p>
-    </div>
+    class="course-card"
+    :class="{ enrolled: course && course.isEnrolled, unavailable: course && !course.available }">
+    <template v-if="course">
+      <div class="course-card-title">
+        <p class="category-name">{{ course.Category.name }}</p>
+        <h3>{{ course.name }}</h3>
+      </div>
+      <div class="course-card-description">
+        <p>{{ course.description }}</p>
+        <p class="date">
+          {{ course | getDateRange }}
+        </p>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
+import { dateFormat } from '../../utils/constants';
 import format from 'date-fns/format';
 
 export default {
@@ -25,79 +27,53 @@ export default {
   props: {
     course: {
       type: Object,
-      required: true,
-      default() {
-        return {
-          id: '',
-          name: '',
-          category: {},
-          description: '',
-          users: [],
-          start: '',
-          end: ''
-        };
-      }
-    },
-    enrolled: { type: Boolean, default: false }
-  },
-  computed: {
-    lecturer() {
-      const lecturer = this.course.Users
-        .find(user => user.role === 'LECTURER');
-      if (!lecturer) return 'No Lecturer specified';
-      return `${lecturer.firstName} ${lecturer.lastName}`;
+      default: null
     }
   },
   methods: {
     showCourse() {
-      this.$router.push(`courses/${this.course.id}`);
+      if (this.course.available) this.$router.push(`courses/${this.course.id}`);
     },
     formatDate(dateString) {
-      return format(new Date(dateString), 'dd/MM/yyyy');
+      return format(new Date(dateString), dateFormat);
     }
   },
   filters: {
     getDateRange(course) {
       const { startDate, endDate } = course;
-      if (!(startDate || endDate)) {
-        return 'No Date specified';
-      }
-      return `${format(new Date(startDate), 'dd/MM/yyyy')} - 
-              ${format(new Date(endDate), 'dd/MM/yyyy')}`;
+      if (!(startDate || endDate)) { return 'No Date specified'; }
+      return `${format(new Date(startDate), dateFormat)} - 
+              ${format(new Date(endDate), dateFormat)}`;
     }
   }
 };
 </script>
 
-<style scoped>
+<style lang="css" scoped>
 .course-card {
-  box-shadow: 2px 2px 8px 0px var(--color-gray);
-  min-height: 200px;
-  max-height: 250px;
-  min-width: 300px;
+  box-shadow: 3px 3px 8px 0px var(--color-gray);
+  min-height: 150px;
+  min-width: 250px;
   position: relative;
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
 }
-
 .course-card:empty {
   border: none;
   background-repeat: no-repeat;
   opacity: 0.6;
 }
-
 .course-card:empty:before {
   content: "";
-  height: 60px;
+  height: 20%;
   position: absolute;
   left: var(--spacing-lg);
   right: var(--spacing-lg);
-  bottom: 20%;
-  background: linear-gradient(to left, #c2c1c1da 0, #dadadae3);
-  background-size: 200% 200%;
+  bottom: 10%;
+  background: linear-gradient(to left, #c3c1c1da 0, #dadadae3);
+  background-size: 300% 300%;
   background-position: 15px 140px;
   animation: loadingGradient 1s infinite;
 }
-
 .course-card:empty:after {
   content: "";
   height: 80px;
@@ -105,32 +81,29 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  background: linear-gradient(to left, #c2c1c1da 0, #dadadae3);
-  background-size: 200% 200%;
+  background: linear-gradient(to left, #c3c1c1da 0, #dadadae3);
+  background-size: 300% 300%;
   animation: loadingGradient 1s infinite;
 }
-
 @keyframes loadingGradient {
   0% {
     background-position: 0% 50%;
   }
   100% {
-    background-position: -200% 0%;
+    background-position: -300% 0%;
   }
 }
-
 .course-card:hover {
   z-index: 1;
   cursor: pointer;
   transform: scale(1.1);
   transition-duration: 0.3s;
 }
-
 .course-card-title {
   background-color: var(--color-primary);
   color: var(--color-white);
   width: 100%;
-  max-height: 30%;
+  max-height: 50%;
   padding: var(--spacing-sm);
 }
 .course-card-title h1 {
@@ -140,12 +113,19 @@ export default {
   padding: 0 var(--spacing-md);
   font-size: var(--text-sm);
 }
-
 .date {
   text-align: right;
 }
-
 .enrolled {
   border: var(--spacing-xxxs) solid var(--color-success);
+}
+.unavailable .course-card-title {
+  background-color: var(--color-gray);
+  color: var(--color-white);
+  text-decoration: line-through;
+}
+.unavailable:hover {
+  transform: none;
+  cursor: not-allowed;
 }
 </style>

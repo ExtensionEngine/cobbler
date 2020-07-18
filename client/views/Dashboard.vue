@@ -1,101 +1,240 @@
 <template>
-  <div class="wrapper">
-    <div class="container">
-      <div class="cards">
-        <course-card
-          v-for="course in courses"
-          :key="course.id"
-          :course="course"
-          :enrolled="checkEnrolled(course)" />
+  <div
+    class="wrapper flex-h justify-center"
+    :class="{ overlayed: menu }">
+    <search-group
+      v-if="isSmallScreen"
+      @filter="refreshCourseList"
+      class="search-bar" />
+    <transition name="slide">
+      <top-drawer
+        v-if="menu"
+        @closed="handleCloseMenu" />
+    </transition>
+    <div
+      class="main-content">
+      <base-button
+        v-if="!isSmallScreen"
+        @click="showMenu"
+        class="material-btn filter-btn">
+        Filter
+      </base-button>
+      <div class="card-container">
+        <div class="cards">
+          <template v-if="loading">
+            <course-card
+              v-for="n in 6"
+              :key="n" />
+          </template>
+          <course-card
+            v-for="course in courses"
+            v-else
+            :key="course.id"
+            :course="course" />
+        </div>
+      </div>
+      <div v-if="isSmallScreen" class="desktop-page-btns">
+        <button @click="paginateBack" class="arrow-btn">
+          <i class="material-icons">
+            keyboard_arrow_left
+          </i>
+        </button>
+        <button @click="paginateForward" class="arrow-btn">
+          <i class="material-icons">
+            keyboard_arrow_right
+          </i>
+        </button>
+      </div>
+      <div v-if="!isSmallScreen" class="mobile-page-btns flex-h justify-space-around">
+        <base-button
+          @click="paginateBack"
+          class="material-btn mobile-page-btn">
+          Previous
+        </base-button>
+        <base-button
+          @click="paginateForward"
+          class="material-btn mobile-page-btn">
+          Next
+        </base-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import compareAsc from 'date-fns/compareAsc';
+import BaseButton from '../components/common/BaseButton';
+import breakPointsMixin from '../components/common/mixins/breakPointsMixin';
 import CourseCard from '../components/Course/CourseCard';
+import { format } from 'date-fns';
+import { generateQuery } from '../utils/queryParamGenerator';
 import { get } from '../api/courses';
-import parseISO from 'date-fns/parseISO';
-import sortBy from 'lodash/sortBy';
+import SearchGroup from '../components/Course/SearchGroup';
+import TopDrawer from '../components/Course/TopDrawer';
 
 export default {
-  props: {
-    loading: { type: Boolean, default: false }
-  },
+  mixins: [breakPointsMixin],
+
   data() {
     return {
-      courses: { data: [] }
+      menu: false,
+      loading: true,
+      limit: 6,
+      offset: 0,
+      courses: [],
+      filterParams: {
+        startDate: format(new Date(), 'yyyy-MM-dd')
+      }
     };
   },
-  methods: {
-    checkEnrolled(course) {
-      if (!course.Users.length) return false;
-      if (course.Users.find(user => user.email === this.$store.state.auth.email)) {
-        return true;
-      }
-      return false;
-    },
-    sortByUpdated(courses) {
-      return courses.sort((prev, next) => {
-        return compareAsc(parseISO(prev.updatedAt), parseISO(next.updatedAt));
-      });
-    },
-    sortByEnrollment(courses) {
-      return sortBy(this.sortByUpdated(courses), this.checkEnrolled).reverse();
+  computed: {
+    queryString() {
+      const { limit, offset, filterParams } = this;
+      return generateQuery(filterParams, limit, offset);
     }
   },
-  mounted() {
-    get().then(({ data }) => {
-      this.courses =
-        this.sortByEnrollment(this.sortByUpdated(data.data));
-    });
+  methods: {
+    paginateForward() {
+      if (this.courses.length === this.limit) { this.offset += this.limit; }
+    },
+    paginateBack() {
+      this.offset = (this.offset > this.limit)
+        ? this.offset -= this.limit
+        : 0;
+    },
+    refreshCourseList(filterParams) {
+      this.filterParams = filterParams;
+      this.getFilteredCourses();
+    },
+    getFilteredCourses() {
+      get(this.queryString)
+        .then(({ data }) => {
+          this.courses = data.data;
+        }).finally(() => {
+          this.loading = false;
+        });
+    },
+    showMenu() {
+      this.menu = true;
+    },
+    handleCloseMenu(params) {
+      if (params) {
+        this.filterParams = params;
+        this.getFilteredCourses();
+      }
+      this.menu = false;
+    }
+  },
+  watch: {
+    offset: {
+      handler: 'getFilteredCourses',
+      immediate: true
+    }
   },
   components: {
-    CourseCard
+    BaseButton, CourseCard, SearchGroup, TopDrawer
   }
 };
 </script>
 
 <style lang="css" scoped>
 .wrapper {
-  display: flex;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
+  z-index: var(--z-dashboard);
 }
-.container {
+.desktop-page-btns {
+  position: absolute;
+  bottom: 1%;
+}
+.mobile-page-btn {
+  background: var(--color-info);
+  color: var(--color-white);
+  padding: var(--spacing-sm) 0;
+}
+.main-content {
   padding: var(--spacing-md);
-  font-size: var(--text-sm);
-}
-.page-btns {
-  display: flex;
-  justify-content: flex-end;
+  flex-grow: 2;
 }
 i {
   font-size: var(--text-lg);
+}
+.container {
+  font-size: var(--text-sm);
 }
 .arrow-btn {
   background: none;
   border: none;
 }
-.arrow-btn:hover {
-  cursor: pointer;
-}
-.arrow-btn:focus {
-  outline: none;
+.filter-btn {
+  background-color: var(--color-accent);
+  color: var(--color-green);
+  padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
 }
 .cards {
   max-width: 1200px;
-  margin: var(--spacing-md) auto;
+  margin: var(--spacing-sm) auto;
   display: grid;
   grid: auto-flow auto / 1fr;
   grid-gap: var(--spacing-lg);
 }
-@media (min-width: 600px) {
+.mobile-page-btns {
+  width: 100%;
+  margin-top: var(--spacing-lg);
+}
+.mobile-page-btns .material-btn {
+  margin: 0 10px;
+}
+.search-bar {
+  max-width: 20%;
+  flex-grow: 1;
+  border-right: 1px solid var(--color-gray-500);
+}
+.overlayed:after {
+  content: '';
+  height: 100%;
+  position: fixed;
+  top: var(--navbar-height);
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.726);
+}
+.slide-enter-active {
+  animation: slide-in 0.5s ease-out forwards;
+}
+.slide-leave-active {
+  animation: slide-out 0.2s ease-out forwards;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(var(--spacing-lg));
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateY(0)
+  }
+  to {
+    transform: translateY(var(--spacing-md))
+  }
+}
+
+@media (min-width: 748px) {
   .cards {
     grid: auto-flow auto / repeat(2, 1fr);
   }
+  .main-content {
+    max-width: 80%;
+    width: 100%;
+  }
 }
-@media (min-width: 900px) {
+@media (min-width: 1140px) {
   .cards {
     grid: auto-flow auto / repeat(3, 1fr);
   }

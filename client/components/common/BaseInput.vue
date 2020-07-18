@@ -5,7 +5,8 @@
     :type="type"
     :class="{
       filled,
-      outlined
+      outlined,
+      'input-filled': value
     }"
     class="input">
 </template>
@@ -34,6 +35,9 @@ export default {
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: 3px;
   outline: none;
+  color: transparent;
+  position: relative;
+  background: var(--color-white);
 }
 .filled {
   border: none;
@@ -42,22 +46,18 @@ export default {
 .outlined {
   border: solid 1px var(--color-black);
 }
-.input-wrapper {
-  position: relative;
+.input-filled {
+  color: var(--color-black);
 }
-.input-label {
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  width: 100%;
   position: absolute;
-  top: 11px;
-  left: 16px;
-  font-size: 16px;
-  transition: all 0.15s ease;
-}
-.input:focus + .input-label,
-.field-filled {
-  font-size: 11px;
-  top: -12px;
-  left: 5px;
-  background: var(--color-white);
-  border-radius: 3px 3px 0 0;
 }
 </style>

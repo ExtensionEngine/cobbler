@@ -64,6 +64,7 @@ class User extends Model {
         through: Enrollment,
         foreignKey: { name: 'userId', field: 'user_id' }
       });
+    this.hasMany(Enrollment, { foreignKey: 'user_id' });
   }
 
   checkPassword(passwordAttempt) {

@@ -8,7 +8,7 @@
       primary,
       disabled
     }"
-    class="btn">
+    class="pt-xxs pb-xxs pl-md pr-md btn">
     <slot></slot>
   </button>
 </template>
@@ -27,7 +27,6 @@ export default {
 
 <style lang="css" scoped>
 .btn {
-  padding: var(--spacing-xxs) var(--spacing-md);
   border-radius: 3px;
   width: 100%;
 }

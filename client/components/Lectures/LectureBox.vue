@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="pb-sm pt-sm">
     <h3>{{ title }}</h3>
     <p>{{ description }}</p>
   </div>
@@ -14,12 +14,3 @@ export default {
   }
 };
 </script>
-
-<style lang="css" scoped>
-
-.container {
-    border-top: 1px solid var(--color-gray-500);
-    padding: 0 var(--spacing-sd);
-  }
-
-</style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container flex-v">
     <slot></slot>
   </div>
 </template>
@@ -12,8 +12,9 @@ export default {
 
 <style lang="css" scoped>
   .container {
-    padding: var(--spacing-xs);
-    width: 90%;
-    margin: var(--spacing-sm) auto;
+    position: relative;
+    min-height: calc(100% - var(--navbar-height));
+    width: 100%;
+    padding: var(--spacing-lg);
   }
 </style>
