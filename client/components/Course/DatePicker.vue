@@ -1,27 +1,25 @@
 <template>
-  <div>
-    <field
-      v-model="date"
-      name="start">
-      <base-input
-        @input="$emit('input', date)"
-        v-on="$listeners"
-        type="date"
-        v-bind="$attrs"
-        class="date-picker"
-        outlined />
-    </field>
-  </div>
+  <base-input
+    v-on="$listeners"
+    v-bind="$attrs"
+    type="date"
+    class="date-picker"
+    outlined />
 </template>
 
 <script>
 import BaseInput from '../common/BaseInput';
-import Field from '../common/BaseForm/Field';
+
 export default {
   name: 'date-picker',
-  data: () => ({ date: '' }),
   components: {
-    BaseInput, Field
+    BaseInput
   }
 };
 </script>
+
+<style lang="css" scoped>
+.date-picker {
+  border: 1px solid var(--color-gray-500)
+}
+</style>

@@ -1,10 +1,10 @@
 <template>
   <div class="side-bar-wrapper align-start">
     <base-search v-model="name" class="mt-md" debounced />
-    <h4 class="mb-sm">Scheduled date</h4>
-    <date-picker v-model="startDate" />
-    <date-picker v-model="endDate" />
-    <category-filter v-model="categoryId" />
+    <h3 class="mt-md">Scheduled date</h3>
+    <date-picker v-model="startDate" class="mt-xs" />
+    <date-picker v-model="endDate" class="mt-xs" />
+    <category-filter v-model="categoryId" class="mt-md" />
   </div>
 </template>
 
@@ -57,7 +57,7 @@ export default {
   display: grid;
   font-size: var(--text-sm);
   height: calc(100vh - var(--navbar-height));
-  grid: auto-flow auto / 1fr;
+  grid: auto-flow max-content / 1fr;
   padding: var(--spacing-sm);
   overflow-y: scroll;
   width: 100px;
