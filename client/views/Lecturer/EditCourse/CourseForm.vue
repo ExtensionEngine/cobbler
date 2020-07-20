@@ -1,7 +1,7 @@
 <template>
   <div class="course-container flex-h justify-center">
     <base-form
-      v-slot="{ isFormInvalid }"
+      v-slot="{ isFormValid }"
       @submit="onUpdate"
       class="course-form">
       <span class="course-title">{{ originalName }}</span>
@@ -75,7 +75,7 @@
         </template>
       </field>
       <base-button
-        :disabled="isFormInvalid"
+        :disabled="!isFormValid"
         class="button-form-item full-bleed-form-item"
         type="submit"
         contained primary>

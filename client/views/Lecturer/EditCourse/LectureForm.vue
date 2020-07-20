@@ -9,7 +9,7 @@
     </base-button>
     <div :class="{'lecture-add-active': isActive}" class="lecture-add">
       <base-form
-        v-slot="{ isFormInvalid }"
+        v-slot="{ isFormValid }"
         @submit="handleLectureSubmit"
         class="lecture-form">
         <field
@@ -39,7 +39,7 @@
         </field>
         <base-button
           class="lecture-add-btn"
-          :disabled="isFormInvalid"
+          :disabled="!isFormValid"
           type="submit"
           contained>
           Add

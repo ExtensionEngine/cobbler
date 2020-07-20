@@ -12,8 +12,7 @@ const createStruct = object({
 });
 
 router
-  .post('/', bodyValidatorFactory(createStruct), ctrl.create)
-  .patch('/:id', bodyValidatorFactory(createStruct), ctrl.update);
+  .post('/', bodyValidatorFactory(createStruct), ctrl.create);
 
 module.exports = {
   path: '/lectures',
