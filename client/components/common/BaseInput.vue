@@ -41,7 +41,7 @@ export default {
 }
 .filled {
   border: none;
-  border-bottom: solid 1px var(--color-black));
+  border-bottom: solid 1px var(--color-black);
 }
 .outlined {
   border: solid 1px var(--color-black);

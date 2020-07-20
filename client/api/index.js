@@ -9,7 +9,9 @@ export const endpoints = {
   course: {
     base: 'courses',
     byId: id => `courses/${id}`,
-    enroll: id => `courses/${id}/enroll`
+    enroll: id => `courses/${id}/enroll`,
+    myCourses: 'me/courses',
+    getByName: name => `courses?name=${name}`
   },
   enroll: {
     base: 'enroll'
@@ -18,6 +20,8 @@ export const endpoints = {
     base: 'categories'
   }
 };
+
+export const flattenData = ({ data }) => data;
 
 const configureThwack = () => {
   thwack.defaults.baseURL = process.env.VUE_APP_API_HOST;

@@ -7,24 +7,26 @@ module.exports = {
   isEnrolled
 };
 
-function getCoursesByUser(req, res) {
+async function getCoursesByUser(req, res) {
   const { email } = req.user;
-  return Course.findAll({
+  const course = await Course.findAll({
     attributes: ['id', 'name', 'description', 'endDate', 'startDate'],
     include: [
       {
         model: User,
         where: { email },
         attributes: [],
-        through: []
+        through: [],
+        as: 'user'
       },
       {
         model: Category,
+        as: 'category',
         attributes: ['name']
       }
     ]
-  })
-    .then(course => res.json({ data: course }));
+  });
+  res.json({ data: course });
 }
 
 function isEnrolled(req, res) {

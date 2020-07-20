@@ -1,6 +1,6 @@
 <template>
   <div
-    class="error-wrapper">
+    class="error-wrapper flex-h justify-center align-center">
     <slot></slot>
   </div>
 </template>
@@ -13,9 +13,6 @@ export default {
 
 <style lang="css" scoped>
 .error-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding: var(--spacing-xxs) 0;
   border-radius: 3px;
   color: var(--color-error-500);

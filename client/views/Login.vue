@@ -1,10 +1,9 @@
 <template>
-  <div class="login-container">
+  <div class="login-container flex-h justify-center">
     <base-form
-      v-slot="{ isFormInvalid }"
+      v-slot="{ isFormValid }"
       @submit="onSubmit"
-      submit-label="Login"
-      class="login-form">
+      class="login-form flex-v">
       <field
         v-model="email"
         name="email"
@@ -33,7 +32,7 @@
         </template>
       </field>
       <base-button
-        :disabled="isFormInvalid"
+        :disabled="!isFormValid"
         type="submit"
         contained primary>
         Login
@@ -49,6 +48,7 @@ import BaseError from '../components/common/BaseError';
 import BaseForm from '../components/common/BaseForm';
 import BaseInput from '../components/common/BaseInput';
 import Field from '../components/common/BaseForm/Field';
+import { getBasePath } from '../router';
 import { mapActions } from 'vuex';
 
 export default {
@@ -67,7 +67,7 @@ export default {
       try {
         await this.login({ email: this.email, password: this.password });
         this.$toasted.global.formSuccess({ message: 'Login successful!' });
-        this.$router.push('/');
+        this.$router.push(getBasePath());
       } catch (err) {
         this.$toasted.global.formError({ message: 'Login failed!' });
         const { status } = err.thwackResponse;
@@ -94,13 +94,9 @@ export default {
 <style scoped>
 .login-container {
   padding: 100px 0;
-  display: flex;
-  justify-content: center;
 }
 .login-form {
   width: 400px;
-  display: flex;
-  flex-direction: column;
   background: var(--color-gray-500);
   border-radius: 3px;
   padding: 50px;

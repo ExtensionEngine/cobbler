@@ -16,6 +16,11 @@
   --z-dashboard: 100;
   --z-drawer: 300;
 
+
+  --measure-sm: 350px;
+  --measure-md: 550px;
+
+  --z-nav: 2;
 }
 
 .flex-h {

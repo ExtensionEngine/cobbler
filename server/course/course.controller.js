@@ -33,6 +33,7 @@ async function getAll(req, res, next) {
     include: [
       {
         model: Category,
+        as: 'category',
         attributes: ['name']
       }
     ],
@@ -40,9 +41,8 @@ async function getAll(req, res, next) {
     subQuery: false,
     order: [[literal('"isEnrolled"'), 'DESC'], ['updatedAt', 'DESC']]
   };
-  return Course.scope({ method: ['enrolledByUserId', id] }).findAll(query)
-    .then(data => res.json({ data }))
-    .catch(next);
+  const courses = await Course.scope({ method: ['enrolledByUserId', id] }).findAll(query)
+  return res.status(OK).json({ data: courses });
 }
 
 async function getCourseById(req, res) {
@@ -55,6 +55,7 @@ async function getCourseById(req, res) {
     include: [
       {
         model: Category,
+        as: 'category',
         attributes: ['name']
       },
       {

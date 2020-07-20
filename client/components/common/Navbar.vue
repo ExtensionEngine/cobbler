@@ -54,7 +54,7 @@ export default {
   height: var(--spacing-xl);
   padding: 0 var(--spacing-md);
   box-shadow: 2px 2px 4px 0px var(--color-gray);
-  z-index: 5;
+  z-index: var(--z-nav);
 }
 .nav-item {
   background: var(--color-gray-500);

@@ -1,5 +1,15 @@
 export default {
-  home: '',
+  base: '',
   login: '/login',
-  courses: '/courses/:id'
+  forbidden: '/403',
+  lecturer: {
+    base: '/lecturer',
+    addCourse: '/lecturer/add-course'
+  },
+  learner: {
+    base: '/'
+  },
+  admin: {
+    base: '/admin'
+  }
 };

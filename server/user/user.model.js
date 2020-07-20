@@ -62,7 +62,8 @@ class User extends Model {
     this.belongsToMany(Course,
       {
         through: Enrollment,
-        foreignKey: { name: 'userId', field: 'user_id' }
+        foreignKey: { name: 'userId', field: 'user_id' },
+        as: 'course'
       });
     this.hasMany(Enrollment, { foreignKey: 'user_id' });
   }
@@ -73,7 +74,7 @@ class User extends Model {
 
   generateJWT() {
     const options = { expiresIn: '1d' };
-    const payload = { sub: this.email };
+    const payload = { sub: this.email, role: this.role };
     return jwt.sign(payload, process.env.JWT_SECRET, options);
   }
 }
