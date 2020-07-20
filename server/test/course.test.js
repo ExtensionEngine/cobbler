@@ -2,25 +2,28 @@
 
 const { Course } = require('../shared/database');
 const { create } = require('../course/course.controller');
+const { json } = require('sequelize');
 
 describe('Course Service', () => {
   describe('Create new course', () => {
-    it('Should send status 200 for created course', async done => {
+    it('Should send status 201 for created course', async done => {
       jest.spyOn(Course, 'create').mockImplementation(() => {
         return new Promise((resolve, reject) => {
           resolve({ addUser: something => { return { added: true }; } });
         });
       });
+      const req = {};
       const res = {
         send: function () { },
-        json: function (err) {
-          console.log('\n : ' + err);
-        },
-        status: function (responseStatus) {
-          return this;
-        }
+        status: () => ({})
       };
-      expect(create({ do: '' }, res)).not.toBe(null);
+      const status = jest.spyOn(res, 'status').mockImplementation(() => {
+        console.log('Pozvano');
+        return { ...this, json: () => ({}) };
+      });
+      expect(create(req, res)).toBeTruthy();
+      expect(status).toHaveBeenCalled();
+      done();
     });
   });
 });
