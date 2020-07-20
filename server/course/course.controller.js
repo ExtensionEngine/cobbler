@@ -30,12 +30,14 @@ async function getAll(req, res) {
     include: [
       {
         model: Category,
+        as: 'category',
         attributes: ['name']
       },
       {
         model: User,
         attributes: ['firstName', 'lastName', 'email'],
-        through: { model: Enrollment, attributes: [] }
+        through: { model: Enrollment, attributes: [] },
+        as: 'user'
       }
     ],
     where: filters
@@ -53,6 +55,7 @@ async function getCourseById(req, res) {
     include: [
       {
         model: Category,
+        as: 'category',
         attributes: ['name']
       }
     ]

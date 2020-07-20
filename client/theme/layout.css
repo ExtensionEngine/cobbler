@@ -11,6 +11,11 @@
   --spacing-xxxl: 5.5rem;
 
   --navbar-height: var(--spacing-xl);
+
+  --measure-sm: 350px;
+  --measure-md: 550px;
+
+  --z-nav: 2;
 }
 
 .flex-h {

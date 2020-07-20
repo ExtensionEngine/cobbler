@@ -1,4 +1,4 @@
-import './api/common';
+import './api';
 import './utils/validate';
 import './utils/toast';
 import App from './App';

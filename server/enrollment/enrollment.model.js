@@ -35,10 +35,12 @@ class Enrollment extends Model {
 
   static associate({ Course, User }) {
     this.belongsTo(User, {
-      foreignKey: { name: 'userId', field: 'user_id' }
+      foreignKey: { name: 'userId', field: 'user_id' },
+      as: 'user'
     });
     this.belongsTo(Course, {
-      foreignKey: { name: 'courseId', field: 'course_id' }
+      foreignKey: { name: 'courseId', field: 'course_id' },
+      as: 'course'
     });
   }
 }

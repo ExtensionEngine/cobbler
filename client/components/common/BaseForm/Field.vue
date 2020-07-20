@@ -3,6 +3,7 @@
     v-slot="{ errors }"
     :rules="rules"
     :name="name"
+    :debounce="debounce"
     tag="div">
     <label class="field-wrapper">
       <slot :on="{ input }" :value="value"></slot>
@@ -25,8 +26,9 @@ export default {
   props: {
     label: { type: String, default: null },
     name: { type: String, required: true },
-    value: { type: String, default: null },
-    rules: { type: String, default: null }
+    value: { type: [String, Object], default: null },
+    rules: { type: [Object, String], default: null },
+    debounce: { type: Number, default: 300 }
   },
   methods: {
     input(value) {
@@ -52,6 +54,8 @@ export default {
   transition: all 0.15s ease;
 }
 .input:focus + .field-label,
+.text-area:focus + .field-label,
+.select:focus + .field-label,
 .field-filled {
   font-size: 11px;
   top: -26px;
