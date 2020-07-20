@@ -115,7 +115,7 @@ export default {
     nameRules() {
       return {
         required: true,
-        between: { min: 2, max: 50 },
+        lengthBetween: { min: 2, max: 50 },
         uniqueCourse: { checkName: this.checkName }
       };
     }

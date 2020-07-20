@@ -1,42 +1,33 @@
 'use strict';
 
-const { BAD_REQUEST, CREATED, FORBIDDEN, NOT_FOUND, OK } = require('http-status-codes');
+const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
 const { Category, Course, Enrollment, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
-const { Op } = require('sequelize');
-const pick = require('lodash/pick');
+const isEmpty = require('lodash/isEmpty');
+const { validateFilters } = require('../shared/util/apiQueryParser');
 
 module.exports = {
   create,
-  enroll,
   getAll,
   getCourseById,
   checkNameAvailability,
   update
 };
 
-async function create(req, res, next) {
-  const courseInfo = pick(req.body, [
-    'name',
-    'description',
-    'categoryId',
-    'startDate',
-    'endDate'
-  ]);
-
-  if (!courseInfo.name || !courseInfo.description || isNaN(courseInfo.categoryId)) {
-    throw new HttpError('The provided body is invalid', BAD_REQUEST);
-  }
-  await sequelize.transaction(async transaction => {
-    const course = await Course.create(courseInfo, { transaction });
-    await course.addUser(req.user, { transaction });
-    res.status(CREATED).json({ data: course });
-  }).catch(next);
+function create(req, res) {
+  return sequelize.transaction(async transaction => {
+    const course = await Course.create(req.validatedBody, { transaction });
+    const enrollment = await course.addUser(req.user, { transaction });
+    return res.status(CREATED).json({ data: { course, enrollment } });
+  });
 }
 
-function getAll(req, res) {
-  const { available } = req.query;
+async function getAll(req, res) {
+  const { filters, pagination } = req.query;
+  const errors = validateFilters(filters, Course.rawAttributes, Course.name);
+  if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
   const query = {
+    ...pagination,
     include: [
       {
         model: Category,
@@ -49,21 +40,19 @@ function getAll(req, res) {
         through: { model: Enrollment, attributes: [] },
         as: 'user'
       }
-    ]
+    ],
+    where: filters
   };
-  if (available) {
-    query.where = { endDate: { [Op.gte]: new Date() } };
-  }
-  return Course.findAll(query).then(course => res.json({ data: course }));
+  const courses = await Course.findAll(query);
+  return res.status(OK).json({ data: courses });
 }
 
-function getCourseById(req, res, next) {
+async function getCourseById(req, res) {
   const { id } = req.params;
   if (!Number(id)) {
     throw new HttpError('ID is not a number', BAD_REQUEST);
   }
-
-  return Course.findByPk(id, {
+  const course = await Course.findByPk(id, {
     include: [
       {
         model: Category,
@@ -71,44 +60,23 @@ function getCourseById(req, res, next) {
         attributes: ['name']
       }
     ]
-  })
-    .then(course => {
-      if (!course) return res.status(NOT_FOUND).send('Course not found');
-      return res.json({ data: course });
-    })
-    .catch(next);
+  });
+  if (!course) return res.status(NOT_FOUND).send('Course not found');
+  return res.json({ data: course });
 }
 
-function enroll(req, res, next) {
-  Course.findByPk(req.params.id).then(course => {
-    if (!course.available) return res.status(FORBIDDEN).json('Course unavailable');
-    return course.addUser(req.user);
-  }).then(() => res.status(CREATED).json('Successfully enrolled'))
-  .catch(next);
-}
-
-function update(req, res, next) {
-  const courseInfo = pick(req.body, [
-    'name',
-    'description',
-    'startDate',
-    'endDate',
-    'categoryId'
-  ]);
-  return Course.update(
-    courseInfo,
+async function update(req, res) {
+  const [isUpdated, updatedCourses] = await Course.update(
+    req.validatedBody,
     {
       where: {
         id: req.params.id
       },
       returning: true
     }
-  ).then(course => {
-    if (!course[1].length) {
-      return res.status(NOT_FOUND).json('Course does not exist');
-    }
-    return res.status(CREATED).json({ data: course });
-  }).catch(next);
+  );
+  if (!isUpdated) return res.status(NOT_FOUND).json('Course does not exist');
+  return res.status(CREATED).json({ data: updatedCourses });
 }
 
 function checkNameAvailability({ body: { name } }, res, next) {
