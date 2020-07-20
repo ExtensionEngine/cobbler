@@ -2,6 +2,7 @@
 
 const config = require('./config');
 const invoke = require('lodash/invoke');
+const logger = require('../logger');
 const path = require('path');
 const { Sequelize } = require('sequelize');
 const Umzug = require('umzug');
@@ -36,8 +37,8 @@ function initialize() {
   return sequelize
     .authenticate()
     .then(() => umzug.up())
-    .then(() => console.log('Connected to db'))
-    .catch(() => console.log('Failed to connect to db'));
+    .then(() => logger.info('👌 Connected to db'))
+    .catch(() => logger.error('Failed to connect to db'));
 }
 
 const models = {

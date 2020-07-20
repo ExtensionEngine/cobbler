@@ -1,7 +1,7 @@
 <template>
   <div class="course-container flex-h justify-center">
     <base-form
-      v-slot="{ isFormInvalid }"
+      v-slot="{ isFormValid }"
       @submit="onUpdate"
       class="course-form">
       <span class="course-title">{{ originalName }}</span>
@@ -10,7 +10,7 @@
         :rules="nameRules"
         name="name"
         label="Name"
-        class="name-form-item">
+        class="full-bleed-form-item">
         <template v-slot="{ on, value }">
           <base-input
             v-on="on"
@@ -23,7 +23,7 @@
         rules="required|lengthBetween:2,50"
         name="description"
         label="Description"
-        class="description-form-item">
+        class="full-bleed-form-item">
         <template v-slot="{ on, value }">
           <base-input
             v-on="on"
@@ -33,7 +33,7 @@
       </field>
       <field
         v-model="course.category"
-        class="category-form-item"
+        class="full-bleed-form-item"
         name="category"
         label="Category"
         rules="required">
@@ -75,8 +75,8 @@
         </template>
       </field>
       <base-button
-        :disabled="isFormInvalid"
-        class="button-form-item"
+        :disabled="!isFormValid"
+        class="button-form-item full-bleed-form-item"
         type="submit"
         contained primary>
         Save
@@ -86,13 +86,14 @@
 </template>
 
 <script>
-import { checkNameAvailability, updateCourse } from '../../../api/courses';
+import { getByName, updateCourse } from '../../../api/courses';
 import BaseButton from '../../../components/common/BaseButton';
 import BaseForm from '../../../components/common/BaseForm';
 import BaseInput from '../../../components/common/BaseInput';
 import BaseSelect from '../../../components/common/BaseSelect';
 import Field from '../../../components/common/BaseForm/Field';
 import { getAllCategories } from '../../../api/categories';
+import isEmpty from 'lodash/isEmpty';
 
 export default {
   name: 'course-form',
@@ -118,12 +119,12 @@ export default {
     async onUpdate() {
       try {
         this.$toasted.global.formSubmitting();
-        const { data } = await updateCourse({
+        const { data: [updatedCourse] } = await updateCourse({
           ...this.course,
           categoryId: this.course.category.id
         });
-        if (data[0]) {
-          this.originalName = data[1][0].name;
+        if (updatedCourse) {
+          this.originalName = updatedCourse.name;
           this.$toasted.global.formSuccess({
             message: 'Course updated successfully!'
           });
@@ -137,8 +138,8 @@ export default {
       }
     },
     async checkName(name) {
-      const { data } = await checkNameAvailability(name);
-      return data;
+      const { data } = await getByName(name);
+      return isEmpty(data);
     }
   },
   async created() {
@@ -165,8 +166,8 @@ export default {
   max-width: var(--measure-md);
   padding: var(--spacing-md);
   display: grid;
-  grid-template-columns: [start] 1fr [middle] 1fr [end];
-  grid-template-rows: [first] 1fr [second] 1fr [third] 1fr [fourth] 1fr [fifth] 1fr;
+  grid-template-columns: [start] 1fr 1fr [end];
+  grid-template-rows: repeat(5, 1fr);
   grid-column-gap: var(--spacing-xs);
   grid-row-gap: var(--spacing-xs);
   border: solid 1px var(--color-gray);
@@ -180,48 +181,16 @@ export default {
   background: var(--color-white);
   padding: 0 var(--spacing-xxs);
 }
-.name-form-item {
+.full-bleed-form-item {
   grid-column: start / end;
-  grid-row: first;
-}
-.description-form-item {
-  grid-column: start / end;
-  grid-row: second;
-}
-.category-form-item {
-  grid-column: start / end;
-  grid-row: third;
-}
-.start-date-form-item {
-  grid-column: start / middle;
-  grid-row: fourth;
-}
-.end-date-form-item {
-  grid-column: middle / end;
-  grid-row: fourth;
 }
 .button-form-item {
-  grid-column: start / end;
-  grid-row: fifth;
   max-height: 30px;
 }
 @media only screen and (max-width: 480px) {
-  .course-form {
-    grid-template-rows:
-      [first] 1fr [second] 1fr [third] 1fr [fourth] 1fr [fifth] 1fr [sixth] 1fr;
-  }
-  .start-date-form-item {
-    grid-column: start / end;
-    grid-row: fourth;
-  }
+  .start-date-form-item,
   .end-date-form-item {
     grid-column: start / end;
-    grid-row: fifth;
-  }
-  .button-form-item {
-    grid-column: start / end;
-    grid-row: sixth;
-    max-height: 30px;
   }
 }
 </style>

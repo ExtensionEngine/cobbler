@@ -24,6 +24,7 @@
     "dotenv": "^8.2.0",
     "eslint-plugin-require-sort": "^1.2.1",
     "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
     "helmet": "^3.22.0",
     "http-status-codes": "^1.4.0",
     "jwt-decode": "^2.2.0",
@@ -36,13 +37,15 @@
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.12",
     "thwack": "^0.6.0",
+    "superstruct": "^0.10.12",
     "umzug": "^2.3.0",
     "vee-validate": "^3.3.4",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vue-toasted": "^1.1.28",
     "vuedraggable": "^2.24.0",
-    "vuex": "^3.4.0"
+    "vuex": "^3.4.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@extensionengine/eslint-config": "^1.2.0",

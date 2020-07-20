@@ -8,7 +8,7 @@
       v-model="teachingElement.name"
       name="name"
       label="Name"
-      rules="required|between:2,50"
+      rules="required|lengthBetween:2,50"
       class="te-input">
       <template v-slot="{ on, value }">
         <base-input
@@ -49,6 +49,11 @@ export default {
   name: 'te-form',
   props: {
     teachingElement: { type: Object, default: null }
+  },
+  methods: {
+    handleLectureSubmit() {
+      console.log('hwlwel');
+    }
   },
   components: {
     BaseButton,

@@ -88,13 +88,14 @@
 </template>
 
 <script>
-import { addCourse, checkNameAvailability } from '../../api/courses';
+import { addCourse, getByName } from '../../api/courses';
 import BaseButton from '../../components/common/BaseButton';
 import BaseForm from '../../components/common/BaseForm';
 import BaseInput from '../../components/common/BaseInput';
 import BaseSelect from '../../components/common/BaseSelect';
 import Field from '../../components/common/BaseForm/Field';
 import { getAllCategories } from '../../api/categories';
+import isEmpty from 'lodash/isEmpty';
 import paths from '../../router/paths';
 import SecondBar from '../../components/Lecturer/SecondBar';
 
@@ -138,8 +139,8 @@ export default {
       }
     },
     async checkName(name) {
-      const { data } = await checkNameAvailability(name);
-      return data;
+      const { data } = await getByName(name);
+      return isEmpty(data);
     }
   },
   async created() {
@@ -165,7 +166,7 @@ export default {
   width: 100%;
   max-width: var(--measure-md);
   display: grid;
-  grid-template-columns: [start] 1fr [middle] 1fr [end];
+  grid-template-columns: [start] 1fr 1fr [end];
   grid-template-rows: repeat(5, 1fr);
   grid-column-gap: var(--spacing-xs);
   grid-row-gap: var(--spacing-xs);
@@ -180,14 +181,6 @@ export default {
   .start-date-form-item,
   .end-date-form-item {
     grid-column: start / end;
-  }
-  .start-date-form-item {
-    grid-column: start / end;
-    grid-row: fourth;
-  }
-  .end-date-form-item {
-    grid-column: start / end;
-    grid-row: fifth;
   }
   .button-form-item {
     grid-column: start / end;
