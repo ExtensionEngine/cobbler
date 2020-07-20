@@ -72,7 +72,7 @@ export default {
         const { data } = await addLecture({
           name: this.name,
           description: this.description,
-          courseId: this.$route.params.id
+          courseId: Number(this.$route.params.id)
         });
         this.isActive = false;
         this.name = '';

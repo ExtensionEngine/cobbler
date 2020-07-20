@@ -166,7 +166,7 @@ export default {
   width: 100%;
   max-width: var(--measure-md);
   display: grid;
-  grid-template-columns: [start] 1fr [middle] 1fr [end];
+  grid-template-columns: [start] 1fr 1fr [end];
   grid-template-rows: repeat(5, 1fr);
   grid-column-gap: var(--spacing-xs);
   grid-row-gap: var(--spacing-xs);
@@ -181,14 +181,6 @@ export default {
   .start-date-form-item,
   .end-date-form-item {
     grid-column: start / end;
-  }
-  .start-date-form-item {
-    grid-column: start / end;
-    grid-row: fourth;
-  }
-  .end-date-form-item {
-    grid-column: start / end;
-    grid-row: fifth;
   }
   .button-form-item {
     grid-column: start / end;

@@ -1,7 +1,7 @@
 'use strict';
 
+const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
 const { Category, Course, Enrollment, Lecture, sequelize, User } = require('../shared/database');
-const { BAD_REQUEST, CREATED, FORBIDDEN, NOT_FOUND, OK } = require('http-status-codes');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
 const { validateFilters } = require('../shared/util/apiQueryParser');

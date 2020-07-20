@@ -10,7 +10,7 @@
         :rules="nameRules"
         name="name"
         label="Name"
-        class="name-form-item">
+        class="full-bleed-form-item">
         <template v-slot="{ on, value }">
           <base-input
             v-on="on"
@@ -23,7 +23,7 @@
         rules="required|lengthBetween:2,50"
         name="description"
         label="Description"
-        class="description-form-item">
+        class="full-bleed-form-item">
         <template v-slot="{ on, value }">
           <base-input
             v-on="on"
@@ -33,7 +33,7 @@
       </field>
       <field
         v-model="course.category"
-        class="category-form-item"
+        class="full-bleed-form-item"
         name="category"
         label="Category"
         rules="required">
@@ -76,7 +76,7 @@
       </field>
       <base-button
         :disabled="isFormInvalid"
-        class="button-form-item"
+        class="button-form-item full-bleed-form-item"
         type="submit"
         contained primary>
         Save
@@ -166,8 +166,8 @@ export default {
   max-width: var(--measure-md);
   padding: var(--spacing-md);
   display: grid;
-  grid-template-columns: [start] 1fr [middle] 1fr [end];
-  grid-template-rows: [first] 1fr [second] 1fr [third] 1fr [fourth] 1fr [fifth] 1fr;
+  grid-template-columns: [start] 1fr 1fr [end];
+  grid-template-rows: repeat(5, 1fr);
   grid-column-gap: var(--spacing-xs);
   grid-row-gap: var(--spacing-xs);
   border: solid 1px var(--color-gray);
@@ -181,48 +181,16 @@ export default {
   background: var(--color-white);
   padding: 0 var(--spacing-xxs);
 }
-.name-form-item {
+.full-bleed-form-item {
   grid-column: start / end;
-  grid-row: first;
-}
-.description-form-item {
-  grid-column: start / end;
-  grid-row: second;
-}
-.category-form-item {
-  grid-column: start / end;
-  grid-row: third;
-}
-.start-date-form-item {
-  grid-column: start / middle;
-  grid-row: fourth;
-}
-.end-date-form-item {
-  grid-column: middle / end;
-  grid-row: fourth;
 }
 .button-form-item {
-  grid-column: start / end;
-  grid-row: fifth;
   max-height: 30px;
 }
 @media only screen and (max-width: 480px) {
-  .course-form {
-    grid-template-rows:
-      [first] 1fr [second] 1fr [third] 1fr [fourth] 1fr [fifth] 1fr [sixth] 1fr;
-  }
-  .start-date-form-item {
-    grid-column: start / end;
-    grid-row: fourth;
-  }
+  .start-date-form-item,
   .end-date-form-item {
     grid-column: start / end;
-    grid-row: fifth;
-  }
-  .button-form-item {
-    grid-column: start / end;
-    grid-row: sixth;
-    max-height: 30px;
   }
 }
 </style>
