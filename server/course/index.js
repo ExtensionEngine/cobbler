@@ -27,7 +27,7 @@ router
   .post('/', bodyValidatorFactory(createStruct), ctrl.create)
   .get('/', ctrl.getAll)
   .get('/:id', ctrl.getCourseById)
-  .patch('/:id', ctrl.update)
+  .patch('/:id', bodyValidatorFactory(createStruct), ctrl.update)
   .post('/check-name', ctrl.checkNameAvailability);
 
 module.exports = {

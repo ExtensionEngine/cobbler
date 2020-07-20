@@ -79,10 +79,9 @@ async function update(req, res) {
   return res.status(CREATED).json({ data: updatedCourses });
 }
 
-function checkNameAvailability({ body: { name } }, res, next) {
+async function checkNameAvailability({ body: { name } }, res, next) {
   if (!name) throw new HttpError('No name value in the request body', BAD_REQUEST);
 
-  return Course.findOne({ where: { name } }).then(course => {
-    res.status(OK).json({ data: !course });
-  }).catch(next);
+  const course = await Course.findOne({ where: { name } });
+  res.status(OK).json({ data: !course });
 }
