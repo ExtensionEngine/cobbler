@@ -55,6 +55,7 @@ export default {
 <style lang="css" scoped>
 .side-bar-wrapper {
   display: grid;
+  font-size: var(--text-sm);
   height: calc(100vh - var(--navbar-height));
   grid: auto-flow auto / 1fr;
   padding: var(--spacing-sm);

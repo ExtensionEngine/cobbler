@@ -1,11 +1,10 @@
 'use strict';
 
 const { BAD_REQUEST, CREATED, NOT_FOUND } = require('http-status-codes');
-const { Category, Course, User } = require('../shared/database');
+const { Category, Course, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
 const { literal } = require('sequelize');
-const pick = require('lodash/pick');
 const { validateFilters } = require('../shared/util/apiQueryParser');
 
 module.exports = {
@@ -23,7 +22,7 @@ function create(req, res) {
   });
 }
 
-async function getAll(req, res) {
+async function getAll(req, res, next) {
   const { filters, pagination } = req.query;
   const errors = validateFilters(filters, Course.rawAttributes, Course.name);
   const { id } = req.user;
@@ -52,7 +51,7 @@ async function getCourseById(req, res) {
   if (!Number(id)) {
     throw new HttpError('ID is not a number', BAD_REQUEST);
   }
-  return Course.scope({ method: ['enrolledByUserId', req.user.id] }).findByPk(id, {
+  const course = await Course.scope({ method: ['enrolledByUserId', req.user.id] }).findByPk(id, {
     include: [
       {
         model: Category,
