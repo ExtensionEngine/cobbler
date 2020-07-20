@@ -33,7 +33,7 @@ function parseFilter(raw) {
   return operation ? operation(value) : raw;
 }
 
-function validateFilters(filters, rawAttributes, modelName) {
+function validateFilters(filters = {}, rawAttributes, modelName) {
   const errors = {};
   const validAttributes = Object.keys(rawAttributes);
   const filteredAttributes = Object.keys(filters);
