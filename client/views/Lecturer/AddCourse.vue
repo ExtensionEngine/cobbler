@@ -1,6 +1,6 @@
 <template>
   <div>
-    <second-bar />
+    <navigation-helper-bar />
     <div class="course-container flex-h justify-center">
       <base-form
         v-slot="{ isFormValid }"
@@ -96,8 +96,8 @@ import BaseSelect from '../../components/common/BaseSelect';
 import Field from '../../components/common/BaseForm/Field';
 import { getAllCategories } from '../../api/categories';
 import isEmpty from 'lodash/isEmpty';
+import NavigationHelperBar from '../../components/Lecturer/NavigationHelperBar';
 import paths from '../../router/paths';
-import SecondBar from '../../components/Lecturer/SecondBar';
 
 export default {
   name: 'add-course',
@@ -153,7 +153,7 @@ export default {
     BaseInput,
     BaseSelect,
     Field,
-    SecondBar
+    NavigationHelperBar
   }
 };
 </script>

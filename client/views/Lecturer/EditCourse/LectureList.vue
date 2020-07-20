@@ -1,14 +1,14 @@
 <template>
   <div class="lecture-list flex-h justify-center">
     <collapsible
-      v-for="lecture in lectures"
-      :key="lecture.id"
-      @toggleExpand="handleExpandToggle"
-      :id="lecture.id"
-      :title="lecture.name"
-      :expanded="lecture.expanded"
+      v-for="{ id, name, expanded, description } in lectures"
+      :key="id"
+      @toggle-expand="handleExpandToggle"
+      :id="id"
+      :title="name"
+      :expanded="expanded"
       class="lecture">
-      <p>{{ lecture.description || 'No description available yet' }}</p>
+      <p>{{ description || 'No description available yet' }}</p>
     </collapsible>
     <p v-if="!lectures.length">No lectures added yet!</p>
   </div>

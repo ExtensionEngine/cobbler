@@ -1,6 +1,6 @@
 <template>
   <div v-if="course">
-    <second-bar />
+    <navigation-helper-bar />
     <course-form :course="course" />
     <div class="lectures-wrapper flex-h justify-center">
       <div class="lectures-container">
@@ -14,11 +14,11 @@
 
 <script>
 import CourseForm from './CourseForm';
-import DateFormat from 'date-fns/format';
+import dateFormat from 'date-fns/format';
 import { getCourse } from '../../../api/courses';
 import LectureForm from './LectureForm';
 import LectureList from './LectureList';
-import SecondBar from '../../../components/Lecturer/SecondBar';
+import NavigationHelperBar from '../../../components/Lecturer/NavigationHelperBar';
 
 export default {
   name: 'edit-course',
@@ -46,8 +46,8 @@ export default {
       name,
       description,
       category,
-      startDate: startDate && DateFormat(new Date(startDate), 'yyyy-MM-dd'),
-      endDate: endDate && DateFormat(new Date(endDate), 'yyyy-MM-dd')
+      startDate: startDate && dateFormat(new Date(startDate), 'yyyy-MM-dd'),
+      endDate: endDate && dateFormat(new Date(endDate), 'yyyy-MM-dd')
     };
     this.lectures = lectures;
   },
@@ -55,7 +55,7 @@ export default {
     CourseForm,
     LectureForm,
     LectureList,
-    SecondBar
+    NavigationHelperBar
   }
 };
 </script>

@@ -1,7 +1,9 @@
 <template>
   <div>
-    <button @click="handleExpand" type="button" class="collapsible">{{ title }}</button>
-    <div :class="{expanded}" class="content">
+    <button @click="$emit('toggle-expand', id)" type="button" class="collapsible text-center">
+      {{ title }}
+    </button>
+    <div :class="{ expanded }" class="content">
       <slot></slot>
     </div>
   </div>
@@ -14,11 +16,6 @@ export default {
     id: { type: Number, default: null },
     title: { type: String, default: null },
     expanded: { type: Boolean, default: false }
-  },
-  methods: {
-    handleExpand() {
-      this.$emit('toggleExpand', this.id);
-    }
   }
 };
 </script>
@@ -32,7 +29,6 @@ export default {
   width: 100%;
   border: solid 1px var(--color-gray);
   border-radius: 3px;
-  text-align: center;
   outline: none;
 }
 .active, .collapsible:hover {
@@ -41,12 +37,12 @@ export default {
 .content {
   padding: 0 var(--spacing-md);
   overflow: hidden;
-  background-color: #f1f1f1;
+  background-color: var(--colors-white);
   border: solid 1px var(--color-gray);
   max-height: 0;
   transition: all .3s ease;
 }
 .expanded {
-  max-height: 100vh;
+  max-height: var(--measure-xxs);
 }
 </style>

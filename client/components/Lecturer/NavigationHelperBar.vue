@@ -1,24 +1,22 @@
 <template>
-  <div class="second-bar">
-    <span @click="handleBackClick" class="back-button">Go back</span>
+  <div class="navigation-helper-bar">
+    <span @click="goBack" class="back-button">Go back</span>
   </div>
 </template>
 
 <script>
-import paths from '../../router/paths';
-
 export default {
-  name: 'second-bar',
+  name: 'navigation-helper-bar',
   methods: {
-    handleBackClick() {
-      this.$router.push(paths.lecturer.base);
+    goBack() {
+      this.$router.go(-1);
     }
   }
 };
 </script>
 
 <style scoped>
-.second-bar {
+.navigation-helper-bar {
   background: var(--color-gray-500);
   padding: var(--spacing-sm) var(--spacing-lg);
 }
