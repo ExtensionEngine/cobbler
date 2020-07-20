@@ -10,7 +10,6 @@ module.exports = {
   create,
   getAll,
   getCourseById,
-  checkNameAvailability,
   update
 };
 
@@ -77,11 +76,4 @@ async function update(req, res) {
   );
   if (!isUpdated) return res.status(NOT_FOUND).json('Course does not exist');
   return res.status(CREATED).json({ data: updatedCourses });
-}
-
-async function checkNameAvailability({ body: { name } }, res, next) {
-  if (!name) throw new HttpError('No name value in the request body', BAD_REQUEST);
-
-  const course = await Course.findOne({ where: { name } });
-  res.status(OK).json({ data: !course });
 }

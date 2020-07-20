@@ -10,7 +10,7 @@ export function getMyCourses() {
     .then(flattenData);
 }
 
-export function checkNameAvailability(name) {
-  return thwack.post(endpoints.courses.checkNameAvailability, { name })
+export function getByName(name) {
+  return thwack.get(endpoints.courses.getByName(name))
     .then(flattenData);
 }
