@@ -6,6 +6,7 @@ export default {
     base: '/lecturer',
     addCourse: '/lecturer/add-course'
   },
+  courses: '/courses/:id',
   learner: {
     base: '/'
   },

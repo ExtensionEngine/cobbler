@@ -36,7 +36,7 @@ function initialize() {
     .authenticate()
     .then(() => umzug.up())
     .then(() => logger.info('👌 Connected to db'))
-    .catch(() => logger.error('Failed to connect to db'));
+    .catch(err => logger.error('Failed to connect to db ', err));
 }
 
 const models = {

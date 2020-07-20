@@ -1,8 +1,8 @@
-import Course from '../views/CourseOverview.vue';
-import Dashboard from '../views/Dashboard';
 import AddCourse from '../views/Lecturer/AddCourse';
 import AdminDashboard from '../views/Admin/Dashboard';
+import Course from '../views/CourseOverview.vue';
 import curry from 'lodash/curry';
+import Dashboard from '../views/Dashboard';
 import every from 'lodash/every';
 import Forbidden from '../views/Forbidden';
 import Layout from '../components/common/Layout';
@@ -20,45 +20,50 @@ const routes = [
   {
     path: paths.base,
     component: Layout,
-    children: [{
-      path: '',
-      name: 'Dashboard',
-      component: Dashboard
-    },
-    {
-      path: paths.courses,
-      name: 'Course',
-      component: Course
-    },
-      path: paths.lecturer.base,
-      name: 'Lecturer dashboard',
-      component: LecturerDashboard,
-      meta: {
-        roles: ['LECTURER']
+    children: [
+      {
+        path: '/',
+        name: 'Dashboard',
+        component: Dashboard
+      },
+      {
+        path: paths.courses,
+        name: 'Course',
+        component: Course
+      },
+      {
+        path: paths.lecturer.base,
+        name: 'Lecturer dashboard',
+        component: LecturerDashboard,
+        meta: {
+          roles: ['LECTURER']
+        }
+      },
+      {
+        path: paths.lecturer.addCourse,
+        name: 'Add course',
+        component: AddCourse,
+        meta: {
+          roles: ['LECTURER']
+        }
+      },
+      {
+        path: paths.learner.base,
+        name: 'Learner dashboard',
+        component: LearnerDashboard,
+        meta: {
+          roles: ['LEARNER']
+        }
+      },
+      {
+        path: paths.admin.base,
+        name: 'Admin dashboard',
+        component: AdminDashboard,
+        meta: {
+          roles: ['ADMIN']
+        }
       }
-    }, 
-    {
-      path: paths.lecturer.addCourse,
-      name: 'Add course',
-      component: AddCourse,
-      meta: {
-        roles: ['LECTURER']
-      }
-    }, {
-      path: paths.learner.base,
-      name: 'Learner dashboard',
-      component: LearnerDashboard,
-      meta: {
-        roles: ['LEARNER']
-      }
-    }, {
-      path: paths.admin.base,
-      name: 'Admin dashboard',
-      component: AdminDashboard,
-      meta: {
-        roles: ['ADMIN']
-      }
-    }]
+    ]
   },
   {
     path: paths.login,
@@ -89,7 +94,7 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-export function getBasePath() {
+export function getBasepath() {
   switch (store.state.auth.role) {
     case 'ADMIN':
       return paths.admin.base;

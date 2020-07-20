@@ -2,7 +2,7 @@
   <div>
     <div class="flex-h justify-start mb-md">
       <span class="small-label category-label mr-xs pt-xxs pb-xxs pl-sm pr-sm">
-        {{ course.Category.name }}
+        {{ course.category.name }}
       </span>
       <span class="small-label date-label mr-xs pt-xxs pb-xxs pl-sm pr-sm">
         {{ course.startDate | formatDate }} - {{ course.endDate | formatDate }}

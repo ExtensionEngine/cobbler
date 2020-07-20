@@ -5,7 +5,7 @@
     :class="{ enrolled: course && course.isEnrolled, unavailable: course && !course.available }">
     <template v-if="course">
       <div class="course-card-title">
-        <p class="category-name">{{ course.Category.name }}</p>
+        <p class="category-name">{{ course.category.name }}</p>
         <h3>{{ course.name }}</h3>
       </div>
       <div class="course-card-description">

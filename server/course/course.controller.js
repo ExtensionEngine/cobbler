@@ -1,6 +1,6 @@
 'use strict';
 
-const { BAD_REQUEST, CREATED, NOT_FOUND } = require('http-status-codes');
+const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
 const { Category, Course, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
@@ -22,7 +22,7 @@ function create(req, res) {
   });
 }
 
-async function getAll(req, res, next) {
+async function getAll(req, res) {
   const { filters, pagination } = req.query;
   const errors = validateFilters(filters, Course.rawAttributes, Course.name);
   const { id } = req.user;
@@ -41,7 +41,7 @@ async function getAll(req, res, next) {
     subQuery: false,
     order: [[literal('"isEnrolled"'), 'DESC'], ['updatedAt', 'DESC']]
   };
-  const courses = await Course.scope({ method: ['enrolledByUserId', id] }).findAll(query)
+  const courses = await Course.scope({ method: ['enrolledByUserId', id] }).findAll(query);
   return res.status(OK).json({ data: courses });
 }
 
@@ -60,6 +60,7 @@ async function getCourseById(req, res) {
       },
       {
         model: User,
+        as: 'user',
         required: false,
         attributes: ['firstName', 'lastName', 'email', 'role']
       }

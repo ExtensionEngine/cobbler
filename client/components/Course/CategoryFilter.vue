@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { getAll } from '../../api/categories';
+import { getAllCategories } from '../../api/categories';
 
 export default {
   name: 'category-filter',
@@ -32,8 +32,8 @@ export default {
     };
   },
   mounted() {
-    getAll().then(categories => {
-      this.categories = categories.data.data;
+    getAllCategories().then(categories => {
+      this.categories = categories.data;
     });
   }
 };
