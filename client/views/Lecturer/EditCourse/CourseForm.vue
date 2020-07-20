@@ -86,13 +86,14 @@
 </template>
 
 <script>
-import { checkNameAvailability, updateCourse } from '../../../api/courses';
+import { getByName, updateCourse } from '../../../api/courses';
 import BaseButton from '../../../components/common/BaseButton';
 import BaseForm from '../../../components/common/BaseForm';
 import BaseInput from '../../../components/common/BaseInput';
 import BaseSelect from '../../../components/common/BaseSelect';
 import Field from '../../../components/common/BaseForm/Field';
 import { getAllCategories } from '../../../api/categories';
+import isEmpty from 'lodash/isEmpty';
 
 export default {
   name: 'course-form',
@@ -118,12 +119,12 @@ export default {
     async onUpdate() {
       try {
         this.$toasted.global.formSubmitting();
-        const { data } = await updateCourse({
+        const { data: [updatedCourse] } = await updateCourse({
           ...this.course,
           categoryId: this.course.category.id
         });
-        if (data[0]) {
-          this.originalName = data[1][0].name;
+        if (updatedCourse) {
+          this.originalName = updatedCourse.name;
           this.$toasted.global.formSuccess({
             message: 'Course updated successfully!'
           });
@@ -137,8 +138,8 @@ export default {
       }
     },
     async checkName(name) {
-      const { data } = await checkNameAvailability(name);
-      return data;
+      const { data } = await getByName(name);
+      return isEmpty(data);
     }
   },
   async created() {
