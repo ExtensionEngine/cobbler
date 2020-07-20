@@ -14,7 +14,6 @@
 
 <script>
 import CourseCard from './CourseCard';
-import format from 'date-fns/format';
 import { getMyCourses } from '../../api/courses';
 
 export default {
@@ -28,11 +27,6 @@ export default {
       this.$toasted.global.formError({ message: 'Something went wrong while getting you courses' });
     } finally {
       this.loading = false;
-    }
-  },
-  filters: {
-    formatDate(date) {
-      return format(new Date(date), 'yyyy-MM-dd');
     }
   },
   components: {

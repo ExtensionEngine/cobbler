@@ -6,7 +6,10 @@
     <div class="card-info">
       <h3 class="course-title">{{ course.name }}</h3>
       <p>{{ course.description }}</p>
-      <span>{{ course | formatDates }}</span>
+      <span v-if="course.startDate && course.endDate">
+        {{ course.startDate | formatDate }} - {{ course.endDate | formatDate }}
+      </span>
+      <span v-else>There is no start or end date set</span>
     </div>
     <div class="category">
       <span>{{ course.category.name }}</span>
@@ -25,14 +28,6 @@ export default {
   methods: {
     handleCourseClick(id) {
       this.$router.push(paths.lecturer.editCourse(id));
-    }
-  },
-  filters: {
-    formatDates({ startDate, endDate }) {
-      if (!startDate || !endDate) {
-        return 'The start date, end date or both are not defined yet!';
-      }
-      return `${new Date(startDate).toDateString()} - ${new Date(endDate).toDateString()}`;
     }
   }
 };
