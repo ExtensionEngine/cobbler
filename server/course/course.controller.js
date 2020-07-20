@@ -16,19 +16,14 @@ module.exports = {
 };
 
 function create(req, res) {
-  const courseInfo = pick(req.body, [
-    'name',
-    'description',
-    'categoryId',
-    'startDate',
-    'endDate'
-  ]);
-  return Course.create(courseInfo)
-    .then(course => course.addUser(req.user))
-    .then(course => res.status(CREATED).json({ data: course }));
+  return sequelize.transaction(async transaction => {
+    const course = await Course.create(req.validatedBody, { transaction });
+    const enrollment = await course.addUser(req.user, { transaction });
+    return res.status(CREATED).json({ data: { course, enrollment } });
+  });
 }
 
-function getAll(req, res, next) {
+async function getAll(req, res) {
   const { filters, pagination } = req.query;
   const errors = validateFilters(filters, Course.rawAttributes, Course.name);
   const { id } = req.user;
@@ -51,7 +46,7 @@ function getAll(req, res, next) {
     .catch(next);
 }
 
-function getCourseById(req, res) {
+async function getCourseById(req, res) {
   const { id } = req.params;
 
   if (!Number(id)) {
@@ -69,32 +64,21 @@ function getCourseById(req, res) {
         attributes: ['firstName', 'lastName', 'email', 'role']
       }
     ]
-  }).then(course => {
-    if (!course) return res.status(NOT_FOUND).send('Course not found');
-    return res.json({ data: course });
   });
+  if (!course) return res.status(NOT_FOUND).send('Course not found');
+  return res.json({ data: course });
 }
 
-function update(req, res) {
-  const courseInfo = pick(req.body, [
-    'name',
-    'description',
-    'startDate',
-    'endDate',
-    'categoryId'
-  ]);
-  return Course.update(
-    courseInfo,
+async function update(req, res) {
+  const [isUpdated, updatedCourses] = await Course.update(
+    req.validatedBody,
     {
       where: {
         id: req.params.id
       },
       returning: true
     }
-  ).then(course => {
-    if (!course[1].length) {
-      return res.status(NOT_FOUND).json('Course does not exist');
-    }
-    return res.status(CREATED).json({ data: course });
-  });
+  );
+  if (!isUpdated) return res.status(NOT_FOUND).json('Course does not exist');
+  return res.status(CREATED).json({ data: updatedCourses });
 }

@@ -1,6 +1,7 @@
 'use strict';
 
 require('dotenv').config();
+require('express-async-errors');
 const { apiQueryParser } = require('./shared/util/apiQueryParser');
 const auth = require('./shared/auth');
 const bodyParser = require('body-parser');
@@ -10,13 +11,13 @@ const express = require('express');
 const helmet = require('helmet');
 const { INTERNAL_SERVER_ERROR } = require('http-status-codes');
 const logger = require('./shared/logger');
+const { omit } = require('lodash');
 const { port } = require('../config/server');
 const router = require('./router.js');
 const app = express();
 
 app.use(cors());
 app.use(helmet());
-app.use(cors());
 app.use(bodyParser.json());
 app.use(auth.initialize());
 
@@ -35,17 +36,18 @@ function errorHandler(err, req, res, next) {
   res.status(INTERNAL_SERVER_ERROR).json('Something went wrong');
 }
 
-function requestLogger(req, res, next) {
-  const reqSerializer = req => {
-    return {
-      method: req.method,
-      url: req.originalUrl || req.url,
-      headers: req.headers,
-      remoteAddress: req.connection.remoteAddress,
-      remotePort: req.connection.remotePort
-    };
+function requestLogger({ method, originalUrl, url, headers, connection }, res, next) {
+  const { remoteAddress, remotePort } = connection;
+  const reqSerializer = {
+    method,
+    url: originalUrl || url,
+    headers: process.env.NODE_ENV === 'production'
+      ? omit(headers, 'authorization')
+      : headers,
+    remoteAddress,
+    remotePort
   };
-  logger.http('%o', reqSerializer(req));
+  logger.info('%o', reqSerializer);
   next();
 }
 

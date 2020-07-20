@@ -5,11 +5,9 @@ const { cli, colorize, combine, printf, splat } = format;
 
 const levels = {
   error: 0,
-  debug: 1,
+  info: 1,
   warn: 2,
-  sql: 3,
-  http: 4,
-  info: 5
+  debug: 3
 };
 
 const logFormat = combine(
@@ -18,9 +16,7 @@ const logFormat = combine(
       info: 'blue',
       error: 'red',
       debug: 'green',
-      warn: 'orange',
-      http: 'white',
-      sql: 'cyan'
+      warn: 'orange'
     }
   }),
   colorize({ all: true }),
@@ -30,7 +26,7 @@ const logFormat = combine(
 
 const logger = createLogger({
   format: logFormat,
-  level: 'info',
+  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
   levels,
   transports: [
     new (transports.Console)()
