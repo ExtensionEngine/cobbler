@@ -5,8 +5,18 @@ import thwack from 'thwack';
 export const endpoints = {
   auth: {
     login: 'login'
+  },
+  categories: {
+    base: 'categories'
+  },
+  courses: {
+    base: 'courses',
+    myCourses: 'me/courses',
+    getByName: name => `courses?name=${name}`
   }
 };
+
+export const flattenData = ({ data }) => data;
 
 const configureThwack = () => {
   thwack.defaults.baseURL = process.env.VUE_APP_API_HOST;
