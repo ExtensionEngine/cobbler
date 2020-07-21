@@ -182,10 +182,5 @@ export default {
   .end-date-form-item {
     grid-column: start / end;
   }
-  .button-form-item {
-    grid-column: start / end;
-    grid-row: sixth;
-    max-height: 30px;
-  }
 }
 </style>

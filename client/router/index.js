@@ -21,35 +21,35 @@ const routes = [
     component: Layout,
     children: [{
       path: paths.lecturer.base,
-      name: 'Lecturer dashboard',
+      name: 'lecturer-dashboard',
       component: LecturerDashboard,
       meta: {
         roles: ['LECTURER']
       }
     }, {
       path: paths.lecturer.addCourse,
-      name: 'Add course',
+      name: 'add-course',
       component: AddCourse,
       meta: {
         roles: ['LECTURER']
       }
     }, {
-      path: paths.lecturer.editCourse(':id'),
-      name: 'Edit course',
+      path: paths.lecturer.editCourse,
+      name: 'edit-course',
       component: EditCourse,
       meta: {
         roles: ['LECTURER']
       }
     }, {
       path: paths.learner.base,
-      name: 'Learner dashboard',
+      name: 'learner-dashboard',
       component: LearnerDashboard,
       meta: {
         roles: ['LEARNER']
       }
     }, {
       path: paths.admin.base,
-      name: 'Admin dashboard',
+      name: 'admin-dashboard',
       component: AdminDashboard,
       meta: {
         roles: ['ADMIN']
@@ -58,12 +58,12 @@ const routes = [
   },
   {
     path: paths.login,
-    name: 'Login',
+    name: 'login',
     component: Login
   },
   {
     path: paths.forbidden,
-    name: 'Forbidden',
+    name: 'forbidden',
     component: Forbidden
   }
 ];

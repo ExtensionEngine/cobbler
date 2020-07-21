@@ -3,7 +3,7 @@
     <collapsible
       v-for="{ id, name, expanded, description } in lectures"
       :key="id"
-      @toggle-expand="handleExpandToggle"
+      @toggle-expand="$emit('expand', id)"
       :id="id"
       :title="name"
       :expanded="expanded"
@@ -21,11 +21,6 @@ export default {
   name: 'lecture-list',
   props: {
     lectures: { type: Array, required: true }
-  },
-  methods: {
-    handleExpandToggle(lectureId) {
-      this.$emit('expand', lectureId);
-    }
   },
   components: {
     Collapsible

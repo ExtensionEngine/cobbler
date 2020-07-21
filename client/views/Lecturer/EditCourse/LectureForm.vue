@@ -2,7 +2,7 @@
   <div>
     <base-button
       @click="toggleAddLecture"
-      :class="{'add-lecture-btn-active': isActive}"
+      :class="{ 'add-lecture-btn-active': isActive }"
       class="add-lecture-btn flex-h justify-center align-center"
       outlined>
       <span :class="{ rotate: isActive }">+</span>

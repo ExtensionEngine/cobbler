@@ -18,8 +18,6 @@
 </template>
 
 <script>
-import paths from '../../router/paths';
-
 export default {
   name: 'course-card',
   props: {
@@ -27,7 +25,7 @@ export default {
   },
   methods: {
     handleCourseClick(id) {
-      this.$router.push(paths.lecturer.editCourse(id));
+      this.$router.push({ name: 'edit-course', params: { id } });
     }
   }
 };
