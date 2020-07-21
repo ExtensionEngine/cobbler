@@ -28,17 +28,16 @@ const routes = [
       meta: {
         roles: ['LECTURER']
       }
-     
-    }, 
-    {
-        path: '/',
-        name: 'Dashboard',
-        component: Dashboard
     },
-        path: paths.courses,
     {
-        name: 'Course',
-        component: Course
+      path: '/',
+      name: 'Dashboard',
+      component: Dashboard
+    },
+    {
+      path: paths.courses,
+      name: 'Course',
+      component: Course
     },
     {
       path: paths.lecturer.addCourse,

@@ -8,7 +8,7 @@
 <script>
 import Container from '../components/common/Container';
 import CoursePage from '../components/Course/CoursePage';
-import { getById } from '../api/courses';
+import { getCourse } from '../api/courses';
 
 export default {
   name: 'course-overview',
@@ -24,8 +24,8 @@ export default {
     }
   },
   async created() {
-    await getById(this.$route.params.id).then(course => {
-      this.course = course.data.data;
+    await getCourse(this.$route.params.id).then(course => {
+      this.course = course.data;
     });
   },
   components: {

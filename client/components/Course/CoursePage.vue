@@ -32,7 +32,7 @@
       <p>{{ course.description }}</p>
       <p>By: {{ lecturers }}</p>
     </div>
-    <lecture-container class="lectures" />
+    <lecture-container :lectures="course.lectures" class="lectures" />
   </div>
 </template>
 
@@ -51,8 +51,8 @@ export default {
   computed: {
     lecturers() {
       const lecturers = [];
-      if (!this.course.Users) return;
-      this.course.Users.forEach(user => {
+      if (!this.course.user) return;
+      this.course.user.forEach(user => {
         if (user.role === 'LECTURER') lecturers.push(`${user.firstName} ${user.lastName}`);
       });
       return lecturers.join(', ');
