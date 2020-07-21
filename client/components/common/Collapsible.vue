@@ -3,9 +3,11 @@
     <button @click="$emit('toggle-expand', id)" type="button" class="collapsible text-center">
       {{ title }}
     </button>
-    <div :class="{ expanded }" class="content">
-      <slot></slot>
-    </div>
+    <transition name="slide-fade">
+      <div v-show="expanded" class="content">
+        <slot></slot>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -39,10 +41,14 @@ export default {
   overflow: hidden;
   background-color: var(--colors-white);
   border: solid 1px var(--color-gray);
-  max-height: 0;
+}
+.slide-fade-enter-active,
+.slide-fade-leave-active {
   transition: all .3s ease;
 }
-.expanded {
-  max-height: var(--measure-xxs);
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(var(--spacing-md));
+  opacity: 0;
 }
 </style>
