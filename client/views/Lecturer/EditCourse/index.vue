@@ -6,7 +6,7 @@
       <div class="lectures-container">
         <span class="lectures-title">Lectures</span>
         <lecture-form @add="handleLectureAdd" />
-        <lecture-list @expand="handleExpandToggle" :lectures="lectures" />
+        <lecture-list :lectures="lectures" />
       </div>
     </div>
   </div>
@@ -29,11 +29,6 @@ export default {
     });
   },
   methods: {
-    handleExpandToggle(lectureId) {
-      this.lectures = this.lectures.map(lecture => lecture.id === lectureId
-        ? { ...lecture, expanded: !lecture.expanded }
-        : lecture);
-    },
     handleLectureAdd(lecture) {
       this.lectures.push(lecture);
     }

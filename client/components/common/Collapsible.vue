@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="$emit('toggle-expand', id)" type="button" class="collapsible text-center">
+    <button @click="expanded=!expanded" type="button" class="collapsible text-center">
       {{ title }}
     </button>
     <transition name="slide-fade">
@@ -14,11 +14,8 @@
 <script>
 export default {
   name: 'collapsible',
-  props: {
-    id: { type: Number, default: null },
-    title: { type: String, default: null },
-    expanded: { type: Boolean, default: false }
-  }
+  props: { title: { type: String, default: null } },
+  data: () => ({ expanded: false })
 };
 </script>
 

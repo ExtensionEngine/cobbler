@@ -3,10 +3,7 @@
     <collapsible
       v-for="{ id, name, expanded, description } in lectures"
       :key="id"
-      @toggle-expand="$emit('expand', id)"
-      :id="id"
       :title="name"
-      :expanded="expanded"
       class="lecture">
       <p>{{ description || 'No description available yet' }}</p>
     </collapsible>
