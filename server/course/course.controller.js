@@ -4,7 +4,7 @@ const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
 const { Category, Course, Enrollment, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
-const { validateFilters } = require('../shared/util/apiQueryParser');
+const queryParser = require('../shared/util/apiQueryParser');
 
 module.exports = {
   create,
@@ -23,8 +23,9 @@ function create(req, res) {
 
 async function getAll(req, res) {
   const { filters, pagination } = req.query;
-  const errors = validateFilters(filters, Course.rawAttributes, Course.name);
-  if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
+  const errors = queryParser.validateFilters(filters, Course.rawAttributes, Course.name);
+  console.log(errors);
+  if (isEmpty(errors) === false) return res.status(BAD_REQUEST).json({ errors });
   const query = {
     ...pagination,
     include: [
