@@ -21,7 +21,9 @@ const logFormat = combine(
   }),
   colorize({ all: true }),
   splat(),
-  printf(({ level, message }) => `[${level}]: ${message}`.replace('undefined', '\t'))
+  printf(({ level, message, stack }) => stack
+    ? `[${level}]: ${stack}`
+    : `[${level}]: ${message}`)
 );
 
 const logger = createLogger({

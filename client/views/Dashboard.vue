@@ -7,7 +7,7 @@
       @filter="refreshCourseList"
       class="search-bar" />
     <transition name="slide">
-      <top-drawer
+      <course-filters-drawer
         v-if="menu"
         @closed="handleCloseMenu" />
     </transition>
@@ -65,11 +65,11 @@
 import BaseButton from '../components/common/BaseButton';
 import breakPointsMixin from '../components/common/mixins/breakPointsMixin';
 import CourseCard from '../components/Course/CourseCard';
+import CourseFiltersDrawer from '../components/Course/CourseFiltersDrawer';
 import { format } from 'date-fns';
 import { generateQuery } from '../utils/queryParamGenerator';
 import { get } from '../api/courses';
 import SearchGroup from '../components/Course/SearchGroup';
-import TopDrawer from '../components/Course/TopDrawer';
 
 export default {
   mixins: [breakPointsMixin],
@@ -131,7 +131,7 @@ export default {
     }
   },
   components: {
-    BaseButton, CourseCard, SearchGroup, TopDrawer
+    BaseButton, CourseCard, SearchGroup, CourseFiltersDrawer
   }
 };
 </script>
@@ -183,7 +183,7 @@ i {
   margin-top: var(--spacing-lg);
 }
 .mobile-page-btns .material-btn {
-  margin: 0 10px;
+  margin: 0 var(--spacing-sm);
 }
 .search-bar {
   max-width: 20%;
@@ -197,7 +197,7 @@ i {
   top: var(--navbar-height);
   left: 0;
   width: 100%;
-  z-index: 100;
+  z-index: var(--z-dashboard);
   background-color: rgba(0, 0, 0, 0.726);
 }
 .slide-enter-active {

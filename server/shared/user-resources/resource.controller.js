@@ -29,10 +29,10 @@ async function getCoursesByUser(req, res) {
   res.json({ data: course });
 }
 
-function isEnrolled(req, res) {
+async function isEnrolled(req, res) {
   const { email } = req.user;
   const { id } = req.params;
-  return Course.findOne({
+  const course = await Course.findOne({
     where: { id },
     include: [
       {
@@ -40,11 +40,6 @@ function isEnrolled(req, res) {
         where: { email }
       }
     ]
-  }).then(course => {
-    if (course) {
-      res.json({ enrolled: true });
-    } else {
-      res.json({ enrolled: false });
-    }
   });
+  res.json({ enrolled: !!course });
 }

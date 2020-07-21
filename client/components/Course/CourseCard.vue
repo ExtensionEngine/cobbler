@@ -11,7 +11,7 @@
       <div class="course-card-description">
         <p>{{ course.description }}</p>
         <p class="date">
-          {{ course | getDateRange }}
+          {{ course.startDate | formatDate }} - {{ course.endDate | formatDate }}
         </p>
       </div>
     </template>
@@ -39,11 +39,9 @@ export default {
     }
   },
   filters: {
-    getDateRange(course) {
-      const { startDate, endDate } = course;
-      if (!(startDate || endDate)) { return 'No Date specified'; }
-      return `${format(new Date(startDate), dateFormat)} - 
-              ${format(new Date(endDate), dateFormat)}`;
+    formatDate(date) {
+      if (!date) { return ''; }
+      return `${format(new Date(date), dateFormat)}`;
     }
   }
 };
@@ -94,7 +92,7 @@ export default {
   }
 }
 .course-card:hover {
-  z-index: 1;
+  z-index: var(--z-card);
   cursor: pointer;
   transform: scale(1.1);
   transition-duration: 0.3s;

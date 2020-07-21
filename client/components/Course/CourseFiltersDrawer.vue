@@ -17,7 +17,7 @@ import { format } from 'date-fns';
 import SearchGroup from './SearchGroup';
 
 export default {
-  name: 'top-drawer',
+  name: 'course-filters-drawer',
   data() {
     return {
       filterParams: {

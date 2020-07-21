@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex-h justify-start mb-md">
-      <span class="small-label category-label mr-xs pt-xxs pb-xxs pl-sm pr-sm">
+      <span v-if="course.category" class="small-label category-label mr-xs pt-xxs pb-xxs pl-sm pr-sm">
         {{ course.category.name }}
       </span>
       <span class="small-label date-label mr-xs pt-xxs pb-xxs pl-sm pr-sm">
