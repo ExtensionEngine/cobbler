@@ -3,6 +3,7 @@ import AdminDashboard from '../views/Admin/Dashboard';
 import Course from '../views/CourseOverview.vue';
 import curry from 'lodash/curry';
 import Dashboard from '../views/Dashboard';
+import EditCourse from '../views/Lecturer/EditCourse';
 import every from 'lodash/every';
 import Forbidden from '../views/Forbidden';
 import Layout from '../components/common/Layout';
@@ -20,59 +21,63 @@ const routes = [
   {
     path: paths.base,
     component: Layout,
-    children: [
-      {
+    children: [{
+      path: paths.lecturer.base,
+      name: 'lecturer-dashboard',
+      component: LecturerDashboard,
+      meta: {
+        roles: ['LECTURER']
+      }
+     
+    }, 
+    {
         path: '/',
         name: 'Dashboard',
         component: Dashboard
-      },
-      {
+    },
         path: paths.courses,
+    {
         name: 'Course',
         component: Course
-      },
-      {
-        path: paths.lecturer.base,
-        name: 'Lecturer dashboard',
-        component: LecturerDashboard,
-        meta: {
-          roles: ['LECTURER']
-        }
-      },
-      {
-        path: paths.lecturer.addCourse,
-        name: 'Add course',
-        component: AddCourse,
-        meta: {
-          roles: ['LECTURER']
-        }
-      },
-      {
-        path: paths.learner.base,
-        name: 'Learner dashboard',
-        component: LearnerDashboard,
-        meta: {
-          roles: ['LEARNER']
-        }
-      },
-      {
-        path: paths.admin.base,
-        name: 'Admin dashboard',
-        component: AdminDashboard,
-        meta: {
-          roles: ['ADMIN']
-        }
+    },
+    {
+      path: paths.lecturer.addCourse,
+      name: 'add-course',
+      component: AddCourse,
+      meta: {
+        roles: ['LECTURER']
       }
-    ]
+    }, {
+      path: paths.lecturer.editCourse,
+      name: 'edit-course',
+      component: EditCourse,
+      meta: {
+        roles: ['LECTURER']
+      }
+    }, {
+      path: paths.learner.base,
+      name: 'learner-dashboard',
+      component: LearnerDashboard,
+      meta: {
+        roles: ['LEARNER']
+      }
+    }, {
+      path: paths.admin.base,
+      name: 'admin-dashboard',
+      component: AdminDashboard,
+      meta: {
+        roles: ['ADMIN']
+      }
+    }]
   },
   {
     path: paths.login,
-    name: 'Login',
+    name: 'login',
     component: Login
   },
   {
     path: paths.forbidden,
-    name: 'Forbidden',
+    name: 'forbidden',
     component: Forbidden
   }
 ];

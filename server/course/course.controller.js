@@ -1,7 +1,7 @@
 'use strict';
 
 const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
-const { Category, Course, sequelize, User } = require('../shared/database');
+const { Category, Course, Enrollment, Lecture, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
 const { literal } = require('sequelize');
@@ -55,8 +55,11 @@ async function getCourseById(req, res) {
     include: [
       {
         model: Category,
-        as: 'category',
-        attributes: ['name']
+        as: 'category'
+      },
+      {
+        model: Lecture,
+        as: 'lectures'
       },
       {
         model: User,

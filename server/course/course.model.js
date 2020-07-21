@@ -41,7 +41,7 @@ class Course extends Model {
     };
   }
 
-  static associate({ Category, User, Enrollment }) {
+  static associate({ Category, User, Enrollment, Lecture }) {
     this.belongsTo(Category, {
       foreignKey: 'categoryId',
       as: 'category'
@@ -50,6 +50,10 @@ class Course extends Model {
       through: Enrollment,
       foreignKey: { name: 'courseId', field: 'course_id' },
       as: 'user'
+    });
+    this.hasMany(Lecture, {
+      foreignKey: 'courseId',
+      as: 'lectures'
     });
     this.hasMany(Enrollment, { foreignKey: 'course_id' });
   }

@@ -19,3 +19,13 @@ export function getByName(name) {
   return thwack.get(endpoints.course.getByName(name))
     .then(flattenData);
 }
+
+export function getCourse(id) {
+  return thwack.get(endpoints.courses.getById(id))
+    .then(flattenData);
+}
+
+export function updateCourse(course) {
+  return thwack.patch(endpoints.courses.update(course.id), course)
+    .then(flattenData);
+}

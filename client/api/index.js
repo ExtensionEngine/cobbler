@@ -11,6 +11,7 @@ export const endpoints = {
     byId: id => `courses/${id}`,
     enroll: id => `courses/${id}/enroll`,
     myCourses: 'me/courses',
+    update: id => `courses/${id}`
     getByName: name => `courses?name=${name}`
   },
   enroll: {
