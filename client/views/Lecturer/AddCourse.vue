@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="second-bar">
-      <span @click="goBack" class="back-button">Go back</span>
-    </div>
+    <navigation-helper-bar />
     <div class="course-container flex-h justify-center">
       <base-form
         v-slot="{ isFormValid }"
@@ -98,6 +96,7 @@ import BaseSelect from '../../components/common/BaseSelect';
 import Field from '../../components/common/BaseForm/Field';
 import { getAllCategories } from '../../api/categories';
 import isEmpty from 'lodash/isEmpty';
+import NavigationHelperBar from '../../components/Lecturer/NavigationHelperBar';
 import paths from '../../router/paths';
 
 export default {
@@ -139,9 +138,6 @@ export default {
         this.$toasted.global.formError({ message: 'Something went wrong' });
       }
     },
-    goBack() {
-      this.$router.push(paths.lecturer.base);
-    },
     async checkName(name) {
       const { data } = await getByName(name);
       return isEmpty(data);
@@ -156,12 +152,13 @@ export default {
     BaseForm,
     BaseInput,
     BaseSelect,
-    Field
+    Field,
+    NavigationHelperBar
   }
 };
 </script>
 
-<style>
+<style scoped>
 .course-container {
   padding: var(--spacing-xl) var(--spacing-md);
 }
@@ -169,7 +166,7 @@ export default {
   width: 100%;
   max-width: var(--measure-md);
   display: grid;
-  grid-template-columns: [start] 1fr [middle] 1fr [end];
+  grid-template-columns: [start] 1fr 1fr [end];
   grid-template-rows: repeat(5, 1fr);
   grid-column-gap: var(--spacing-xs);
   grid-row-gap: var(--spacing-xs);
@@ -179,20 +176,6 @@ export default {
 }
 .button-form-item {
   max-height: 30px;
-}
-.second-bar {
-  background: var(--color-gray-500);
-  padding: var(--spacing-sm) var(--spacing-lg);
-}
-.back-button {
-  background: var(--color-gray);
-  border-radius: 3px;
-  padding: var(--spacing-xxs) var(--spacing-xs);
-  cursor: pointer;
-  color: var(--color-white)
-}
-.back-button:hover {
-  opacity: .8;
 }
 @media only screen and (max-width: 480px) {
   .start-date-form-item,

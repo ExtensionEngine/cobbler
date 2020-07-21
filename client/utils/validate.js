@@ -25,9 +25,13 @@ extend('lengthBetween', {
 });
 
 extend('uniqueCourse', {
-  async validate(name, { checkName }) {
-    const isValid = checkName(name);
-    return isValid || 'The name is taken';
+  async validate(name, { exception, checkName }) {
+    if (name === exception) return true;
+    const isValid = await checkName(name);
+    if (isValid) {
+      return true;
+    }
+    return 'The name is taken';
   },
-  params: ['checkName']
+  params: ['checkName', 'exception']
 });

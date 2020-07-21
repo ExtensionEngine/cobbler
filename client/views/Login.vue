@@ -103,7 +103,7 @@ export default {
   box-shadow: 2px 6px 9px 0px var(--color-gray);
 }
 .input-element {
-  margin: 10px 0;
+  margin: var(--spacing-sm) 0;
   box-shadow: 2px 2px 5px 0px var(--color-gray);
 }
 @media only screen and (max-width: 480px) {

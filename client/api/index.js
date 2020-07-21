@@ -12,7 +12,12 @@ export const endpoints = {
   courses: {
     base: 'courses',
     myCourses: 'me/courses',
-    getByName: name => `courses?name=${name}`
+    getById: id => `courses/${id}`,
+    getByName: name => `courses?name=${name}`,
+    update: id => `courses/${id}`
+  },
+  lectures: {
+    base: 'lectures'
   }
 };
 

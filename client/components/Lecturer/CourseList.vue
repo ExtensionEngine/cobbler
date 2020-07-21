@@ -4,25 +4,16 @@
       <div v-for="n in 5" :key="n" class="course-card"></div>
     </template>
     <div v-else-if="!courses.length" class="no-content">There are no courses so far</div>
-    <div
-      v-for="{ name, description, category, startDate, endDate, id } in courses"
-      :key="id"
-      class="course-card flex-h">
-      <div class="card-info">
-        <h3 class="course-title">{{ name }}</h3>
-        <p>{{ description }}</p>
-        <span
-          v-if="startDate && endDate">
-          {{ startDate | formatDate }} - {{ endDate | formatDate }}
-        </span>
-      </div>
-      <span class="category">{{ category.name }}</span>
-    </div>
+    <course-card
+      v-for="course in courses"
+      :key="course.id"
+      :course="course"
+      clickable />
   </div>
 </template>
 
 <script>
-import format from 'date-fns/format';
+import CourseCard from './CourseCard';
 import { getMyCourses } from '../../api/courses';
 
 export default {
@@ -38,28 +29,19 @@ export default {
       this.loading = false;
     }
   },
-  filters: {
-    formatDate(date) {
-      return format(new Date(date), 'yyyy-MM-dd');
-    }
+  components: {
+    CourseCard
   }
 };
 </script>
 
 <style scoped>
-.category {
-  align-self: flex-end;
-  flex-basis: 150px;
-  text-align: end;
-}
-.card-info {
-  flex-grow: 1;
-}
 .course-card {
   background: var(--color-gray-500);
   border: solid 2px var(--color-black);
   padding: var(--spacing-xs);
   position: relative;
+  cursor: pointer;
 }
 .course-card:empty {
   height: 90px;
@@ -88,9 +70,6 @@ export default {
 .no-content {
   text-align: center;
   padding: var(--spacing-sm) 0;
-}
-.course-title {
-  margin: 0;
 }
 @media only screen and (max-width: 480px) {
   .course-card:empty:after {

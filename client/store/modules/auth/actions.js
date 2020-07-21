@@ -5,11 +5,11 @@ import router from '../../../router';
 
 export const login = ({ commit }, credentials) => {
   return loginRequest(credentials)
-  .then(({ data: token }) => {
-    localStorage.setItem('token', token);
-    const { sub: email, role } = jwtDecode(token);
-    return commit('login', { token, email, role });
-  });
+    .then(({ data: token }) => {
+      localStorage.setItem('token', token);
+      const { sub: email, role } = jwtDecode(token);
+      return commit('login', { token, email, role });
+    });
 };
 
 export const logout = ({ commit }) => {

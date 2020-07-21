@@ -4,7 +4,8 @@ export default {
   forbidden: '/403',
   lecturer: {
     base: '/lecturer',
-    addCourse: '/lecturer/add-course'
+    addCourse: '/lecturer/add-course',
+    editCourse: '/lecturer/edit-course/:id'
   },
   learner: {
     base: '/'
