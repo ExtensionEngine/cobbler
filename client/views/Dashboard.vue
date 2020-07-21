@@ -3,7 +3,7 @@
     class="wrapper flex-h justify-center"
     :class="{ overlayed: menu }">
     <search-group
-      v-if="isSmallScreen"
+      v-if="$isSmallScreen"
       @filter="refreshCourseList"
       class="search-bar" />
     <transition name="slide">
@@ -14,7 +14,7 @@
     <div
       class="main-content">
       <base-button
-        v-if="!isSmallScreen"
+        v-if="!$isSmallScreen"
         @click="showMenu"
         class="material-btn filter-btn">
         Filter
@@ -33,7 +33,7 @@
             :course="course" />
         </div>
       </div>
-      <div v-if="isSmallScreen" class="desktop-page-btns">
+      <div v-if="$isSmallScreen" class="desktop-page-btns">
         <button @click="paginateBack" class="arrow-btn">
           <i class="material-icons">
             keyboard_arrow_left
@@ -45,7 +45,7 @@
           </i>
         </button>
       </div>
-      <div v-if="!isSmallScreen" class="mobile-page-btns flex-h justify-space-around">
+      <div v-if="!$isSmallScreen" class="mobile-page-btns flex-h justify-space-around">
         <base-button
           @click="paginateBack"
           class="material-btn mobile-page-btn">
@@ -63,7 +63,6 @@
 
 <script>
 import BaseButton from '../components/common/BaseButton';
-import breakPointsMixin from '../components/common/mixins/breakPointsMixin';
 import CourseCard from '../components/Course/CourseCard';
 import CourseFiltersDrawer from '../components/Course/CourseFiltersDrawer';
 import { format } from 'date-fns';
@@ -72,8 +71,6 @@ import { get } from '../api/courses';
 import SearchGroup from '../components/Course/SearchGroup';
 
 export default {
-  mixins: [breakPointsMixin],
-
   data() {
     return {
       menu: false,

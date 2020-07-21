@@ -19,8 +19,6 @@
 </template>
 
 <script>
-import { dateFormat } from '../../utils/constants';
-import format from 'date-fns/format';
 
 export default {
   name: 'course-card',
@@ -33,15 +31,6 @@ export default {
   methods: {
     showCourse() {
       if (this.course.available) this.$router.push(`courses/${this.course.id}`);
-    },
-    formatDate(dateString) {
-      return format(new Date(dateString), dateFormat);
-    }
-  },
-  filters: {
-    formatDate(date) {
-      if (!date) { return ''; }
-      return `${format(new Date(date), dateFormat)}`;
     }
   }
 };

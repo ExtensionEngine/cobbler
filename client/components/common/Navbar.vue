@@ -1,11 +1,11 @@
 <template>
   <nav class="nav flex-h align-center justify-space-between">
-    <button v-if="!isTablet" class="menu-btn"><i class="material-icons">menu</i></button>
+    <button v-if="!$isTablet" class="menu-btn"><i class="material-icons">menu</i></button>
     <div class="nav-title flex-h justify-space-between">
       <i class="material-icons">analytics</i>
       <span class="mt-xxs ml-sm">Cobbler LMS</span>
     </div>
-    <div v-if="isSmallScreen" class="flex-h justify-end">
+    <div v-if="$isSmallScreen" class="flex-h justify-end">
       <base-button
         @click="logout"
         class="nav-item clickable material-btn auth-btn">
@@ -21,12 +21,9 @@
 
 <script>
 import BaseButton from '../common/BaseButton';
-import breakPointsMixin from './mixins/breakPointsMixin';
 
 export default {
   name: 'navbar',
-  mixins: [breakPointsMixin],
-
   methods: {
     logout() {
       this.$store.dispatch('logout');
