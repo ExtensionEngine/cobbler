@@ -8,7 +8,14 @@ import router from './router';
 import store from './store';
 import Vue from 'vue';
 
-Vue.use(breakPointPlugin, { xs: '480px', sm: '768px', md: '1024px', lg: '1200px' });
+const opts = {
+  isPhone: 'screen and (min-width: 480px)',
+  isTablet: 'screen and (min-width: 762px)',
+  isDesktop: 'screen and (min-width: 1200px)',
+  isSmallScreen: 'screen and (min-width: 1024px)'
+};
+
+Vue.use(breakPointPlugin, opts);
 Vue.config.productionTip = false;
 
 new Vue({

@@ -1,43 +1,28 @@
 export default function install(Vue, options) {
-  const { xs, sm, md, lg } = options;
+  const queries = [];
+  const state = {};
 
-  const phoneQuery = window.matchMedia(`screen and (min-width: ${xs})`);
-  const tabletQuery = window.matchMedia(`screen and (min-width: ${sm})`);
-  const smallScreenQuery = window.matchMedia(`screen and (min-width: ${md})`);
-  const desktopQuery = window.matchMedia(`screen and (min-width: ${lg})`);
-
-  const screenState = Vue.observable({
-    isPhone: phoneQuery.matches,
-    isTablet: tabletQuery.matches,
-    isSmallScreen: smallScreenQuery.matches,
-    isDesktop: desktopQuery.matches
+  // Parse queries and create state object
+  Object.entries(options).map(([key, value]) => {
+    queries.push({ [key]: window.matchMedia(value) });
+    state[key] = window.matchMedia(value).matches;
   });
 
-  Object.defineProperties(Vue.prototype, {
-    $isPhone: {
-      get: () => screenState.isPhone
-    },
-    $isTablet: {
-      get: () => screenState.isTablet
-    },
-    $isSmallScreen: {
-      get: () => screenState.isSmallScreen
-    },
-    $isDesktop: {
-      get: () => screenState.isDesktop
-    }
+  // Create reactive state of watchers
+  const screenState = Vue.observable(state);
+
+  // Dynamically create computed properties for breakpoints
+  const mixin = { computed: {} };
+  Object.entries(screenState).forEach(([key, value]) => {
+    mixin.computed[`$${key}`] = () => screenState[key];
   });
 
-  phoneQuery.addListener(mediaQueryList => {
-    screenState.isTablet = mediaQueryList.matches;
-  });
-  tabletQuery.addListener(mediaQueryList => {
-    screenState.isTablet = mediaQueryList.matches;
-  });
-  smallScreenQuery.addListener(mediaQueryList => {
-    screenState.isSmallScreen = mediaQueryList.matches;
-  });
-  desktopQuery.addListener(mediaQueryList => {
-    screenState.isSmallScreen = mediaQueryList.matches;
+  Vue.mixin(mixin);
+
+  // Start listeners for every defined breakpoint
+  queries.forEach(query => {
+    query[Object.keys(query)[0]].addListener(mediaQueryList => {
+      screenState[Object.keys(query)[0]] = mediaQueryList.matches;
+    });
   });
 }
