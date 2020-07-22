@@ -11,6 +11,10 @@ describe('Course service', () => {
   const res = { json: jest.fn(() => res), status: jest.fn(() => res) };
 
   describe('Get all courses', () => {
+    afterEach(function () {
+      sinon.restore();
+    });
+
     test('Returns all courses with status 200', async () => {
       sinon.stub(Course, 'findAll').callsFake(() => mock);
       await getAll(req, res);
@@ -20,8 +24,7 @@ describe('Course service', () => {
       });
     });
     test('Returns 400 with faulty filters', async () => {
-      const fakeValidator = sinon.fake.returns({ errors: true });
-      sinon.replace(queryParser, 'validateFilters', fakeValidator);
+      sinon.stub(queryParser, 'validateFilters').returns({ errors: true });
       await getAll(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
     });
