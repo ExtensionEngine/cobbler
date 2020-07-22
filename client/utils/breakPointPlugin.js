@@ -4,7 +4,7 @@ export default function install(Vue, options) {
 
   // Parse queries and create state object
   Object.entries(options).map(([key, value]) => {
-    queries.push({ [key]: window.matchMedia(value) });
+    queries.push([key, window.matchMedia(value)]);
     state[key] = window.matchMedia(value).matches;
   });
 
@@ -21,8 +21,8 @@ export default function install(Vue, options) {
 
   // Start listeners for every defined breakpoint
   queries.forEach(query => {
-    query[Object.keys(query)[0]].addListener(mediaQueryList => {
-      screenState[Object.keys(query)[0]] = mediaQueryList.matches;
+    query[1].addListener(mediaQueryList => {
+      screenState[query[0]] = mediaQueryList.matches;
     });
   });
 }
