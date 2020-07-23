@@ -36,7 +36,7 @@
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.12",
-    "thwack": "^0.6.0",
+    "thwack": "^0.6.1",
     "superstruct": "^0.10.12",
     "umzug": "^2.3.0",
     "vee-validate": "^3.3.4",
