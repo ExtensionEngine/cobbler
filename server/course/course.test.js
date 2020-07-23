@@ -2,12 +2,11 @@
 
 const { Course, sequelize } = require('../shared/database');
 const { create, getAll, getCourseById, update } = require('../course/course.controller');
-const queryParser = require('../shared/util/apiQueryParser');
 const sinon = require('sinon');
 
 describe('Course service', () => {
   const mock = [{ id: 1, name: 'Course' }, { id: 1, name: 'Course2' }];
-  const req = { query: {}, params: { id: 2 } };
+  const req = { query: { }, params: { id: 2 }, user: { id: 1 } };
   const res = { json: jest.fn(() => res), send: jest.fn(() => res), status: jest.fn(() => res) };
   afterEach(function () {
     sinon.restore();
@@ -15,7 +14,11 @@ describe('Course service', () => {
 
   describe('Get all courses', () => {
     test('Returns all courses with status 200', async () => {
-      sinon.stub(Course, 'findAll').callsFake(() => mock);
+      sinon.stub(Course, 'scope').callsFake(() => {
+        return {
+          findAll: sinon.stub().returns(mock)
+        };
+      });
       await getAll(req, res);
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
@@ -23,7 +26,12 @@ describe('Course service', () => {
       });
     });
     test('Returns 400 with faulty filters', async () => {
-      sinon.stub(queryParser, 'validateFilters').returns({ errors: true });
+      sinon.stub(Course, 'scope').callsFake(() => {
+        return {
+          findAll: sinon.stub().returns(mock)
+        };
+      });
+      req.query.filters = { test: 'gibberish' };
       await getAll(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
     });
