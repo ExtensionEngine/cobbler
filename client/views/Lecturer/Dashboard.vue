@@ -34,7 +34,7 @@ export default {
 
 <style scoped>
 .dashboard-container {
-  width: 90%;
+  width: 100%;
   max-width: var(--measure-md);
   box-shadow: 2px 6px 9px 0px var(--color-gray);
 }

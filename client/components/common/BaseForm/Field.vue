@@ -3,7 +3,7 @@
     v-slot="{ errors }"
     :rules="rules"
     :name="name"
-    :debounce="debounce"
+    :debounce="debounceValidation"
     tag="div">
     <label class="field-wrapper">
       <slot :on="{ input }" :value="value"></slot>
@@ -26,9 +26,9 @@ export default {
   props: {
     label: { type: String, default: null },
     name: { type: String, required: true },
-    value: { type: [String, Object], default: null },
+    value: { type: String, default: null },
     rules: { type: [Object, String], default: null },
-    debounce: { type: Number, default: 300 }
+    debounceValidation: { type: Number, default: 300 }
   },
   methods: {
     input(value) {

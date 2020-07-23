@@ -13,6 +13,7 @@ const User = require('../../user/user.model');
 const Category = require('../../category/category.model');
 const Course = require('../../course/course.model');
 const Enrollment = require('../../enrollment/enrollment.model');
+const Lecture = require('../../lecture/lecture.model');
 /* eslint-enable */
 
 const sequelize = new Sequelize(config.url, config);
@@ -36,14 +37,15 @@ function initialize() {
     .authenticate()
     .then(() => umzug.up())
     .then(() => logger.info('👌 Connected to db'))
-    .catch(() => logger.error('Failed to connect to db'));
+    .catch(err => logger.error('Failed to connect to db ', err));
 }
 
 const models = {
   User: defineModel(User),
   Category: defineModel(Category),
   Course: defineModel(Course),
-  Enrollment: defineModel(Enrollment)
+  Enrollment: defineModel(Enrollment),
+  Lecture: defineModel(Lecture)
 };
 
 function defineModel(Model, connection = sequelize) {
@@ -56,6 +58,7 @@ function defineModel(Model, connection = sequelize) {
 
 Object.values(models).forEach(model => {
   invoke(model, 'associate', models);
+  invoke(model, 'scopes', models);
 });
 
 const db = {

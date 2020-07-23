@@ -6,7 +6,8 @@
     <option
       v-for="option in options"
       :key="option[valueKey]"
-      :value="option[valueKey]">
+      :value="option[valueKey]"
+      :selected="isSelected(option)">
       {{ option[labelKey] }}
     </option>
   </select>
@@ -26,6 +27,9 @@ export default {
       const selectedOption = this.options.find(
         option => String(option[this.valueKey]) === event.target.value);
       this.$emit('input', selectedOption);
+    },
+    isSelected(option) {
+      return this.value && option[this.valueKey] === this.value[this.valueKey];
     }
   }
 };

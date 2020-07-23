@@ -48,7 +48,7 @@ import BaseError from '../components/common/BaseError';
 import BaseForm from '../components/common/BaseForm';
 import BaseInput from '../components/common/BaseInput';
 import Field from '../components/common/BaseForm/Field';
-import { getBasePath } from '../router';
+import { getBasepath } from '../router';
 import { mapActions } from 'vuex';
 
 export default {
@@ -67,7 +67,7 @@ export default {
       try {
         await this.login({ email: this.email, password: this.password });
         this.$toasted.global.formSuccess({ message: 'Login successful!' });
-        this.$router.push(getBasePath());
+        this.$router.push(getBasepath());
       } catch (err) {
         this.$toasted.global.formError({ message: 'Login failed!' });
         const { status } = err.thwackResponse;
@@ -103,7 +103,7 @@ export default {
   box-shadow: 2px 6px 9px 0px var(--color-gray);
 }
 .input-element {
-  margin: 10px 0;
+  margin: var(--spacing-sm) 0;
   box-shadow: 2px 2px 5px 0px var(--color-gray);
 }
 @media only screen and (max-width: 480px) {

@@ -1,10 +1,11 @@
 'use strict';
 
 const { BAD_REQUEST, CREATED, NOT_FOUND, OK } = require('http-status-codes');
-const { Category, Course, Enrollment, sequelize, User } = require('../shared/database');
+const { Category, Course, Lecture, sequelize, User } = require('../shared/database');
 const { HttpError } = require('../shared/error');
 const isEmpty = require('lodash/isEmpty');
-const queryParser = require('../shared/util/apiQueryParser');
+const { literal } = require('sequelize');
+const { validateFilters } = require('../shared/util/apiQueryParser');
 
 module.exports = {
   create,
@@ -23,8 +24,10 @@ function create(req, res) {
 
 async function getAll(req, res) {
   const { filters, pagination } = req.query;
-  const errors = queryParser.validateFilters(filters, Course.rawAttributes, Course.name);
-  if (isEmpty(errors) === false) return res.status(BAD_REQUEST).json({ errors });
+  const errors = validateFilters(filters, Course.rawAttributes, Course.name);
+  const { id } = req.user;
+  if (!isEmpty(errors)) return res.status(BAD_REQUEST).json({ errors });
+
   const query = {
     ...pagination,
     include: [
@@ -32,31 +35,37 @@ async function getAll(req, res) {
         model: Category,
         as: 'category',
         attributes: ['name']
-      },
-      {
-        model: User,
-        attributes: ['firstName', 'lastName', 'email'],
-        through: { model: Enrollment, attributes: [] },
-        as: 'user'
       }
     ],
-    where: filters
+    where: filters,
+    subQuery: false,
+    order: [[literal('"isEnrolled"'), 'DESC'], ['updatedAt', 'DESC']]
   };
-  const courses = await Course.findAll(query);
+  const courses = await Course.scope({ method: ['enrolledByUserId', id] }).findAll(query);
   return res.status(OK).json({ data: courses });
 }
 
 async function getCourseById(req, res) {
   const { id } = req.params;
+
   if (!Number(id)) {
     throw new HttpError('ID is not a number', BAD_REQUEST);
   }
-  const course = await Course.findByPk(id, {
+  const course = await Course.scope({ method: ['enrolledByUserId', req.user.id] }).findByPk(id, {
     include: [
       {
         model: Category,
-        as: 'category',
-        attributes: ['name']
+        as: 'category'
+      },
+      {
+        model: Lecture,
+        as: 'lectures'
+      },
+      {
+        model: User,
+        as: 'user',
+        required: false,
+        attributes: ['firstName', 'lastName', 'email', 'role']
       }
     ]
   });

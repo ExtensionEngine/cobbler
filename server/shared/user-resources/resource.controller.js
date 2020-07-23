@@ -3,7 +3,8 @@
 const { Category, Course, User } = require('../database');
 
 module.exports = {
-  getCoursesByUser
+  getCoursesByUser,
+  isEnrolled
 };
 
 async function getCoursesByUser(req, res) {
@@ -26,4 +27,19 @@ async function getCoursesByUser(req, res) {
     ]
   });
   res.json({ data: course });
+}
+
+async function isEnrolled(req, res) {
+  const { email } = req.user;
+  const { id } = req.params;
+  const course = await Course.findOne({
+    where: { id },
+    include: [
+      {
+        model: User,
+        where: { email }
+      }
+    ]
+  });
+  res.json({ enrolled: !!course });
 }

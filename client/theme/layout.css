@@ -4,6 +4,7 @@
   --spacing-xxs: 0.25rem;
   --spacing-xs: 0.5rem;
   --spacing-sm: 0.75rem;
+  --spacing-sd: 1rem;
   --spacing-md: 1.25rem;
   --spacing-lg: 2rem;
   --spacing-xl: 3.25rem;
@@ -12,10 +13,17 @@
 
   --navbar-height: var(--spacing-xl);
 
+  --z-dashboard: 100;
+  --z-drawer: 300;
+
+
   --measure-sm: 350px;
   --measure-md: 550px;
+  --measure-lg: 750px;
+  --measure-xl: 950px;
+  --measure-xxl: 1200px;
 
-  --z-nav: 2;
+  --z-nav: 2
 }
 
 .flex-h {
@@ -34,11 +42,23 @@
 .justify-space-between {
   justify-content: space-between;
 }
+.justify-space-around {
+  justify-content: space-around;
+}
 .justify-end {
   justify-content: flex-end;
 }
+.justify-start {
+  justify-content: flex-start;
+}
+.align-start {
+  align-items: start;
+}
 .align-center {
   align-items: center;
+}
+.align-end {
+  align-items: end;
 }
 .place-center {
   justify-content: center;
@@ -262,8 +282,6 @@
 .pl-xxxl { 
   padding-left: var(--spacing-xxxl);
 }
-
-
 
 * {
   box-sizing: border-box;

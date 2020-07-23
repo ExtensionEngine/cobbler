@@ -1,7 +1,7 @@
 'use strict';
 
+const { literal, Model } = require('sequelize');
 const isAfter = require('date-fns/isAfter');
-const { Model } = require('sequelize');
 
 class Course extends Model {
   static fields({ STRING, TEXT, DATE, INTEGER, VIRTUAL }) {
@@ -41,7 +41,7 @@ class Course extends Model {
     };
   }
 
-  static associate({ Category, User, Enrollment }) {
+  static associate({ Category, User, Enrollment, Lecture }) {
     this.belongsTo(Category, {
       foreignKey: 'categoryId',
       as: 'category'
@@ -51,6 +51,11 @@ class Course extends Model {
       foreignKey: { name: 'courseId', field: 'course_id' },
       as: 'user'
     });
+    this.hasMany(Lecture, {
+      foreignKey: 'courseId',
+      as: 'lectures'
+    });
+    this.hasMany(Enrollment, { foreignKey: 'course_id' });
   }
 
   static options() {
@@ -59,6 +64,27 @@ class Course extends Model {
       underscored: true,
       paranoid: true
     };
+  }
+
+  static scopes({ Enrollment }) {
+    const { courseId, userId, createdAt } = Enrollment.rawAttributes;
+
+    return [
+      this.addScope('enrolledByUserId', id => {
+        const enrollmentsQuery = `
+        SELECT ${createdAt.field}
+        FROM ${Enrollment.tableName} as Enrollment
+        WHERE Enrollment.${userId.field} = ${id}
+        AND Enrollment.${courseId.field} = "Course"."id"`;
+        return {
+          attributes: [
+            [literal(`EXISTS(${enrollmentsQuery})`), 'isEnrolled'],
+            ...Object.keys(Course.rawAttributes)
+          ]
+        };
+      }
+      )
+    ];
   }
 }
 

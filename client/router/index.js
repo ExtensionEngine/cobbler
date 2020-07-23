@@ -1,6 +1,9 @@
 import AddCourse from '../views/Lecturer/AddCourse';
 import AdminDashboard from '../views/Admin/Dashboard';
+import Course from '../views/CourseOverview.vue';
 import curry from 'lodash/curry';
+import Dashboard from '../views/Dashboard';
+import EditCourse from '../views/Lecturer/EditCourse';
 import every from 'lodash/every';
 import Forbidden from '../views/Forbidden';
 import Layout from '../components/common/Layout';
@@ -20,28 +23,46 @@ const routes = [
     component: Layout,
     children: [{
       path: paths.lecturer.base,
-      name: 'Lecturer dashboard',
+      name: 'lecturer-dashboard',
       component: LecturerDashboard,
       meta: {
         roles: ['LECTURER']
       }
-    }, {
+    },
+    {
+      path: '/',
+      name: 'Dashboard',
+      component: Dashboard
+    },
+    {
+      path: paths.courses,
+      name: 'Course',
+      component: Course
+    },
+    {
       path: paths.lecturer.addCourse,
-      name: 'Add course',
+      name: 'add-course',
       component: AddCourse,
       meta: {
         roles: ['LECTURER']
       }
     }, {
+      path: paths.lecturer.editCourse,
+      name: 'edit-course',
+      component: EditCourse,
+      meta: {
+        roles: ['LECTURER']
+      }
+    }, {
       path: paths.learner.base,
-      name: 'Learner dashboard',
+      name: 'learner-dashboard',
       component: LearnerDashboard,
       meta: {
         roles: ['LEARNER']
       }
     }, {
       path: paths.admin.base,
-      name: 'Admin dashboard',
+      name: 'admin-dashboard',
       component: AdminDashboard,
       meta: {
         roles: ['ADMIN']
@@ -50,12 +71,12 @@ const routes = [
   },
   {
     path: paths.login,
-    name: 'Login',
+    name: 'login',
     component: Login
   },
   {
     path: paths.forbidden,
-    name: 'Forbidden',
+    name: 'forbidden',
     component: Forbidden
   }
 ];
@@ -77,7 +98,7 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-export function getBasePath() {
+export function getBasepath() {
   switch (store.state.auth.role) {
     case 'ADMIN':
       return paths.admin.base;

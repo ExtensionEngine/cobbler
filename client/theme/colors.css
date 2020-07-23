@@ -8,11 +8,13 @@
   --color-success: #22bb33;
 
   --color-primary-500: rgba(34, 112, 147, 0.5);
+  --color-accent-500: rgba(56,246,137, 0.5);
   --color-error-500: rgba(187, 33, 36, 0.5);
 
   --color-black: #000000;
   --color-gray: #8b8b8b;
   --color-white: #ffffff;
+  --color-green: #016801;
 
   --color-gray-500: #cccccc;
 }
