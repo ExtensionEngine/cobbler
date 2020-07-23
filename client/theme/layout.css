@@ -19,8 +19,11 @@
 
   --measure-sm: 350px;
   --measure-md: 550px;
+  --measure-lg: 750px;
+  --measure-xl: 950px;
+  --measure-xxl: 1200px;
 
-  --z-nav: 2;
+  --z-nav: 2
 }
 
 .flex-h {

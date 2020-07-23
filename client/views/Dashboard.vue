@@ -9,7 +9,7 @@
     <transition name="slide">
       <course-filters-drawer
         v-if="menu"
-        @closed="handleCloseMenu" />
+        @closed="closeMenu" />
     </transition>
     <div
       class="main-content">
@@ -83,12 +83,6 @@ export default {
       }
     };
   },
-  computed: {
-    queryString() {
-      const { limit, offset, filterParams } = this;
-      return generateQuery(filterParams, limit, offset);
-    }
-  },
   methods: {
     paginateForward() {
       if (this.courses.length === this.limit) { this.offset += this.limit; }
@@ -103,7 +97,8 @@ export default {
       this.getFilteredCourses();
     },
     getFilteredCourses() {
-      get(this.queryString)
+      const { limit, offset, filterParams } = this;
+      get(generateQuery(filterParams, limit, offset))
         .then(({ data }) => {
           this.courses = data.data;
         }).finally(() => {
@@ -113,7 +108,7 @@ export default {
     showMenu() {
       this.menu = true;
     },
-    handleCloseMenu(params) {
+    closeMenu(params) {
       if (params) {
         this.filterParams = params;
         this.getFilteredCourses();
@@ -138,10 +133,11 @@ export default {
   height: 100%;
   width: 100%;
   z-index: var(--z-dashboard);
+
 }
 .desktop-page-btns {
   position: absolute;
-  bottom: 1%;
+  bottom: var(--spacing-sm);
 }
 .mobile-page-btn {
   background: var(--color-info);
@@ -169,7 +165,7 @@ i {
   margin-bottom: var(--spacing-md);
 }
 .cards {
-  max-width: 1200px;
+  max-width: var(--measure-xxl);
   margin: var(--spacing-sm) auto;
   display: grid;
   grid: auto-flow auto / 1fr;
@@ -227,7 +223,7 @@ i {
     grid: auto-flow auto / repeat(2, 1fr);
   }
   .main-content {
-    max-width: 80%;
+    max-width: var(--measure-xl);
     width: 100%;
   }
 }
