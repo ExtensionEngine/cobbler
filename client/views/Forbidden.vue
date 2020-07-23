@@ -9,13 +9,13 @@
 
 <script>
 import BaseButton from '../components/common/BaseButton';
-import { getBasePath } from '../router/index';
+import { getBasepath } from '../router/index';
 
 export default {
   name: 'forbidden',
   methods: {
     handleClick() {
-      this.$router.push(getBasePath());
+      this.$router.push(getBasepath());
     }
   },
   components: {

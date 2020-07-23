@@ -7,6 +7,7 @@ export default {
     addCourse: '/lecturer/add-course',
     editCourse: '/lecturer/edit-course/:id'
   },
+  courses: '/courses/:id',
   learner: {
     base: '/'
   },

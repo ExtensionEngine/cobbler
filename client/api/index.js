@@ -6,15 +6,19 @@ export const endpoints = {
   auth: {
     login: 'login'
   },
+  course: {
+    base: 'courses',
+    byId: id => `courses/${id}`,
+    enroll: id => `courses/${id}/enroll`,
+    myCourses: 'me/courses',
+    update: id => `courses/${id}`,
+    getByName: name => `courses?name=${name}`
+  },
+  enroll: {
+    base: 'enroll'
+  },
   categories: {
     base: 'categories'
-  },
-  courses: {
-    base: 'courses',
-    myCourses: 'me/courses',
-    getById: id => `courses/${id}`,
-    getByName: name => `courses?name=${name}`,
-    update: id => `courses/${id}`
   },
   lectures: {
     base: 'lectures'

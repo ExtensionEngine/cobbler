@@ -37,7 +37,7 @@ function initialize() {
     .authenticate()
     .then(() => umzug.up())
     .then(() => logger.info('👌 Connected to db'))
-    .catch(() => logger.error('Failed to connect to db'));
+    .catch(err => logger.error('Failed to connect to db ', err));
 }
 
 const models = {
@@ -58,6 +58,7 @@ function defineModel(Model, connection = sequelize) {
 
 Object.values(models).forEach(model => {
   invoke(model, 'associate', models);
+  invoke(model, 'scopes', models);
 });
 
 const db = {

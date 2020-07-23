@@ -1,3 +1,27 @@
 ul {
   margin: 0;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+.material-btn {
+  box-shadow: 0 2px 3px var(--color-gray), 0 2px 3px var(--color-gray);
+  padding: var(--spacing-xs) var(--spacing-sd);
+  font-size: var(--spacing-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--spacing-xxxs);
+  border: none;
+}
+.material-btn:focus {
+  outline: none;
+}
+button:hover {
+  cursor: pointer;
+}
+button:focus {
+  outline: none;
+
+}
+

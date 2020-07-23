@@ -1,6 +1,8 @@
 import AddCourse from '../views/Lecturer/AddCourse';
 import AdminDashboard from '../views/Admin/Dashboard';
+import Course from '../views/CourseOverview.vue';
 import curry from 'lodash/curry';
+import Dashboard from '../views/Dashboard';
 import EditCourse from '../views/Lecturer/EditCourse';
 import every from 'lodash/every';
 import Forbidden from '../views/Forbidden';
@@ -26,7 +28,18 @@ const routes = [
       meta: {
         roles: ['LECTURER']
       }
-    }, {
+    },
+    {
+      path: '/',
+      name: 'Dashboard',
+      component: Dashboard
+    },
+    {
+      path: paths.courses,
+      name: 'Course',
+      component: Course
+    },
+    {
       path: paths.lecturer.addCourse,
       name: 'add-course',
       component: AddCourse,
@@ -85,7 +98,7 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-export function getBasePath() {
+export function getBasepath() {
   switch (store.state.auth.role) {
     case 'ADMIN':
       return paths.admin.base;

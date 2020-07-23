@@ -35,6 +35,7 @@
     "passport-local": "^1.0.0",
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
+    "query-string": "^6.13.1",
     "sequelize": "^5.21.12",
     "thwack": "^0.6.0",
     "superstruct": "^0.10.12",
