@@ -1,6 +1,6 @@
 'use strict';
 
-const Category = require('./category.model');
+const { Category } = require('../shared/database');
 const { OK } = require('http-status-codes');
 
 module.exports = {

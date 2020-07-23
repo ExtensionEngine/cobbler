@@ -2,6 +2,7 @@
 
 const { createLogger, format, transports } = require('winston');
 const { cli, colorize, combine, printf, splat } = format;
+const { omit } = require('lodash');
 
 const levels = {
   error: 0,
@@ -33,4 +34,19 @@ const logger = createLogger({
   ]
 });
 
-module.exports = logger;
+function requestLogger({ method, originalUrl, url, headers, connection }, res, next) {
+  const { remoteAddress, remotePort } = connection;
+  const reqSerializer = {
+    method,
+    url: originalUrl || url,
+    headers: process.env.NODE_ENV === 'production'
+      ? omit(headers, 'authorization')
+      : headers,
+    remoteAddress,
+    remotePort
+  };
+  logger.info('%o', reqSerializer);
+  next();
+}
+
+module.exports = { logger, requestLogger };
