@@ -5,6 +5,7 @@ const {
   coerce,
   masked
 } = require('superstruct');
+
 const { BAD_REQUEST } = require('http-status-codes');
 
 function reqBodyValidatorFactory(struct) {
