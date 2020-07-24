@@ -2,7 +2,7 @@
 
 const config = require('./config');
 const invoke = require('lodash/invoke');
-const logger = require('../logger');
+const { logger } = require('../logger');
 const path = require('path');
 const { Sequelize } = require('sequelize');
 const Umzug = require('umzug');

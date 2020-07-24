@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('../logger');
+const { logger } = require('../logger');
 
 const {
   DATABASE_ADAPTER,
@@ -10,6 +10,7 @@ const {
   DATABASE_PASSWORD,
   DATABASE_PORT,
   DATABASE_NAME
+
 } = process.env;
 
 module.exports = {
@@ -32,6 +33,5 @@ function readConfig() {
     host: DATABASE_HOST,
     port: DATABASE_PORT,
     dialect: DATABASE_ADAPTER || 'postgres'
-
   };
 }

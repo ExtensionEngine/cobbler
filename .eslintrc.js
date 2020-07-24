@@ -1,4 +1,7 @@
 module.exports = {
   root: true,
-  extends: '@extensionengine'
+  extends: '@extensionengine',
+  env: {
+    jest: true
+  }
 };
