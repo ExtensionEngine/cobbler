@@ -33,6 +33,5 @@ function readConfig() {
     host: DATABASE_HOST,
     port: DATABASE_PORT,
     dialect: DATABASE_ADAPTER || 'postgres'
-
   };
 }
