@@ -22,6 +22,10 @@ export const endpoints = {
   },
   lectures: {
     base: 'lectures'
+  },
+  sse: {
+    base: 'sse',
+    subscribe: 'sse/subscribe'
   }
 };
 
