@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-for="({ post }, i) in posts" :key="i">
+      {{ post }}
+    </div>
     <form @submit.prevent="onSubmit">
       <input v-model="post">
       <input type="submit">
@@ -9,10 +12,17 @@
 
 <script>
 import { addPost, subscribe } from '../../api/sse';
+import SSEClient from '../../SSEClient';
 
 export default {
   name: 'learner-dashboard',
-  data() { return ({ post: '' }); },
+  data() {
+    return ({
+      sseClient: null,
+      post: '',
+      posts: []
+    });
+  },
   methods: {
     async onSubmit() {
       try {
@@ -23,15 +33,11 @@ export default {
     }
   },
   async created() {
-    const readableStream = await subscribe();
-    const decodedStream =
-      await readableStream.data.pipeThrough(new window.TextDecoderStream());
-    const jsonStream = await decodedStream.pipeThrough(new window.TransformStream({
-      transform: (payload, controller) => controller.enqueue(JSON.parse(payload))
-    }));
-    console.log(await jsonStream.getReader().read());
-    // const writableStream = await jsonStream.pipeTo(new WritableStream());
-    // console.log(writableStream);
+    this.sseClient = new SSEClient(
+      await subscribe(),
+      payload => this.posts.push(payload)
+    );
+    this.sseClient.subscribe();
   }
 };
 </script>

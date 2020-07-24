@@ -14,8 +14,9 @@ function subscribe(req, res) {
     Connection: 'keep-alive',
     'Cache-Control': 'no-cache'
   });
-  res.write(`${JSON.stringify(posts)}\n\n`);
-  clients.push(req.user);
+  const stringifiedPosts = posts.map(post => `${JSON.stringify(post)}\n`).join();
+  res.write(`${stringifiedPosts}\n`);
+  clients.push({ ...req.user, res });
   req.on('close', () => {
     console.log(`${req.user.id} Connection closed`);
     clients = clients.filter(c => c.id !== req.user.id);
